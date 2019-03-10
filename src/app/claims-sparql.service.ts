@@ -34,7 +34,7 @@ export class ClaimsSparqlService {
       newClaim.author = result.author.value;
       newClaim.date = result.date.value;
       newClaim.link = result.link.value;
-      newClaim.truthRating = result.truthRating.value;
+      newClaim.truthRating = parseInt(result.truthRating.value, 10);
       newClaim.ratingName = result.ratingName.value;
       newClaim.text = result.text.value;
       claims.push(newClaim);

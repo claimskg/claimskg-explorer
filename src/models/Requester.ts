@@ -1,6 +1,7 @@
 /* tslint:disable:no-trailing-whitespace */
 import * as request_data from './data/request_data.json';
 import {RatingEnum} from './RatingEnum';
+import {environment} from '../environments/environment';
 
 const prefixes = (request_data as any).prefixes;
 const select = (request_data as any).select;
@@ -11,15 +12,17 @@ export class Requester {
   truthRatings: number[];
   author: string;
   keywords: string[];
-  firstDate: string; // Format américain yyyy-mm-dd
-  secondDate: string;
   languages: string[];
+  dates: Date[];
+  currentOffset: number;
 
   constructor() {
     this.languages = [];
     this.truthRatings = [];
     this.entities = [];
     this.keywords = [];
+    this.dates = [];
+    this.currentOffset = 0;
   }
 
   public toSPARQL(): string {
@@ -34,8 +37,11 @@ export class Requester {
     if (this.author) {
       request += 'FILTER regex(?author, "' + this.author + '") . ';
     }
-    if (this.firstDate && this.secondDate) {
-      request += 'FILTER (?date >= "' + this.firstDate + '"^^xsd:dateTime && ?date <= "' + this.secondDate + '"^^xsd:dateTime) . ';
+    if (this.dates && this.dates.length === 2) {
+      request += 'FILTER (?date >= "'
+        + this.getStringifiedDate(this.dates[0])
+        + '"^^xsd:dateTime && ?date <= "'
+        + this.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
       request += '?claims schema:mentions ?entities .';
@@ -75,7 +81,33 @@ export class Requester {
       request += ') .';
     }
     request += '}';
+    request += 'LIMIT ' + environment.resultPerPage + ' ';
+    request += 'OFFSET ' + this.currentOffset;
 
     return request;
+  }
+
+  private getStringifiedDate(date: Date): string {
+    return date.toISOString().split('T')[0];
+  }
+
+  public incrementOffset(): void {
+    this.currentOffset += environment.resultPerPage;
+  }
+
+  public decrementOffset(): void {
+    this.currentOffset -= environment.resultPerPage;
+  }
+
+  public getLimit(): number {
+    return environment.resultPerPage;
+  }
+
+  public getCurrentPageIndex(): number {
+    return (this.currentOffset / this.getLimit()) + 1;
+  }
+
+  public setPage(page: number) {
+    this.currentOffset = (page - 1) * this.getLimit();
   }
 }

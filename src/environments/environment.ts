@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  endpoint: 'http://localhost:8890/sparql'
+  endpoint: 'http://localhost:8890/sparql',
+  resultPerPage: 10,
 };
 
 /*

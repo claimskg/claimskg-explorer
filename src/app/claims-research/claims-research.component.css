@@ -1,0 +1,26 @@
+#search-block {
+  margin-top: 60px;
+}
+
+.custom-chip {
+  margin: 5px 5px 5px 5px;
+}
+
+.custom-chip:hover {
+  background-color:#c7c6c6
+}
+
+.chip-custom-entity {
+  background-color: #4285f4;
+  color: white;
+}
+
+.chip-custom-entity:hover {
+  color:#fff;
+  background-color:#1266f1
+}
+
+#back-action {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

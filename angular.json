@@ -23,7 +23,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+              "src/styles.css",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/propellerkit/dist/css/propeller.css",
+              "node_modules/propellerkit-datetimepicker/css/bootstrap-datetimepicker.css",
+              "node_modules/propellerkit-datetimepicker/css/pmd-datetimepicker.css",
+              "src/assets/icon-material.css",
+              "src/assets/font-awesome/css/font-awesome.css",
             ],
             "scripts": [],
             "es5BrowserSupport": true
@@ -80,6 +88,8 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "./node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
               "src/styles.css"
             ],
             "scripts": [],

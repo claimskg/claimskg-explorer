@@ -1,0 +1,108 @@
+<div id="back-action" *ngIf="go" class="text-center mx-auto">
+  <button class="btn btn-dark" (click)="goBackForm()"><span class="fa fa-arrow-left"> Back</span></button>
+</div>
+<div *ngIf="!go" id="search-block" class="text-center w-50 mx-auto">
+  <h1><strong>Claims search engine</strong></h1>
+  <form id="research-form">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="entities">Mentionned Entities</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle" title="Type an entity (ex: Donald Trump) and press enter to add it in the list!"></i>
+              </div>
+            </div>
+            <input (keydown)="addEntry($event, 'entities', 'entitiesField')" [(ngModel)]="entitiesField" id="entities" name="entities" type="text" class="form-control">
+          </div>
+        </div>
+        <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip chip-custom-entity">
+          {{entity}}
+          <a (click)="deleteEnntry('entities', entity)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="keywords">Keywords</label>
+          <div class="input-group">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle" title="Type a keyword and press enter to add it in the list!"></i>
+              </div>
+            </div>
+            <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords" name="keywords" type="text" class="form-control">
+          </div>
+        </div>
+        <div *ngFor="let word of request.keywords" class="pmd-chip custom-chip">
+          {{word}}
+          <a (click)="deleteEnntry('keywords', word)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Truth rating</label>
+      <div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change) = "filterTruthRating($event, 3)" name="truthrating" id="truthrating_0" type="checkbox" class="custom-control-input" value="3" [checked]="request.truthRatings.includes(3)">
+          <label for="truthrating_0" class="custom-control-label">True</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change) = "filterTruthRating($event, 2)" name="truthrating" id="truthrating_1" type="checkbox" class="custom-control-input" value="2" [checked]="request.truthRatings.includes(2)">
+          <label for="truthrating_1" class="custom-control-label">Mixture</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change) = "filterTruthRating($event, 1)" name="truthrating" id="truthrating_2" type="checkbox" class="custom-control-input" value="1" [checked]="request.truthRatings.includes(1)">
+          <label for="truthrating_2" class="custom-control-label">False</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change) = "filterTruthRating($event, -1)" name="truthrating" id="truthrating_3" type="checkbox" class="custom-control-input" value="-1" [checked]="request.truthRatings.includes(-1)">
+          <label for="truthrating_3" class="custom-control-label">Other</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="author">Author</label>
+        <input [(ngModel)]="request.author" id="author" name="author" type="text" class="form-control">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="author">Time period</label>
+        <input name="timeperiod" class="form-control" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="request.dates">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="languages">Languages</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-question-circle"></i>
+          </div>
+        </div>
+        <input (keydown)="addEntry($event,'languages', 'languagesField')" [(ngModel)]="languagesField" id="languages" name="languages" type="text" class="form-control">
+      </div>
+    </div>
+    <div *ngFor="let language of request.languages" class="pmd-chip custom-chip chip-custom-entity">
+      {{language}}
+      <a (click)="deleteEnntry('languages', language)" class="pmd-chip-action">
+        <i class="material-icons">close</i></a>
+    </div>
+    <div class="form-group">
+      <label for="sources">Source</label>
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <i class="fa fa-question-circle"></i>
+          </div>
+        </div>
+        <input id="sources" name="sources" type="text" class="form-control">
+      </div>
+    </div>
+    <div class="form-group">
+      <button name="submit" type="button" class="btn btn-primary" (click)="goSearch($event)">Claims Search</button>
+    </div>
+  </form>
+</div>
+<app-claims-list *ngIf="go" [request]="request"></app-claims-list>
