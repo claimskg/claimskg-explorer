@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 
@@ -10,6 +10,8 @@ import { ClaimsResearchComponent } from './claims-research/claims-research.compo
 import { AppRoutingModule } from './app-routing.module';
 
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+
+import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 
 
 @NgModule({
@@ -24,6 +26,9 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     AppRoutingModule,
     FormsModule,
     BsDatepickerModule.forRoot(),
+    MatInputModule,
+    ReactiveFormsModule,
+    MatAutocompleteModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

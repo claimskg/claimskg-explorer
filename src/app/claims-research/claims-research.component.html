@@ -81,7 +81,10 @@
             <i class="fa fa-question-circle"></i>
           </div>
         </div>
-        <input (keydown)="addEntry($event,'languages', 'languagesField')" [(ngModel)]="languagesField" id="languages" name="languages" type="text" class="form-control">
+        <input (keydown)="addEntry($event,'languages', 'languagesField')" [(ngModel)]="languagesField" id="languages" name="languages" type="text" class="form-control" matInput [formControl]="controlLanguage" [matAutocomplete]="languages">
+        <mat-autocomplete #languages="matAutocomplete">
+          <mat-option *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
+        </mat-autocomplete>
       </div>
     </div>
     <div *ngFor="let language of request.languages" class="pmd-chip custom-chip chip-custom-entity">
@@ -97,7 +100,10 @@
             <i class="fa fa-question-circle"></i>
           </div>
         </div>
-        <input id="sources" name="sources" type="text" class="form-control">
+        <input id="sources" name="sources" type="text" class="form-control" matInput [formControl]="controlSources" [matAutocomplete]="sources">
+        <mat-autocomplete #sources="matAutocomplete">
+          <mat-option *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
+        </mat-autocomplete>
       </div>
     </div>
     <div class="form-group">

@@ -1,7 +1,7 @@
 import {Component, OnInit, Input, SimpleChanges, SimpleChange} from '@angular/core';
 import {Requester} from '../../models/Requester';
 import {ClaimsSparqlService} from '../claims-sparql.service';
-import {ClaimPreview} from '../../models/data/ClaimPreview';
+import {ClaimPreview} from '../../models/ClaimPreview';
 
 @Component({
   selector: 'app-claims-list',

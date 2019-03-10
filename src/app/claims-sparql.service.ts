@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
-import {URLSearchParams} from 'url';
 import { Observable, of } from 'rxjs';
 import { environment} from '../environments/environment';
 import {Requester} from '../models/Requester';
-import {ClaimPreview} from '../models/data/ClaimPreview';
+import {ClaimPreview} from '../models/ClaimPreview';
+
+const options = {
+  headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', 'application/sparql-results+json')
+};
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +17,7 @@ export class ClaimsSparqlService {
 
   constructor(private http: HttpClient) { }
 
-  getClaimsPreview(request: Requester): Observable<ClaimPreview[]> {
-    let params = new HttpParams();
-    const headers = new HttpHeaders();
-    params = params.set('query', request.toSPARQL());
-    const options = {
-      headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', 'application/sparql-results+json')
-    };
-    return this.http.post<any>(environment.endpoint,  params, options)
-      .pipe(map(res => res = this.convertJSONtoClaimsPreview(res)));
-  }
-
-  private convertJSONtoClaimsPreview(response: any): ClaimPreview[] {
+  private static convertJSONtoClaimsPreview(response: any): ClaimPreview[] {
     const results = response.results.bindings;
     const claims = [];
     for (const result of results) {
@@ -40,5 +32,12 @@ export class ClaimsSparqlService {
       claims.push(newClaim);
     }
     return claims;
+  }
+
+  getClaimsPreview(request: Requester): Observable<ClaimPreview[]> {
+    let params = new HttpParams();
+    params = params.set('query', request.toSPARQL());
+    return this.http.post<any>(environment.endpoint,  params, options)
+      .pipe(map(res => res = ClaimsSparqlService.convertJSONtoClaimsPreview(res)));
   }
 }
