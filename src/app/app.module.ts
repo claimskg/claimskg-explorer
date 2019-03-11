@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { MatAutocompleteModule, MatInputModule } from '@angular/material';
+import { ClaimsHomeComponent } from './claims-home/claims-home.component';
 
 
 @NgModule({
@@ -19,6 +20,7 @@ import { MatAutocompleteModule, MatInputModule } from '@angular/material';
     AppComponent,
     ClaimsListComponent,
     ClaimsResearchComponent,
+    ClaimsHomeComponent,
   ],
   imports: [
     BrowserModule,

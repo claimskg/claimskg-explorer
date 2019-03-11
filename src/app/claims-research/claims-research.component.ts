@@ -41,10 +41,19 @@ export class ClaimsResearchComponent implements OnInit {
 
   addEntry(event, keyRequest, keyComponent): void {
     if (event.key === 'Enter') {
-      if (this[keyComponent] !== '' && !this.request[keyRequest].includes(this[keyComponent])) {
-        this.request[keyRequest].push(this[keyComponent]);
-        this[keyComponent] = '';
-      }
+      this.addDataToRequester(keyRequest, keyComponent);
+    }
+  }
+
+  addEntryClickFiltered(toBlurId, keyRequest, keyComponent): void {
+    document.getElementById(toBlurId).blur();
+    this.addDataToRequester(keyRequest, keyComponent);
+  }
+
+  private addDataToRequester(keyRequest, keyComponent): void {
+    if (this[keyComponent] !== '' && !this.request[keyRequest].includes(this[keyComponent])) {
+      this.request[keyRequest].push(this[keyComponent]);
+      this[keyComponent] = '';
     }
   }
 

@@ -18,7 +18,6 @@ export class ClaimsListComponent implements OnInit{
 
   noResult = false;
 
-  nbPagesDisplay = 2;
   endResults = false;
 
   constructor(private sparqlService: ClaimsSparqlService) {
@@ -89,5 +88,4 @@ export class ClaimsListComponent implements OnInit{
     }
     this.loadNewData();
   }
-
 }

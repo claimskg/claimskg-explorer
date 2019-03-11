@@ -9,15 +9,15 @@
         <div class="form-group">
           <label for="entities">Mentionned Entities</label>
           <div class="input-group">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend help-circle" title="Type an entity (ex: Donald Trump) and press enter to add it in the list!">
               <div class="input-group-text">
-                <i class="fa fa-question-circle" title="Type an entity (ex: Donald Trump) and press enter to add it in the list!"></i>
+                <i class="fa fa-question-circle"></i>
               </div>
             </div>
             <input (keydown)="addEntry($event, 'entities', 'entitiesField')" [(ngModel)]="entitiesField" id="entities" name="entities" type="text" class="form-control">
           </div>
         </div>
-        <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip chip-custom-entity">
+        <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip">
           {{entity}}
           <a (click)="deleteEnntry('entities', entity)" class="pmd-chip-action">
             <i class="material-icons">close</i></a>
@@ -27,9 +27,9 @@
         <div class="form-group">
           <label for="keywords">Keywords</label>
           <div class="input-group">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend help-circle" title="Type a keyword and press enter to add it in the list!">
               <div class="input-group-text">
-                <i class="fa fa-question-circle" title="Type a keyword and press enter to add it in the list!"></i>
+                <i class="fa fa-question-circle"></i>
               </div>
             </div>
             <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords" name="keywords" type="text" class="form-control">
@@ -73,41 +73,52 @@
         <input name="timeperiod" class="form-control" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="request.dates">
       </div>
     </div>
-    <div class="form-group">
-      <label for="languages">Languages</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-question-circle"></i>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="languages">Languages</label>
+          <div class="input-group">
+            <div class="input-group-prepend help-circle" title="Select a language in the list or type a language and press enter">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle"></i>
+              </div>
+            </div>
+            <input (keydown)="addEntry($event,'languages', 'languagesField')" [(ngModel)]="languagesField" id="languages" name="languages" type="text" class="form-control" matInput [formControl]="controlLanguage" [matAutocomplete]="languages">
+            <mat-autocomplete #languages="matAutocomplete">
+              <mat-option (click)="addEntryClickFiltered('languages', 'languages', 'languagesField')" *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
+            </mat-autocomplete>
           </div>
         </div>
-        <input (keydown)="addEntry($event,'languages', 'languagesField')" [(ngModel)]="languagesField" id="languages" name="languages" type="text" class="form-control" matInput [formControl]="controlLanguage" [matAutocomplete]="languages">
-        <mat-autocomplete #languages="matAutocomplete">
-          <mat-option *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
-        </mat-autocomplete>
+        <div *ngFor="let language of request.languages" class="pmd-chip custom-chip">
+          {{language}}
+          <a (click)="deleteEnntry('languages', language)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
       </div>
-    </div>
-    <div *ngFor="let language of request.languages" class="pmd-chip custom-chip chip-custom-entity">
-      {{language}}
-      <a (click)="deleteEnntry('languages', language)" class="pmd-chip-action">
-        <i class="material-icons">close</i></a>
-    </div>
-    <div class="form-group">
-      <label for="sources">Source</label>
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <i class="fa fa-question-circle"></i>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="sources">Sources</label>
+          <div class="input-group">
+            <div class="input-group-prepend help-circle" title="Select a source (fact-checking website) in the list or type a source and press enter">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle"></i>
+              </div>
+            </div>
+            <input (keydown)="addEntry($event,'sources', 'sourcesField')" [(ngModel)]="sourcesField" id="sources" name="sources" type="text" class="form-control" matInput [formControl]="controlSources" [matAutocomplete]="sources">
+            <mat-autocomplete #sources="matAutocomplete">
+              <mat-option (click)="addEntryClickFiltered('sources', 'sources', 'sourcesField')"  *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
+            </mat-autocomplete>
           </div>
         </div>
-        <input id="sources" name="sources" type="text" class="form-control" matInput [formControl]="controlSources" [matAutocomplete]="sources">
-        <mat-autocomplete #sources="matAutocomplete">
-          <mat-option *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
-        </mat-autocomplete>
+        <div *ngFor="let source of request.sources" class="pmd-chip custom-chip">
+          {{source}}
+          <a (click)="deleteEnntry('sources', source)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
       </div>
     </div>
     <div class="form-group">
-      <button name="submit" type="button" class="btn btn-primary" (click)="goSearch($event)">Claims Search</button>
+      <button name="submit" type="button" id="btn-search" class="btn btn-primary" (click)="goSearch($event)">Claims Search</button>
     </div>
   </form>
 </div>

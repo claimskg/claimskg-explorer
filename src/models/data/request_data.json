@@ -4,20 +4,18 @@
     "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>",
     "PREFIX nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>"
   ],
-  "select": "(?claims as ?id) ?text ?date ?truthRating ?ratingName ?author ?link",
+  "select": "(?claims as ?id) ?text COALESCE(?date, 'Unknown') as ?date ?truthRating ?ratingName COALESCE(?author, 'Unknown') as ?author COALESCE(?link, '') as ?link",
   "clauses": [
     "?claims a schema:ClaimReview",
-    "?claims schema:headline ?headline",
-    "?claims schema:datePublished ?date",
+    "?claims schema:headline ?text",
+    "OPTIONAL {?claims schema:datePublished ?date}",
     "?claims schema:reviewRating ?truth_rating_review",
     "?truth_rating_review schema:alternateName ?ratingName",
     "?truth_rating_review schema:author <http://data.gesis.org/claimskg/organization/claimskg>",
     "?truth_rating_review schema:ratingValue ?truthRating",
-    "?claims schema:url ?link",
-    "?claims schema:author ?authorInfo",
+    "OPTIONAL {?claims schema:url ?link}",
+    "?item a schema:CreativeWork",
     "?claims schema:itemReviewed ?item",
-    "?item schema:author ?author_info",
-    "?item schema:text ?text",
-    "?author_info schema:name ?author"
+    "OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author}"
   ]
 }

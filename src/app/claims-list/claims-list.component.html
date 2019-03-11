@@ -1,3 +1,6 @@
+<div *ngIf="(!claims ||claims.length === 0) && !noResult && !endResults" class="text-center mx-auto">
+  <img src="../../assets/img/loading.gif">
+</div>
 <div *ngIf="noResult" class="text-center resultMsg">
   <p>No results.</p>
 </div>
@@ -13,7 +16,7 @@
           <a href="{{claim.link}}" class="pmd-avatar-list-img mx-auto">
             <img src="../../assets/img/www-icon.png" width="40" height="40">
           </a>
-          <p class="mx-auto">{{claim.date}}</p>
+          <p class="mx-auto">{{claim.date | date:'shortDate'}}</p>
         </div>
         <div class="media-body">
           <h3 class="card-title">{{claim.text}}</h3>
@@ -29,10 +32,9 @@
       </div>
     </div>
   </a>
-  <div *ngIf="claims.length > 0" class="pagination-box mx-auto text-center">
-    <button *ngIf="request.currentOffset !== 0"  (click)="clickPrevious()" class="btn btn-primary"><span class="fa fa-arrow-left"></span></button>
-    <button *ngIf="request.currentOffset == 0" disabled class="btn btn-primary"><span class="fa fa-arrow-left"></span></button>
-    <button [hidden]="(this.request.getCurrentPageIndex() < index && this.claims.length < this.request.getLimit())" [disabled]="(index === request.getCurrentPageIndex())" [className]="index === request.getCurrentPageIndex() ? 'btn-primary' : ''" (click)="loadPage(index)" *ngFor="let index of pagesIndex" class="btn">{{index}}</button>
+  <div *ngIf="claims && claims.length > 0" class="pagination-box mx-auto text-center">
+    <button [disabled]="request.currentOffset == 0" (click)="clickPrevious()" class="btn btn-primary"><span class="fa fa-arrow-left"></span></button>
+    <button [hidden]="(this.request.getCurrentPageIndex() < index && this.claims.length < this.request.getLimit())" [disabled]="(index === request.getCurrentPageIndex())" [className]="index === request.getCurrentPageIndex() ? 'btn btn-primary' : 'btn border'" (click)="loadPage(index)" *ngFor="let index of pagesIndex">{{index}}</button>
     <button [disabled]="this.claims.length < this.request.getLimit()" (click)="clickNext()" class="btn btn-primary"><span class="fa fa-arrow-right"></span></button>
   </div>
 </div>

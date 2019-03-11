@@ -13,16 +13,22 @@ export class Requester {
   author: string;
   keywords: string[];
   languages: string[];
+  sources: string[];
   dates: Date[];
   currentOffset: number;
 
   constructor() {
     this.languages = [];
+    this.sources = [];
     this.truthRatings = [];
     this.entities = [];
     this.keywords = [];
     this.dates = [];
     this.currentOffset = 0;
+  }
+
+  private static getStringifiedDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 
   public toSPARQL(): string {
@@ -35,20 +41,20 @@ export class Requester {
       request += clause + ' . ';
     }
     if (this.author) {
-      request += 'FILTER regex(?author, "' + this.author + '") . ';
+      request += 'FILTER regex(lcase(str(?author)), "' + this.author.toLowerCase() + '") . ';
     }
     if (this.dates && this.dates.length === 2) {
       request += 'FILTER (?date >= "'
-        + this.getStringifiedDate(this.dates[0])
+        + Requester.getStringifiedDate(this.dates[0])
         + '"^^xsd:dateTime && ?date <= "'
-        + this.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
+        + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
       request += '?claims schema:mentions ?entities .';
       request += '?entities nif:isString ?entities_name .';
       request += 'FILTER (';
       for (const entity of this.entities) {
-        request += 'contains (?entities_name, "' + entity + '") || ';
+        request += 'contains (lcase(str(?entities_name)), "' + entity.toLowerCase() + '") || ';
       }
       request = request.slice(0 , -4); // Delete last ' || '
       request += ') .';
@@ -71,11 +77,22 @@ export class Requester {
       request = request.slice(0 , -4); // Delete last ' || '
       request += ') .';
     }
+    if (this.sources && this.sources.length > 0) {
+      request += '?claims schema:author ?sourceAuthor .';
+      request += '?sourceAuthor schema:name ?source . ';
+      request += 'FILTER (';
+      for (const source of this.sources) {
+        request += 'contains(?source ,"' + source + '") || ';
+      }
+      request = request.slice(0 , -4); // Delete last ' || '
+      request += ') .';
+    }
     if (this.keywords && this.keywords.length > 0) {
       request += 'OPTIONAL {?item schema:keywords ?keywords} . ';
       request += 'FILTER (';
       for (const word of this.keywords) {
-        request += 'contains (?keywords, "' + word + '") || contains (?headline, "' + word + '") || contains (?text, "' + word + '") || ';
+        request += 'contains (lcase(str(?keywords)), "' + word.toLowerCase() + '") || contains (lcase(str(?text)), "'
+                + word.toLowerCase() + '") || ';
       }
       request = request.slice(0 , -4); // Delete last ' || '
       request += ') .';
@@ -85,10 +102,6 @@ export class Requester {
     request += 'OFFSET ' + this.currentOffset;
 
     return request;
-  }
-
-  private getStringifiedDate(date: Date): string {
-    return date.toISOString().split('T')[0];
   }
 
   public incrementOffset(): void {
