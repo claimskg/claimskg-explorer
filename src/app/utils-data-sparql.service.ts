@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Language} from '../models/utils/Language';
 import {Organization} from '../models/utils/Organization';
-import * as UtilsRequest from '../models/data/utils_model_data.json';
+import * as UtilsRequest from '../models/data/utils_request_data.json';
 import { Observable, of } from 'rxjs';
 import {environment} from '../environments/environment';
 import {map} from 'rxjs/operators';

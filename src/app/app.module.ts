@@ -13,6 +13,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 import { ClaimsHomeComponent } from './claims-home/claims-home.component';
+import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { ClaimsHomeComponent } from './claims-home/claims-home.component';
     ClaimsListComponent,
     ClaimsResearchComponent,
     ClaimsHomeComponent,
+    ClaimDetailComponent,
   ],
   imports: [
     BrowserModule,

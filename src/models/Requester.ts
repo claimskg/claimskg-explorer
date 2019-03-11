@@ -1,6 +1,5 @@
 /* tslint:disable:no-trailing-whitespace */
-import * as request_data from './data/request_data.json';
-import {RatingEnum} from './RatingEnum';
+import * as request_data from './data/preview_request_data.json';
 import {environment} from '../environments/environment';
 
 const prefixes = (request_data as any).prefixes;
