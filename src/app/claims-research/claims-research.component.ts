@@ -74,24 +74,24 @@ export class ClaimsResearchComponent implements OnInit {
     this.request.setPage(1);
   }
 
-  private setUpFilterLanguages(languages): void {
-    this.allLanguages = languages;
-    this.filteredLanguages = this.controlLanguage.valueChanges
+  private setUpFilter(keyList, keyFilter, keyControl, list, filterFunction): void {
+    this[keyList] = list;
+    this[keyFilter] = this[keyControl].valueChanges
       .pipe(
         startWith(''),
-        map(value => this._filter_language(value))
+        map(value => this[filterFunction](value))
       );
+  }
+
+  private setUpFilterLanguages(languages): void {
+    this.setUpFilter('allLanguages', 'filteredLanguages', 'controlLanguage', languages, '_filter_language');
   }
 
   private setUpFilterSources(sources): void {
-    this.allSources = sources;
-    this.filteredSources = this.controlSources.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter_source(value))
-      );
+    this.setUpFilter('allSources', 'filteredSources', 'controlSources', sources, '_filter_source');
   }
 
+  // Are used (by generic method setUpFiltezr)
   private _filter_language(value: string): Language[] {
     const filterValue = value.toLowerCase();
     return this.allLanguages.filter(language => language.name.toLowerCase().includes(filterValue));
