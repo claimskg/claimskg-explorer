@@ -9,7 +9,7 @@
     "?claim schema:headline ?text",
     "OPTIONAL {?claim schema:datePublished ?date}",
     "?claim schema:reviewRating ?truth_rating_review",
-    "?truth_rating_review schema:author <http://data.gesis.org/claimskg/organization/claimskg>",
+    "?truth_rating_review schema:author <<!IRI!>organization/claimskg>",
     "?truth_rating_review schema:alternateName ?ratingName",
     "?truth_rating_review schema:ratingValue ?truthRating",
     "OPTIONAL {?claim schema:url ?link}",

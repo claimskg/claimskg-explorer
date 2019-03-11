@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   endpoint: 'http://localhost:8890/sparql',
+  graph_iri: 'http://data.gesis.org/claimskg/',
   resultPerPage: 10,
 };
 

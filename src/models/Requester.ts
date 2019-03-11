@@ -1,6 +1,7 @@
 /* tslint:disable:no-trailing-whitespace */
 import * as request_data from './data/preview_request_data.json';
 import {environment} from '../environments/environment';
+import {Utils} from './utils/Utils';
 
 const prefixes = (request_data as any).prefixes;
 const select = (request_data as any).select;
@@ -36,7 +37,10 @@ export class Requester {
       request += prefix + ' ';
     }
     request += 'select distinct ' + select + ' where { ';
-    for (const clause of clauses) {
+    for (let clause of clauses) {
+      if (clause.includes(Utils.IRI_MARKER)) {
+        clause = clause.replace(new RegExp(Utils.IRI_MARKER, 'g'), environment.graph_iri) ;
+      }
       request += clause + ' . ';
     }
     if (this.author) {

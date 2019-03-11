@@ -1,4 +1,6 @@
 import * as select_data from './data/select_request_data.json';
+import {Utils} from './utils/Utils';
+import {environment} from '../environments/environment';
 
 const prefixes = (select_data as any).prefixes;
 const select = (select_data as any).select;
@@ -39,7 +41,10 @@ export class Claim {
       request += prefix + ' ';
     }
     request += 'select distinct ' + select + ' where { ';
-    for (const clause of clauses) {
+    for (let clause of clauses) {
+      if (clause.includes(Utils.IRI_MARKER)) {
+        clause = clause.replace(new RegExp(Utils.IRI_MARKER, 'g'), environment.graph_iri);
+      }
       request += clause + ' . ';
     }
     request += 'FILTER (?claim = ' + id + ') }';
