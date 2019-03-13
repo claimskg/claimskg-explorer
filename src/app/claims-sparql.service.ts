@@ -22,13 +22,13 @@ export class ClaimsSparqlService {
     let params = new HttpParams();
     params = params.set('query', request.toSPARQL());
     return this.http.post<any>(environment.endpoint,  params, options)
-      .pipe(map(res => res = ClaimPreview.convertJSONtoClaimsPreview(res)));
+      .pipe(map(res => ClaimPreview.convertJSONtoClaimsPreview(res)));
   }
 
   getClaim(claimId: string): Observable<Claim> {
     let params = new HttpParams();
     params = params.set('query', Claim.getSPAEQLToSelect(claimId));
     return this.http.post<any>(environment.endpoint,  params, options)
-      .pipe(map(res => res = (res !== null) ? new Claim(res.results.bindings[0]) : null));
+      .pipe(map(res => (res.results.bindings.length > 0) ? new Claim(res.results.bindings[0]) : null));
   }
 }

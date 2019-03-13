@@ -2,6 +2,9 @@ import {Component, OnInit, Input, SimpleChanges, SimpleChange} from '@angular/co
 import {Requester} from '../../models/Requester';
 import {ClaimsSparqlService} from '../claims-sparql.service';
 import {ClaimPreview} from '../../models/ClaimPreview';
+import { Router } from '@angular/router';
+import { Location } from '@angular/common';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-claims-list',
@@ -20,12 +23,17 @@ export class ClaimsListComponent implements OnInit{
 
   endResults = false;
 
-  constructor(private sparqlService: ClaimsSparqlService) {
+  selectedClaimId: string;
+
+  claimOpen = false;
+
+  constructor(private sparqlService: ClaimsSparqlService, private router: Router, private location: Location, private titleService: Title) {
     this.pagesIndex = [1, 2];
   }
 
   ngOnInit() {
     this.getRequestClaims();
+    this.setTitle();
   }
 
   getRequestClaims(): void {
@@ -41,6 +49,7 @@ export class ClaimsListComponent implements OnInit{
         this.endResults = true;
     } else {
         this.noResult = true;
+        this.titleService.setTitle('No results');
     }
   }
 
@@ -87,5 +96,22 @@ export class ClaimsListComponent implements OnInit{
       this.checkPageIndexWhenIncrement();
     }
     this.loadNewData();
+  }
+
+  openClaim(id: string) {
+    this.selectedClaimId = id;
+    this.claimOpen = true;
+    this.location.replaceState('/detail/' + id, '');
+  }
+
+  goBackList() {
+    this.claimOpen = false;
+    // Plus tard dans le projet, il faudra changer query par les paramtres de la recherche etc..
+    this.location.replaceState('/research', '');
+    this.setTitle();
+  }
+
+  private setTitle() {
+    this.titleService.setTitle('Claims Search');
   }
 }

@@ -1,40 +1,46 @@
-<div *ngIf="(!claims ||claims.length === 0) && !noResult && !endResults" class="text-center mx-auto">
-  <img src="../../assets/img/loading.gif">
-</div>
-<div *ngIf="noResult" class="text-center resultMsg">
-  <p>No results.</p>
-</div>
-<div *ngIf="endResults" class="text-center mx-auto">
-  <p class="resultMsg">End of results.</p>
-  <button (click)="clickPrevious()" class="btn btn-primary">Go back to previous page</button>
-</div>
-<div id="listPreview" class="w-50 mx-auto">
-  <a class="claim-preview-card" routerLink="/" *ngFor="let claim of claims">
-    <div class="pmd-card pmd-card-default pmd-z-depth pmd-card-custom-view">
-      <div class="card-body d-flex flex-row">
-        <div class="text-center source-link">
-          <a href="{{claim.link}}" class="pmd-avatar-list-img mx-auto">
-            <img src="../../assets/img/www-icon.png" width="40" height="40">
-          </a>
-          <p class="mx-auto">{{claim.date | date:'shortDate'}}</p>
-        </div>
-        <div class="media-body">
-          <h3 class="card-title">{{claim.text}}</h3>
-          <strong class="card-subtitle">By {{claim.author}}</strong>
-        </div>
-        <div class="text-center truth-rating">
-          <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-3x"></i>
-          <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-3x"></i>
-          <i *ngIf="claim.truthRating === 3" class="mx-auto fa fa-thermometer-full truth-true fa-3x"></i>
-          <i *ngIf="claim.truthRating === -1" class="mx-auto fa fa-question-circle truth-other fa-3x"></i>
-          <p class="mx-auto">{{claim.ratingName}}</p>
+<div *ngIf="!claimOpen">
+  <div *ngIf="(!claims ||claims.length === 0) && !noResult && !endResults" class="text-center mx-auto">
+    <img src="../../assets/img/loading.gif">
+  </div>
+  <div *ngIf="noResult" class="text-center resultMsg">
+    <p>No results.</p>
+  </div>
+  <div *ngIf="endResults" class="text-center mx-auto">
+    <p class="resultMsg">End of results.</p>
+    <button (click)="clickPrevious()" class="btn btn-primary">Go back to previous page</button>
+  </div>
+  <div id="listPreview" class="w-50 mx-auto">
+    <a target="_blank" routerLink="/detail/{{claim.id}}" (click)="openClaim(claim.id);$event.preventDefault();$event.stopPropagation()" class="claim-preview-card" *ngFor="let claim of claims">
+      <div class="pmd-card pmd-card-default pmd-z-depth pmd-card-custom-view">
+        <div class="card-body d-flex flex-row">
+          <div class="text-center source-link">
+            <a href="{{claim.link}}" class="pmd-avatar-list-img mx-auto">
+              <img src="../../assets/img/www-icon.png" width="40" height="40">
+            </a>
+            <p class="mx-auto">{{claim.date | date:'shortDate'}}</p>
+          </div>
+          <div class="media-body">
+            <h3 class="card-title">{{claim.text}}</h3>
+            <strong class="card-subtitle">By {{claim.author}}</strong>
+          </div>
+          <div class="text-center truth-rating">
+            <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-3x"></i>
+            <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-3x"></i>
+            <i *ngIf="claim.truthRating === 3" class="mx-auto fa fa-thermometer-full truth-true fa-3x"></i>
+            <i *ngIf="claim.truthRating === -1" class="mx-auto fa fa-question-circle truth-other fa-3x"></i>
+            <p class="mx-auto">{{claim.ratingName}}</p>
+          </div>
         </div>
       </div>
+    </a>
+    <div *ngIf="claims && claims.length > 0" class="pagination-box mx-auto text-center">
+      <button [disabled]="request.currentOffset == 0" (click)="clickPrevious()" class="btn btn-primary"><span class="fa fa-arrow-left"></span></button>
+      <button [hidden]="(this.request.getCurrentPageIndex() < index && this.claims.length < this.request.getLimit())" [disabled]="(index === request.getCurrentPageIndex())" [className]="index === request.getCurrentPageIndex() ? 'btn btn-primary' : 'btn border'" (click)="loadPage(index)" *ngFor="let index of pagesIndex">{{index}}</button>
+      <button [disabled]="this.claims.length < this.request.getLimit()" (click)="clickNext()" class="btn btn-primary"><span class="fa fa-arrow-right"></span></button>
     </div>
-  </a>
-  <div *ngIf="claims && claims.length > 0" class="pagination-box mx-auto text-center">
-    <button [disabled]="request.currentOffset == 0" (click)="clickPrevious()" class="btn btn-primary"><span class="fa fa-arrow-left"></span></button>
-    <button [hidden]="(this.request.getCurrentPageIndex() < index && this.claims.length < this.request.getLimit())" [disabled]="(index === request.getCurrentPageIndex())" [className]="index === request.getCurrentPageIndex() ? 'btn btn-primary' : 'btn border'" (click)="loadPage(index)" *ngFor="let index of pagesIndex">{{index}}</button>
-    <button [disabled]="this.claims.length < this.request.getLimit()" (click)="clickNext()" class="btn btn-primary"><span class="fa fa-arrow-right"></span></button>
   </div>
 </div>
+<div *ngIf="claimOpen" id="back-action" class="text-center mx-auto">
+  <button class="btn btn-dark" (click)="goBackList()"><span class="fa fa-arrow-left"> Back</span></button>
+</div>
+<app-claim-detail *ngIf="claimOpen" [contentMarginClass]="'margin-t-50'" [claimId]="selectedClaimId"></app-claim-detail>

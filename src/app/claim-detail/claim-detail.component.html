@@ -1,3 +1,77 @@
-<p>
-  claim-detail works!
-</p>
+<div *ngIf="claim" class="text-center mx-auto w-75 {{contentMarginClass}}">
+
+  <p id="claimText" class="mx-auto">{{claim.text}}</p>
+  <div id="headInfos" class="mx-auto w-25">
+    <div class="row">
+      <a *ngIf="claim.link" href="{{claim.link}}" class="mx-auto"><img class="link-source" src="../../assets/img/www-icon.png"></a>
+      <div *ngIf="!claim.link" class="mx-auto"><img class="link-source" src="../../assets/img/www-icon.png"></div>
+      <div id="truth" class="text-center mx-auto">
+        <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-4x"></i>
+        <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-4x"></i>
+        <i *ngIf="claim.truthRating === 3" class="mx-auto fa fa-thermometer-full truth-true fa-4x"></i>
+        <i *ngIf="claim.truthRating === -1" class="mx-auto fa fa-question-circle truth-other fa-4x"></i>
+        <p class="mx-auto">{{claim.ratingName}}</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p id="claimAuthorDate">
+      <span *ngIf="claim.author">Claimed by {{claim.author}}</span>
+      <span *ngIf="claim.author && claim.date">, on </span>
+      <span *ngIf="claim.date">{{claim.date|date:'longDate'}}</span>
+    </p>
+  </div>
+  <div>
+    <mat-expansion-panel *ngIf="claim.mentions.length > 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Mentioned Entities
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let entity of claim.mentions">{{entity}}</mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="claim.citations.length > 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          References
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let citation of claim.citations"><a href="{{citation}}">{{citation}}</a></mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="claim.keywords.length > 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Keywords
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let keyword of claim.keywords">{{keyword}}</mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="claim.source || claim.sourceURL || claim.language">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Additional Information
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngIf="claim.source || claim.sourceURL">
+          <span *ngIf="claim.source && claim.source">Source of information : <a href="{{claim.sourceURL}}">{{claim.source}}</a></span>
+          <span *ngIf="claim.source && !claim.sourceURL">Source of information : {{claim.source}}</span>
+          <a href="{{claim.sourceURL}}" *ngIf="claim.sourceURL && !claim.source">{{claim.sourceURL}}</a>
+        </mat-list-item>
+        <mat-list-item *ngIf="claim.language">Language : {{claim.language}}</mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+  </div>
+</div>
+<div *ngIf="notFound" id="notFound" class="mx-auto text-center {{contentMarginClass}}">
+  <p>Not found</p>
+</div>
+<div *ngIf="loading" class="text-center mx-auto">
+  <img id="loading" class="{{contentMarginClass}}" src="../../assets/img/loading.gif">
+</div>

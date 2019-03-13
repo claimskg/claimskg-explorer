@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {ClaimsSparqlService} from '../claims-sparql.service';
+import {Claim} from '../../models/Claim';
+import {ActivatedRoute} from '@angular/router';
+import {Title} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-claim-detail',
@@ -7,9 +11,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClaimDetailComponent implements OnInit {
 
-  constructor() { }
+  @Input() claimId: string;
+  @Input() contentMarginClass = 'margin-t-100';
+  claim: Claim;
+  notFound = false;
+  loading = true;
+
+  constructor(private sparqlService: ClaimsSparqlService, private route: ActivatedRoute, private titleService: Title) { }
 
   ngOnInit() {
+    const idRoute = this.route.snapshot.paramMap.get('id');
+    if (idRoute !== null) {
+      this.claimId = idRoute;
+    }
+    this.sparqlService.getClaim(this.claimId).subscribe(claim => this.setupClaim(claim));
+  }
+
+  private setupClaim(claim: Claim): void {
+    this.loading  = false;
+    this.claim = claim;
+    if (claim === null) {
+      this.notFound = true;
+      this.titleService.setTitle('Not found');
+      return;
+    }
+    this.titleService.setTitle(this.claim.text);
   }
 
 }

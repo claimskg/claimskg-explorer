@@ -11,9 +11,10 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
-import { MatAutocompleteModule, MatInputModule } from '@angular/material';
+import { MatAutocompleteModule, MatInputModule, MatExpansionModule, MatListModule } from '@angular/material';
 import { ClaimsHomeComponent } from './claims-home/claims-home.component';
 import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -33,6 +34,9 @@ import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
     MatInputModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatExpansionModule,
+    MatListModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

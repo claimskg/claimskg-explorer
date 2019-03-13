@@ -1,0 +1,29 @@
+#loading {
+  width: 400px;
+}
+
+#notFound {
+  font-weight: bold;
+  font-size: 100px;
+}
+
+#claimContent {
+  margin-top: 100px;
+}
+
+#claimText {
+  font-size: 32px;
+}
+
+.link-source {
+  width: 70px;
+}
+
+#headInfos {
+  margin-top: 15px;
+}
+
+#claimAuthorDate {
+  font-style: italic;
+  font-size: 20px;
+}

@@ -1,4 +1,0 @@
-{
-  "languagesRequest": "PREFIX schema: <http://schema.org/> select distinct ?inLanguage ?language where { ?inLanguage a schema:Language . ?inLanguage schema:name ?language }",
-  "sourcesRequest": "PREFIX schema: <http://schema.org/> select distinct ?organization ?source where { ?organization a schema:Organization . ?organization schema:name ?source }"
-}

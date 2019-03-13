@@ -7,25 +7,10 @@
   width: 80px;
 }
 
-.truth-true {
-  color: green;
-}
-
-.truth-false {
-  color: red;
-}
-
-.truth-mixed {
-  color: orange;
-}
-
-.truth-other {
- color: rebeccapurple;
-}
-
 .claim-preview-card {
   color:inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .pagination-box {
@@ -42,4 +27,9 @@
   font-weight: bold;
   font-size: 100px;
   margin-top: 100px;
+}
+
+#back-action {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }

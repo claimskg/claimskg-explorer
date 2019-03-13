@@ -1,21 +1,7 @@
-/* tslint:disable:no-trailing-whitespace */
-import * as request_data from './data/preview_request_data.json';
 import {environment} from '../environments/environment';
-import {Utils} from './utils/Utils';
-
-const prefixes = (request_data as any).prefixes;
-const select = (request_data as any).select;
-const clauses = (request_data as any).clauses;
+import {RequestUtils} from './utils/RequestUtils';
 
 export class Requester {
-  entities: string[];
-  truthRatings: number[];
-  author: string;
-  keywords: string[];
-  languages: string[];
-  sources: string[];
-  dates: Date[];
-  currentOffset: number;
 
   constructor() {
     this.languages = [];
@@ -26,6 +12,15 @@ export class Requester {
     this.dates = [];
     this.currentOffset = 0;
   }
+  private static readonly requestData = RequestUtils.previewRequest;
+  entities: string[];
+  truthRatings: number[];
+  author: string;
+  keywords: string[];
+  languages: string[];
+  sources: string[];
+  dates: Date[];
+  currentOffset: number;
 
   private static getStringifiedDate(date: Date): string {
     return date.toISOString().split('T')[0];
@@ -33,14 +28,11 @@ export class Requester {
 
   public toSPARQL(): string {
     let request = '';
-    for (const prefix of prefixes) {
+    for (const prefix of Requester.requestData.prefixes) {
       request += prefix + ' ';
     }
-    request += 'select distinct ' + select + ' where { ';
-    for (let clause of clauses) {
-      if (clause.includes(Utils.IRI_MARKER)) {
-        clause = clause.replace(new RegExp(Utils.IRI_MARKER, 'g'), environment.graph_iri) ;
-      }
+    request += 'select distinct ' + Requester.requestData.select + ' where { ';
+    for (const clause of Requester.requestData.clauses) {
       request += clause + ' . ';
     }
     if (this.author) {

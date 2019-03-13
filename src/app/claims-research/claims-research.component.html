@@ -1,13 +1,10 @@
-<div id="back-action" *ngIf="go" class="text-center mx-auto">
-  <button class="btn btn-dark" (click)="goBackForm()"><span class="fa fa-arrow-left"> Back</span></button>
-</div>
 <div *ngIf="!go" id="search-block" class="text-center w-50 mx-auto">
-  <h1><strong>Claims search engine</strong></h1>
+  <h1><strong>Claims Search Engine</strong></h1>
   <form id="research-form">
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="entities">Mentionned Entities</label>
+          <label for="entities">Mentioned Entities</label>
           <div class="input-group">
             <div class="input-group-prepend help-circle" title="Type an entity (ex: Donald Trump) and press enter to add it in the list!">
               <div class="input-group-text">
@@ -83,9 +80,9 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntry($event,'languages', 'languagesField')" [(ngModel)]="languagesField" id="languages" name="languages" type="text" class="form-control" matInput [formControl]="controlLanguage" [matAutocomplete]="languages">
+            <input (keydown)="addEntryFieldWithFormControl($event,'languages', 'controlLanguage')" id="languages" name="languages" type="text" class="form-control" matInput [formControl]="controlLanguage" [matAutocomplete]="languages">
             <mat-autocomplete #languages="matAutocomplete">
-              <mat-option (click)="addEntryClickFiltered('languages', 'languages', 'languagesField')" *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
+              <mat-option (click)="addEntryClickFiltered('languages', 'languages', 'controlLanguage')" *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
             </mat-autocomplete>
           </div>
         </div>
@@ -104,9 +101,9 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntry($event,'sources', 'sourcesField')" [(ngModel)]="sourcesField" id="sources" name="sources" type="text" class="form-control" matInput [formControl]="controlSources" [matAutocomplete]="sources">
+            <input (keydown)="addEntryFieldWithFormControl($event,'sources', 'controlSources')" id="sources" name="sources" type="text" class="form-control" matInput [formControl]="controlSources" [matAutocomplete]="sources">
             <mat-autocomplete #sources="matAutocomplete">
-              <mat-option (click)="addEntryClickFiltered('sources', 'sources', 'sourcesField')"  *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
+              <mat-option (click)="addEntryClickFiltered('sources', 'sources', 'controlSources')"  *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
             </mat-autocomplete>
           </div>
         </div>
@@ -121,5 +118,8 @@
       <button name="submit" type="button" id="btn-search" class="btn btn-primary" (click)="goSearch($event)">Claims Search</button>
     </div>
   </form>
+</div>
+<div *ngIf="go && childInit && !resultList.claimOpen" id="back-action" class="text-center mx-auto">
+  <button class="btn btn-dark" (click)="goBackForm()"><span class="fa fa-arrow-left"> Back</span></button>
 </div>
 <app-claims-list *ngIf="go" [request]="request"></app-claims-list>

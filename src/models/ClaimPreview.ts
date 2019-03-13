@@ -8,7 +8,8 @@ export class ClaimPreview {
   link: string;
 
   constructor(jsonData) {
-    this.id = jsonData.id.value;
+    const idFull = jsonData.id.value;
+    this.id = idFull.substring(idFull.lastIndexOf('/') + 1);
     this.author = jsonData.author.value;
     this.date = jsonData.date.value;
     this.link = jsonData.link.value;

@@ -1,12 +1,9 @@
-import * as select_data from './data/select_request_data.json';
 import {Utils} from './utils/Utils';
 import {environment} from '../environments/environment';
-
-const prefixes = (select_data as any).prefixes;
-const select = (select_data as any).select;
-const clauses = (select_data as any).clauses;
+import {RequestUtils} from './utils/RequestUtils';
 
 export class Claim {
+  private static readonly requestData = RequestUtils.selectRequest;
   id: string;
   text: string;
   date: string;
@@ -19,35 +16,35 @@ export class Claim {
   keywords: string[];
   citations: string[];
   source: string;
+  sourceURL: string;
 
   constructor(jsonData) {
-    this.id = jsonData.id.value;
+    const idFull = jsonData.id.value;
+    this.id = idFull.substring(idFull.lastIndexOf('/') + 1);
     this.author = jsonData.author.value;
     this.date = jsonData.date.value;
     this.link = jsonData.link.value;
     this.truthRating = parseInt(jsonData.truthRating.value, 10);
     this.ratingName = jsonData.ratingName.value;
     this.text = jsonData.text.value;
-    this.mentions = jsonData.mentions.value.split(';!;');
+    this.mentions = jsonData.mentions.value !== '' ? jsonData.mentions.value.split(';!;') : [];
     this.language = jsonData.language.value;
-    this.keywords = jsonData.keywords.value.split(';!;');
-    this.citations = jsonData.citations.value.split(';!;');
+    this.keywords = jsonData.keywords.value !== ''  ? jsonData.keywords.value.split(',') : [];
+    this.citations = jsonData.citations.value !== ''  ? jsonData.citations.value.split(';!;') : [];
     this.source = jsonData.source.value;
+    this.sourceURL = jsonData.sourceURL.value;
   }
 
   public static getSPAEQLToSelect(id: string): string {
     let request = '';
-    for (const prefix of prefixes) {
+    for (const prefix of this.requestData.prefixes) {
       request += prefix + ' ';
     }
-    request += 'select distinct ' + select + ' where { ';
-    for (let clause of clauses) {
-      if (clause.includes(Utils.IRI_MARKER)) {
-        clause = clause.replace(new RegExp(Utils.IRI_MARKER, 'g'), environment.graph_iri);
-      }
+    request += 'select distinct ' + this.requestData.select + ' where { ';
+    for (const clause of this.requestData.clauses) {
       request += clause + ' . ';
     }
-    request += 'FILTER (?claim = ' + id + ') }';
+    request += 'FILTER (?claim = <' + environment.graph_iri + 'claim_review/' + id + '>) }';
 
     return request;
   }

@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+
+.truth-true {
+  color: green;
+}
+
+.truth-false {
+  color: red;
+}
+
+.truth-mixed {
+  color: orange;
+}
+
+.truth-other {
+  color: rebeccapurple;
+}
+
+.margin-t-50 {
+  margin-top: 50px;
+}
+
+.margin-t-100 {
+  margin-top: 100px;
+}
