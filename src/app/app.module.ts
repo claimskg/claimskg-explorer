@@ -15,6 +15,7 @@ import { MatAutocompleteModule, MatInputModule, MatExpansionModule, MatListModul
 import { ClaimsHomeComponent } from './claims-home/claims-home.component';
 import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { ClaimHelpComponent } from './claim-help/claim-help.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     ClaimsResearchComponent,
     ClaimsHomeComponent,
     ClaimDetailComponent,
+    ClaimHelpComponent,
   ],
   imports: [
     BrowserModule,
