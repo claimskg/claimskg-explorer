@@ -86,8 +86,9 @@ export class Requester {
       request += 'OPTIONAL {?item schema:keywords ?keywords} . ';
       request += 'FILTER (';
       for (const word of this.keywords) {
-        request += 'contains (lcase(str(?keywords)), "' + word.toLowerCase() + '") || contains (lcase(str(?text)), "'
-                + word.toLowerCase() + '") || ';
+        request += 'contains (lcase(str(?keywords)), "' + word.toLowerCase() + '") ' +
+          '|| contains (lcase(str(?text)), ' + word.toLowerCase() + '") ' +
+          '|| contains (lcase(str(?headline)), ' + word.toLowerCase() + '") ';
       }
       request = request.slice(0 , -4); // Delete last ' || '
       request += ') .';
