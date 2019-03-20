@@ -37,9 +37,9 @@
             </div>
             <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords" name="keywords" type="text" class="form-control">
             <div class="input-group-append">
-              <select class="form-control">
-                <option>Match Any</option>
-                <option>Match All</option>
+              <select name="keywordsMode" [(ngModel)]="request.keywordsConjunctionMode" class="form-control">
+                <option [ngValue]="false">Match Any</option>
+                <option [ngValue]="true">Match All</option>
               </select>
             </div>
           </div>

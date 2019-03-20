@@ -12,6 +12,7 @@ export class Requester {
     this.dates = [];
     this.currentOffset = 0;
     this.entitiesConjunctionMode = false;
+    this.keywordsConjunctionMode = false;
   }
   private static readonly requestData = RequestUtils.previewRequest;
   entities: string[];
@@ -23,6 +24,7 @@ export class Requester {
   dates: Date[];
   currentOffset: number;
   entitiesConjunctionMode: boolean;
+  keywordsConjunctionMode: boolean;
 
   private static getStringifiedDate(date: Date): string {
     return date.toISOString().split('T')[0];
@@ -33,9 +35,10 @@ export class Requester {
     for (const prefix of Requester.requestData.prefixes) {
       request += prefix + ' ';
     }
-    if (this.entities && this.entities.length > 1 && this.entitiesConjunctionMode) {
+    if (this.superRequestIsTriggered()) {
       request += 'select ' + Requester.requestData.superSelectConjunction + ' where { {';
-      request += 'select ' + Requester.requestData.select + ' group_concat(?mentions, ",") as ?mentions where { ';
+      request += 'select ' + Requester.requestData.select + ' group_concat(?mentions, ",") as ?mentions ' +
+        'group_concat(?keywords, ",") as ?keywords where { ';
     } else {
       request += 'select distinct ' + Requester.requestData.select + ' where { ';
     }
@@ -52,19 +55,14 @@ export class Requester {
         + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
-      if (!this.entitiesConjunctionMode) {
-        request += '?claims schema:mentions ?entities .';
-        request += '?entities nif:isString ?entities_name .';
-        request += 'FILTER (';
-        for (const entity of this.entities) {
-          request += 'contains (lcase(str(?entities_name)), "' + entity.toLowerCase() + '") || ';
-        }
-        request = request.slice(0 , -4); // Delete last ' || '
-        request += ') .';
-      } else {
-        request += '?claims schema:mentions ?mentions_links . ';
-        request += '?mentions_links nif:isString ?mentions .';
+      request += '?claims schema:mentions ?mentions_links . ';
+      request += '?mentions_links nif:isString ?mentions .';
+      request += 'FILTER (';
+      for (const entity of this.entities) {
+        request += 'contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '") || ';
       }
+      request = request.slice(0 , -4); // Delete last ' || '
+      request += ') .';
     }
     if (this.truthRatings && this.truthRatings.length > 0) {
       request += 'FILTER (';
@@ -106,20 +104,44 @@ export class Requester {
       request += ') .';
     }
     request += '}';
-    if (this.entities && this.entities.length > 1 && this.entitiesConjunctionMode) {
+    if (this.superRequestIsTriggered()) {
       request += '}';
-      request += 'FILTER (';
-      for (const entity of this.entities) {
-        request += 'contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '") && ';
+      if (this.entitiesConjunctionIsTriggered()) {
+        request += 'FILTER (';
+        for (const entity of this.entities) {
+          request += 'contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '") && ';
+        }
+        request = request.slice(0 , -4); // Delete last ' && '
+        request += ') . ';
       }
-      request = request.slice(0 , -4); // Delete last ' && '
-      request += ') . ';
+      if (this.keywordsConjunctionIsTriggered()) {
+        request += 'FILTER (';
+        for (const keyword of this.keywords) {
+          request += '(contains (lcase(str(?keywords)), "' + keyword.toLowerCase() +
+            '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
+        }
+        request = request.slice(0 , -4); // Delete last ' && '
+        request += ') . ';
+      }
       request += '}';
     }
     request += 'LIMIT ' + environment.resultPerPage + ' ';
     request += 'OFFSET ' + this.currentOffset;
 
     return request;
+  }
+
+  private superRequestIsTriggered() {
+    return this.entitiesConjunctionIsTriggered()
+      || this.keywordsConjunctionIsTriggered();
+  }
+
+  private entitiesConjunctionIsTriggered() {
+    return this.entities && this.entities.length > 1 && this.entitiesConjunctionMode;
+  }
+
+  private keywordsConjunctionIsTriggered() {
+    return this.keywords && this.keywords.length > 1 && this.keywordsConjunctionMode;
   }
 
   public incrementOffset(): void {
