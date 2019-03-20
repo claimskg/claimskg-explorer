@@ -12,6 +12,12 @@
               </div>
             </div>
             <input (keydown)="addEntry($event, 'entities', 'entitiesField')" [(ngModel)]="entitiesField" id="entities" name="entities" type="text" class="form-control">
+            <div class="input-group-append">
+              <select name="entitiesMode" [(ngModel)]="request.entitiesConjunctionMode" class="form-control">
+                <option [ngValue]="false">Match Any</option>
+                <option [ngValue]="true">Match All</option>
+              </select>
+            </div>
           </div>
         </div>
         <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip">
@@ -30,6 +36,12 @@
               </div>
             </div>
             <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords" name="keywords" type="text" class="form-control">
+            <div class="input-group-append">
+              <select class="form-control">
+                <option>Match Any</option>
+                <option>Match All</option>
+              </select>
+            </div>
           </div>
         </div>
         <div *ngFor="let word of request.keywords" class="pmd-chip custom-chip">

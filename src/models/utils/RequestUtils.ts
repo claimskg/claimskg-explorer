@@ -14,6 +14,7 @@ export class RequestUtils {
       '?ratingName ' +
       'COALESCE(?author, \'Unknown\') as ?author ' +
       'COALESCE(?link, \'\') as ?link',
+    superSelectConjunction: '?id ?text ?date ?truthRating ?ratingName ?author ?link',
     clauses: [
       '?claims a schema:ClaimReview',
       '?claims schema:headline ?headline',
