@@ -8,6 +8,7 @@ import {FormControl} from '@angular/forms';
 import {map, startWith} from 'rxjs/operators';
 import {ClaimsListComponent} from '../claims-list/claims-list.component';
 import {Title} from '@angular/platform-browser';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-claims-research',
@@ -31,7 +32,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   @ViewChildren(ClaimsListComponent) initDetector: QueryList<ClaimsListComponent>;
   childInit = false;
 
-  constructor(private utilsDataService: UtilsDataSparqlService, private titleService: Title) {}
+  constructor(private utilsDataService: UtilsDataSparqlService, private titleService: Title, private location: Location) {}
 
   ngOnInit() {
     this.request = new Requester();
@@ -102,6 +103,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   goBackForm() {
     this.go = false;
     this.childInit = false;
+    this.location.replaceState('/research', '');
     this.request.setPage(1);
     this.setTitle();
   }

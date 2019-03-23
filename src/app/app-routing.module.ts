@@ -4,11 +4,13 @@ import {ClaimsResearchComponent} from './claims-research/claims-research.compone
 import {ClaimsHomeComponent} from './claims-home/claims-home.component';
 import {ClaimDetailComponent} from './claim-detail/claim-detail.component';
 import {ClaimHelpComponent} from './claim-help/claim-help.component';
+import {ClaimsListComponent} from './claims-list/claims-list.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: ClaimsHomeComponent},
+  { path: 'search', component: ClaimsListComponent },
   { path: 'research', component: ClaimsResearchComponent },
   { path: 'detail/:id', component: ClaimDetailComponent },
   { path: 'help', component: ClaimHelpComponent },

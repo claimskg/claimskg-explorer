@@ -14,6 +14,7 @@ export class Requester {
     this.entitiesConjunctionMode = false;
     this.keywordsConjunctionMode = false;
   }
+
   private static readonly requestData = RequestUtils.previewRequest;
   entities: string[];
   truthRatings: number[];
@@ -101,7 +102,7 @@ export class Requester {
       for (const entity of this.entities) {
         request += 'contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '") || ';
       }
-      request = request.slice(0 , -4); // Delete last ' || '
+      request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
     }
     if (this.truthRatings && this.truthRatings.length > 0) {
@@ -109,7 +110,7 @@ export class Requester {
       for (const rating of this.truthRatings) {
         request += '?truthRating = ' + rating + ' || ';
       }
-      request = request.slice(0 , -4); // Delete last ' || '
+      request = request.slice(0, -4); // Delete last ' || '
       request += ') . ';
     }
     if (this.languages && this.languages.length > 0) {
@@ -119,7 +120,7 @@ export class Requester {
       for (const language of this.languages) {
         request += '?language = "' + language + '" || ';
       }
-      request = request.slice(0 , -4); // Delete last ' || '
+      request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
     }
     if (this.sources && this.sources.length > 0) {
@@ -129,7 +130,7 @@ export class Requester {
       for (const source of this.sources) {
         request += 'contains(?source ,"' + source + '") || ';
       }
-      request = request.slice(0 , -4); // Delete last ' || '
+      request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
     }
     if (this.keywords && this.keywords.length > 0) {
@@ -140,7 +141,7 @@ export class Requester {
           '|| contains (lcase(str(?text)), "' + word.toLowerCase() + '") ' +
           '|| contains (lcase(str(?headline)), "' + word.toLowerCase() + '") || ';
       }
-      request = request.slice(0 , -4); // Delete last ' || '
+      request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
     }
     request += '}';
@@ -151,7 +152,7 @@ export class Requester {
         for (const entity of this.entities) {
           request += 'contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '") && ';
         }
-        request = request.slice(0 , -4); // Delete last ' && '
+        request = request.slice(0, -4); // Delete last ' && '
         request += ') . ';
       }
       if (this.keywordsConjunctionIsTriggered()) {
@@ -160,7 +161,7 @@ export class Requester {
           request += '(contains (lcase(str(?keywords)), "' + keyword.toLowerCase() +
             '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
         }
-        request = request.slice(0 , -4); // Delete last ' && '
+        request = request.slice(0, -4); // Delete last ' && '
         request += ') . ';
       }
       request += '}';
@@ -182,14 +183,6 @@ export class Requester {
     return this.keywords && this.keywords.length > 1 && this.keywordsConjunctionMode;
   }
 
-  public incrementOffset(): void {
-    this.currentOffset += environment.resultPerPage;
-  }
-
-  public decrementOffset(): void {
-    this.currentOffset -= environment.resultPerPage;
-  }
-
   public getLimit(): number {
     return environment.resultPerPage;
   }
@@ -200,5 +193,72 @@ export class Requester {
 
   public setPage(page: number) {
     this.currentOffset = (page - 1) * this.getLimit();
+  }
+
+  public toQueryParams(): string {
+    let params = '?page=' + this.getCurrentPageIndex();
+    if (this.entities.length > 0) {
+      params += '&entities=' + this.entities.join(',');
+    }
+    if (this.truthRatings.length > 0) {
+      params += '&truthRatings=' + this.truthRatings.join(',');
+    }
+    if (this.author !== undefined) {
+      params += '&author=' + this.author;
+    }
+    if (this.keywords.length > 0) {
+      params += '&keywords=' + this.keywords.join(',');
+    }
+    if (this.languages.length > 0) {
+      params += '&languages=' + this.languages.join(',');
+    }
+    if (this.sources.length > 0) {
+      params += '&sources=' + this.sources.join(',');
+    }
+    if (this.dates.length === 2) {
+      params += '&dates=' + Requester.getStringifiedDate(this.dates[0]) + ',' + Requester.getStringifiedDate(this.dates[1]);
+    }
+    if (this.entitiesConjunctionMode !== undefined) {
+      params += '&entitiesConjunctionMode=' + this.entitiesConjunctionMode;
+    }
+    if (this.keywordsConjunctionMode !== undefined) {
+      params += '&keywordsConjunctionMode=' + this.keywordsConjunctionMode;
+    }
+
+    return encodeURI(params);
+  }
+
+  public configureWithQueyParams(params) {
+    if (params.entities !== undefined) {
+      this.entities = params.entities.split(',');
+    }
+    if (params.truthRatings !== undefined) {
+      for (const rating of params.truthRatings.split(',')) {
+        this.truthRatings.push(parseInt(rating, null));
+      }
+    }
+    if (params.author !== undefined) {
+      this.author = params.author;
+    }
+    if (params.keywords !== undefined) {
+      this.keywords = params.keywords.split(',');
+    }
+    if (params.languages !== undefined) {
+      this.languages = params.languages.split(',');
+    }
+    if (params.sources !== undefined) {
+      this.sources = params.sources.split(',');
+    }
+    if (params.dates !== undefined) {
+      const datesArray = params.dates.split(',');
+      this.dates.push(new Date(datesArray[0]));
+      this.dates.push(new Date(datesArray[1]));
+    }
+    if (params.entitiesConjunctionMode !== undefined) {
+      this.entitiesConjunctionMode = Boolean(params.entitiesConjunctionMode);
+    }
+    if (params.keywordsConjunctionMode !== undefined) {
+      this.keywordsConjunctionMode = Boolean(params.keywordsConjunctionMode);
+    }
   }
 }

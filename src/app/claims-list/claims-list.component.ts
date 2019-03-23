@@ -2,17 +2,18 @@ import {Component, OnInit, Input, SimpleChanges, SimpleChange} from '@angular/co
 import {Requester} from '../../models/Requester';
 import {ClaimsSparqlService} from '../claims-sparql.service';
 import {ClaimPreview} from '../../models/ClaimPreview';
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Title} from '@angular/platform-browser';
 import {PageEvent} from '@angular/material';
+import {passBoolean} from 'protractor/built/util';
 
 @Component({
   selector: 'app-claims-list',
   templateUrl: './claims-list.component.html',
   styleUrls: ['./claims-list.component.css']
 })
-export class ClaimsListComponent implements OnInit{
+export class ClaimsListComponent implements OnInit {
 
   @Input() request: Requester;
 
@@ -36,12 +37,15 @@ export class ClaimsListComponent implements OnInit{
 
   pageIndexForPaginator: number;
 
-  constructor(private sparqlService: ClaimsSparqlService, private router: Router, private location: Location, private titleService: Title) {
+  constructor(private sparqlService: ClaimsSparqlService, private route: ActivatedRoute, private router: Router,
+              private location: Location, private titleService: Title) {
     this.pageIndex = 1;
     this.pageIndexForPaginator = 0;
   }
 
   ngOnInit() {
+    this.initFromRoute();
+    this.updateQueryToSearch();
     this.getRequestClaims();
     this.getCountClaims();
     this.setTitle();
@@ -61,8 +65,6 @@ export class ClaimsListComponent implements OnInit{
         this.claims = claims;
         this.noResult = false;
         this.endResults = false;
-    } else if (this.request.getCurrentPageIndex() > 1) {
-        this.endResults = true;
     } else {
         this.noResult = true;
         this.titleService.setTitle('No results');
@@ -93,8 +95,7 @@ export class ClaimsListComponent implements OnInit{
 
   goBackList() {
     this.claimOpen = false;
-    // Plus tard dans le projet, il faudra changer query par les paramtres de la recherche etc..
-    this.location.replaceState('/research', '');
+    this.updateQueryToSearch();
     this.setTitle();
   }
 
@@ -116,6 +117,31 @@ export class ClaimsListComponent implements OnInit{
     }
     this.request.setPage(this.pageIndex);
     this.pageIndexForPaginator = this.pageIndex - 1;
+    this.updateQueryToSearch();
     this.loadNewData();
+  }
+
+  private updateQueryToSearch() {
+    this.location.replaceState('/search', this.request.toQueryParams());
+  }
+
+  private initFromRoute() {
+    this.route
+      .queryParams
+      .subscribe(params => {
+        if (!this.request) {
+          this.request = new Requester();
+          this.request.configureWithQueyParams(params);
+          const page = params.page;
+          if (page !== undefined) {
+            this.pageIndex = parseInt(page, null);
+            if (this.pageIndex < 1) {
+              this.pageIndex = 1;
+            }
+            this.pageIndexForPaginator = this.pageIndex - 1;
+            this.request.setPage(this.pageIndex);
+          }
+        }
+      });
   }
 }
