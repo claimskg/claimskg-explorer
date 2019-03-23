@@ -17,6 +17,10 @@ export class ClaimsListComponent implements OnInit{
 
   claims: ClaimPreview[];
 
+  claimsCount: number;
+
+  firstLoad = true;
+
   pagesIndex: number[];
 
   noResult = false;
@@ -33,11 +37,16 @@ export class ClaimsListComponent implements OnInit{
 
   ngOnInit() {
     this.getRequestClaims();
+    this.getCountClaims();
     this.setTitle();
   }
 
   getRequestClaims(): void {
     this.sparqlService.getClaimsPreview(this.request).subscribe(claims => this.diffuseClaims(claims));
+  }
+
+  getCountClaims(): void {
+    this.sparqlService.getClaimsPreviewCount(this.request).subscribe(claimsCount => this.diffuseClaimsCount(claimsCount));
   }
 
   diffuseClaims(claims: ClaimPreview[]): void {
@@ -52,6 +61,11 @@ export class ClaimsListComponent implements OnInit{
         this.titleService.setTitle('No results');
     }
   }
+  diffuseClaimsCount(count): void {
+    this.claimsCount = count;
+    this.firstLoad = false;
+  }
+
 
   clickNext(): void {
     this.request.incrementOffset();

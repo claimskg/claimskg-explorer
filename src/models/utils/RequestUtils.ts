@@ -17,7 +17,7 @@ export class RequestUtils {
     superSelectConjunction: '?id ?text ?date ?truthRating ?ratingName ?author ?link',
     clauses: [
       '?claims a schema:ClaimReview',
-      '?claims schema:headline ?headline',
+      'OPTIONAL {?claims schema:headline ?headline}',
       'OPTIONAL {?claims schema:datePublished ?date}',
       '?claims schema:reviewRating ?truth_rating_review',
       '?truth_rating_review schema:alternateName ?ratingName',

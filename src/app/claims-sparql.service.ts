@@ -25,6 +25,13 @@ export class ClaimsSparqlService {
       .pipe(map(res => ClaimPreview.convertJSONtoClaimsPreview(res)));
   }
 
+  getClaimsPreviewCount(request: Requester): Observable<number> {
+    let params = new HttpParams();
+    params = params.set('query', request.toCountSPARQL());
+    return this.http.post<any>(environment.endpoint,  params, options)
+      .pipe(map(res => (res.results.bindings.length > 0) ? res.results.bindings[0].count.value : null));
+  }
+
   getClaim(claimId: string): Observable<Claim> {
     let params = new HttpParams();
     params = params.set('query', Claim.getSPAEQLToSelect(claimId));

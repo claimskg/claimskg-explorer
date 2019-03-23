@@ -37,11 +37,50 @@ export class Requester {
     }
     if (this.superRequestIsTriggered()) {
       request += 'select ' + Requester.requestData.superSelectConjunction + ' where { {';
-      request += 'select ' + Requester.requestData.select + ' group_concat(?mentions, ",") as ?mentions ' +
-        'group_concat(?keywords, ",") as ?keywords where { ';
+      request += this.getNormalSelectCore();
     } else {
       request += 'select distinct ' + Requester.requestData.select + ' where { ';
     }
+
+    request += this.getRequestCore();
+
+    request += 'LIMIT ' + environment.resultPerPage + ' ';
+    request += 'OFFSET ' + this.currentOffset;
+
+    return request;
+  }
+
+  public toCountSPARQL(): string {
+    let request = '';
+    for (const prefix of Requester.requestData.prefixes) {
+      request += prefix + ' ';
+    }
+    request += 'select count(*) as ?count where { ';
+    if (this.superRequestIsTriggered()) {
+      request += ' { ';
+      request += this.getNormalSelectCore();
+    }
+
+    request += this.getRequestCore();
+
+    return request;
+  }
+
+  private getNormalSelectCore(): string {
+    let request = 'select ' + Requester.requestData.select;
+    if (this.entitiesConjunctionIsTriggered()) {
+      request += ' group_concat(?mentions, ",") as ?mentions ';
+    }
+    if (this.keywordsConjunctionIsTriggered()) {
+      request += ' group_concat(?keywords, ",") as ?keywords ';
+    }
+    request += ' where { ';
+
+    return request;
+  }
+
+  private getRequestCore(): string {
+    let request = '';
     for (const clause of Requester.requestData.clauses) {
       request += clause + ' . ';
     }
@@ -125,8 +164,6 @@ export class Requester {
       }
       request += '}';
     }
-    request += 'LIMIT ' + environment.resultPerPage + ' ';
-    request += 'OFFSET ' + this.currentOffset;
 
     return request;
   }
