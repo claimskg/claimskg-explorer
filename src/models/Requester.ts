@@ -55,10 +55,11 @@ export class Requester {
     for (const prefix of Requester.requestData.prefixes) {
       request += prefix + ' ';
     }
-    request += 'select count(*) as ?count where { ';
     if (this.superRequestIsTriggered()) {
-      request += ' { ';
+      request += 'select count(distinct ?id) as ?count where { {';
       request += this.getNormalSelectCore();
+    } else {
+      request += 'select count(distinct ?claims) as ?count where { ';
     }
 
     request += this.getRequestCore();

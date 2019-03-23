@@ -8,6 +8,7 @@ export class RequestUtils {
       'PREFIX nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>'
     ],
     select: '(?claims as ?id) ' +
+      'COALESCE(?headline, \'No text data\') as ?headline ' +
       'COALESCE(?text, ?headline) as ?text ' +
       'COALESCE(?date, \'Unknown\') as ?date ' +
       '?truthRating ' +
@@ -46,6 +47,7 @@ export class RequestUtils {
       'PREFIX nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>'
     ],
     select: '(?claim as ?id) ' +
+      'COALESCE(?headline, \'No text data\') as ?headline ' +
       'COALESCE(?text, ?headline) as ?text ' +
       'COALESCE(?date, \'\') as ?date ' +
       'COALESCE(?keywords, "") as ?keywords ' +
@@ -60,7 +62,7 @@ export class RequestUtils {
       'COALESCE(?link, \'\') as ?link',
     clauses: [
       '?claim a schema:ClaimReview',
-      '?claim schema:headline ?headline',
+      'OPTIONAL{ ?claim schema:headline ?headline}',
       'OPTIONAL {?claim schema:datePublished ?date}',
       '?claim schema:reviewRating ?truth_rating_review',
       '?truth_rating_review schema:author <' + environment.graph_iri + 'organization/claimskg>',

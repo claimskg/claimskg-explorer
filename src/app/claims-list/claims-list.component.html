@@ -1,5 +1,5 @@
 <div *ngIf="!claimOpen">
-  <div *ngIf="(!claims ||claims.length === 0) && !(claimsCount && firstLoad) && !noResult && !endResults" class="text-center mx-auto">
+  <div *ngIf="(loadingClaims || loadingCounter) && !noResult" class="text-center mx-auto">
     <img src="../../assets/img/loading.gif">
   </div>
   <div id="countResults" *ngIf="claimsCount && claims && claims.length !=0" class="text-center">
@@ -7,10 +7,6 @@
   </div>
   <div *ngIf="noResult" class="text-center resultMsg">
     <p>No results.</p>
-  </div>
-  <div *ngIf="endResults" class="text-center mx-auto">
-    <p class="resultMsg">End of results.</p>
-    <button (click)="clickPrevious()" class="btn btn-primary">Go back to previous page</button>
   </div>
   <div *ngIf="claimsCount && claims" id="listPreview" class="w-50 mx-auto">
     <a *ngFor="let claim of claims" target="_blank" routerLink="/detail/{{claim.id}}" (click)="openClaim(claim.id);$event.preventDefault();$event.stopPropagation()" class="claim-preview-card">
@@ -20,7 +16,8 @@
             <a href="{{claim.link}}" class="pmd-avatar-list-img mx-auto">
               <img src="../../assets/img/www-icon.png" width="40" height="40">
             </a>
-            <p class="mx-auto">{{claim.date | date:'MM/dd/yy'}}</p>
+            <p *ngIf="claim.date !== 'Unknown'" class="mx-auto">{{claim.date | date:'MM/dd/yy'}}</p>
+            <p *ngIf="claim.date == 'Unknown'" class="mx-auto">{{claim.date}}</p>
           </div>
           <div class="media-body">
             <h3 class="card-title">{{claim.text}}</h3>
@@ -36,10 +33,19 @@
         </div>
       </div>
     </a>
-    <div *ngIf="claims && claims.length > 0" class="pagination-box mx-auto text-center">
-      <button [disabled]="request.currentOffset == 0" (click)="clickPrevious()" class="btn btn-primary"><span class="fa fa-arrow-left"></span></button>
-      <button [hidden]="(this.request.getCurrentPageIndex() < index && this.claims.length < this.request.getLimit())" [disabled]="(index === request.getCurrentPageIndex())" [className]="index === request.getCurrentPageIndex() ? 'btn btn-primary' : 'btn border'" (click)="loadPage(index)" *ngFor="let index of pagesIndex">{{index}}</button>
-      <button [disabled]="this.claims.length < this.request.getLimit()" (click)="clickNext()" class="btn btn-primary"><span class="fa fa-arrow-right"></span></button>
+    <div [hidden]="!(claims && claims.length > 0)" class="mx-auto pagination-box">
+      <mat-paginator class="text-center mx-auto col-md-7"
+        [length]="claimsCount"
+        [pageSize]="10"
+        [pageIndex]="pageIndexForPaginator"
+        [showFirstLastButtons]="true"
+      [hidePageSize]="true"
+      (page)="pageChange($event)">
+      </mat-paginator>
+      <mat-form-field class="col-sm-3">
+        <input matInput [(ngModel)]="pageIndex" type="number" step="1" min="1" max="{{getNbMaxPages()}}">
+      </mat-form-field>
+      <button (click)="jumpPage()" class="col-lg-2" mat-button>Jump</button>
     </div>
   </div>
 </div>

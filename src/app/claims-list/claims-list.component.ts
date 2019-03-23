@@ -5,6 +5,7 @@ import {ClaimPreview} from '../../models/ClaimPreview';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import {Title} from '@angular/platform-browser';
+import {PageEvent} from '@angular/material';
 
 @Component({
   selector: 'app-claims-list',
@@ -19,9 +20,9 @@ export class ClaimsListComponent implements OnInit{
 
   claimsCount: number;
 
-  firstLoad = true;
+  loadingCounter = true;
 
-  pagesIndex: number[];
+  loadingClaims = true;
 
   noResult = false;
 
@@ -31,8 +32,13 @@ export class ClaimsListComponent implements OnInit{
 
   claimOpen = false;
 
+  pageIndex: number;
+
+  pageIndexForPaginator: number;
+
   constructor(private sparqlService: ClaimsSparqlService, private router: Router, private location: Location, private titleService: Title) {
-    this.pagesIndex = [1, 2];
+    this.pageIndex = 1;
+    this.pageIndexForPaginator = 0;
   }
 
   ngOnInit() {
@@ -50,6 +56,7 @@ export class ClaimsListComponent implements OnInit{
   }
 
   diffuseClaims(claims: ClaimPreview[]): void {
+    this.loadingClaims = false;
     if (!(claims.length === 0)) {
         this.claims = claims;
         this.noResult = false;
@@ -63,53 +70,19 @@ export class ClaimsListComponent implements OnInit{
   }
   diffuseClaimsCount(count): void {
     this.claimsCount = count;
-    this.firstLoad = false;
+    this.loadingCounter = false;
   }
 
-
-  clickNext(): void {
-    this.request.incrementOffset();
-    this.checkPageIndexWhenIncrement();
-    this.loadNewData();
-  }
-
-  clickPrevious(): void {
-    if (this.request.getCurrentPageIndex() > 1) {
-      this.request.decrementOffset();
-      this.checkPageIndexOnDecrement();
-      this.loadNewData();    }
+  pageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex + 1;
+    this.jumpPage();
   }
 
   loadNewData(): void {
+    this.loadingClaims = true;
     this.claims = [];
     this.getRequestClaims();
     window.scroll(0, 0);
-  }
-
-  checkPageIndexWhenIncrement(): void {
-    const page = this.request.getCurrentPageIndex();
-    if (page === this.pagesIndex[1]) {
-      this.pagesIndex = [page, page + 1];
-    }
-  }
-
-  checkPageIndexOnDecrement(): void {
-    const page = this.request.getCurrentPageIndex();
-    if (!(page === this.pagesIndex[0]) && this.pagesIndex[0] !== 1) {
-      this.pagesIndex = [page, page + 1];
-    }
-  }
-
-  loadPage(page: number): void {
-    const previousIndex = this.request.getCurrentPageIndex();
-    this.request.setPage(page);
-    if (page < previousIndex) {
-      this.checkPageIndexOnDecrement();
-    }
-    if (page > previousIndex) {
-      this.checkPageIndexWhenIncrement();
-    }
-    this.loadNewData();
   }
 
   openClaim(id: string) {
@@ -127,5 +100,22 @@ export class ClaimsListComponent implements OnInit{
 
   private setTitle() {
     this.titleService.setTitle('Claims Search');
+  }
+
+  getNbMaxPages(): number {
+
+    return parseInt(((this.claimsCount / this.request.getLimit()) + 1).toString(), null);
+  }
+
+  jumpPage() {
+    if (this.pageIndex > this.getNbMaxPages()) {
+      this.pageIndex = this.getNbMaxPages();
+    }
+    if (this.pageIndex < 1) {
+      this.pageIndex = 1;
+    }
+    this.request.setPage(this.pageIndex);
+    this.pageIndexForPaginator = this.pageIndex - 1;
+    this.loadNewData();
   }
 }

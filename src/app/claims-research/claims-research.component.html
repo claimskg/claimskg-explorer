@@ -92,7 +92,7 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntryFieldWithFormControl($event,'languages', 'controlLanguage')" id="languages" name="languages" type="text" class="form-control" matInput [formControl]="controlLanguage" [matAutocomplete]="languages">
+            <input (keydown)="addEntryFieldWithFormControl($event,'languages', 'controlLanguage')" id="languages" name="languages" type="text" class="form-control"  [formControl]="controlLanguage" [matAutocomplete]="languages">
             <mat-autocomplete #languages="matAutocomplete">
               <mat-option (click)="addEntryClickFiltered('languages', 'languages', 'controlLanguage')" *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
             </mat-autocomplete>
@@ -113,7 +113,7 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntryFieldWithFormControl($event,'sources', 'controlSources')" id="sources" name="sources" type="text" class="form-control" matInput [formControl]="controlSources" [matAutocomplete]="sources">
+            <input (keydown)="addEntryFieldWithFormControl($event,'sources', 'controlSources')" id="sources" name="sources" type="text" class="form-control" [formControl]="controlSources" [matAutocomplete]="sources">
             <mat-autocomplete #sources="matAutocomplete">
               <mat-option (click)="addEntryClickFiltered('sources', 'sources', 'controlSources')"  *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
             </mat-autocomplete>

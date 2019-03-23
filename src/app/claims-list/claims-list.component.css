@@ -14,8 +14,9 @@
 }
 
 .pagination-box {
-  margin-top: 10px;
-  margin-bottom: 25px;
+  display: flex;
+  background-color: white;
+  margin-bottom: 30px;
 }
 
 .pagination-box button {
@@ -38,3 +39,4 @@
   font-weight: bold;
   font-size: larger;
 }
+
