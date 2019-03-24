@@ -7,8 +7,9 @@ export class Utils {
     return environment.graph_iri + ressource;
   }
 
-  public static getIdPathRessource(simpleId: string): string {
-    return Utils.getRessourcePathGraph('claim_review/' + simpleId);
+  public static capitalize(str: string) {
+
+    return str.charAt(0).toUpperCase() + str.slice(1);
   }
 
 }

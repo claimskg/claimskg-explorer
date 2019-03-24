@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 import {environment} from '../environments/environment';
 import {map} from 'rxjs/operators';
 import {RequestUtils} from '../models/utils/RequestUtils';
+import {Utils} from '../models/utils/Utils';
 
 const options = {
   headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', 'application/sparql-results+json')
@@ -24,7 +25,7 @@ export class UtilsDataSparqlService {
     for (const result of results) {
       const newLanguage = new Language();
       newLanguage.id = result.inLanguage.value;
-      newLanguage.name = result.language.value;
+      newLanguage.name = Utils.capitalize(result.language.value);
       languages.push(newLanguage);
     }
 
@@ -37,11 +38,23 @@ export class UtilsDataSparqlService {
     for (const result of results) {
       const newOrganization = new Organization();
       newOrganization.id = result.organization.value;
-      newOrganization.name = result.source.value;
+      newOrganization.name = Utils.capitalize(result.source.value);
       organizations.push(newOrganization);
     }
 
     return organizations;
+  }
+
+  private static convertJSONToEntitiesNames(response: any): string[] {
+    const results = response.results.bindings;
+    const entities = [];
+    for (const result of results) {
+      const newEntity = result.entity.value;
+      if (!entities.map(item => item.toLowerCase()).includes(newEntity.toLowerCase())) {
+        entities.push(Utils.capitalize(newEntity));
+      }
+    }
+    return entities;
   }
 
   getAllLanguages(): Observable<Language[]> {
@@ -56,5 +69,12 @@ export class UtilsDataSparqlService {
     params = params.set('query', RequestUtils.sourcesRequest);
     return this.http.post<any>(environment.endpoint,  params, options)
       .pipe(map(res => res = UtilsDataSparqlService.convertJSONtoOrganizations(res)));
+  }
+
+  getFilteredEntities(entityFragment: string): Observable<string[]> {
+    let params = new HttpParams();
+    params = params.set('query', RequestUtils.filterEntities(entityFragment));
+    return this.http.post<any>(environment.endpoint,  params, options)
+      .pipe(map(res => res = UtilsDataSparqlService.convertJSONToEntitiesNames(res)));
   }
 }

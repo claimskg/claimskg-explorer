@@ -3,9 +3,9 @@ import {Requester} from '../../models/Requester';
 import {Language} from '../../models/utils/Language';
 import {Organization} from '../../models/utils/Organization';
 import {UtilsDataSparqlService} from '../utils-data-sparql.service';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {FormControl} from '@angular/forms';
-import {map, startWith} from 'rxjs/operators';
+import {distinctUntilChanged, map, startWith, switchMap} from 'rxjs/operators';
 import {ClaimsListComponent} from '../claims-list/claims-list.component';
 import {Title} from '@angular/platform-browser';
 import {Location} from '@angular/common';
@@ -20,14 +20,15 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   request: Requester;
   go = false;
   entitiesField: string;
+  languagesField: string;
+  sourcesField: string;
   keywordsField: string;
   allLanguages: Language[];
-  filteredLanguages: Observable<Language[]>;
   allSources: Organization[];
-  filteredSources: Observable<Organization[]>;
-  controlLanguage = new FormControl();
-  controlSources = new FormControl();
-
+  filteredEntities: string[];
+  private searchTermsEntities = new Subject<string>();
+  filteredLanguages: Language[];
+  filteredSources: Organization[];
   @ViewChild(ClaimsListComponent) resultList: ClaimsListComponent;
   @ViewChildren(ClaimsListComponent) initDetector: QueryList<ClaimsListComponent>;
   childInit = false;
@@ -36,8 +37,12 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.request = new Requester();
+    this.filteredLanguages = [];
+    this.filteredSources = [];
+    this.filteredEntities = [];
     this.utilsDataService.getAllLanguages().subscribe(languages => this.setUpFilterLanguages(languages));
     this.utilsDataService.getAllSources().subscribe(sources => this.setUpFilterSources(sources));
+    this.setUpFilterEntities();
     this.setTitle();
   }
 
@@ -61,31 +66,31 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     }
   }
 
-  private addDataToRequesterNormal(keyRequest, keyComponent): void {
-    this.addDataToRequester(keyRequest, this[keyComponent]);
-    this[keyComponent] = '';
-  }
-
-  addEntryFieldWithFormControl(event, keyRequest, keyControl): void {
+  addEntryFilterPress(event, keyRequest, keyComponent, keyFilter, clear, blur) {
     if (event.key === 'Enter') {
-      this.addDataToRequesterFilteredFields(keyRequest, keyControl);
+      this.addEntryFilter(keyRequest, keyComponent, keyFilter, clear, blur, event.target.id);
     }
   }
 
-  addEntryClickFiltered(toBlurId, keyRequest, keyControl): void {
-    document.getElementById(toBlurId).blur();
-    this.addDataToRequesterFilteredFields(keyRequest, keyControl);
+  addEntryFilterClick(keyRequest, keyComponent, keyFilter, clear, blur, blurID = null) {
+    this.addEntryFilter(keyRequest, keyComponent, keyFilter, clear, blur, blurID);
   }
 
-  private addDataToRequesterFilteredFields(keyRequest, keyControl): void {
-    this.addDataToRequester(keyRequest, this[keyControl].value);
-    this[keyControl].setValue('');
-  }
-
-  private addDataToRequester(keyRequest, value): void {
-    if (value !== '' && !this.request[keyRequest].includes(value)) {
-      this.request[keyRequest].push(value);
+  private addEntryFilter(keyRequest, keyComponent, keyFilter, clear, blur, blurId) {
+    this.addDataToRequesterNormal(keyRequest, keyComponent);
+    if (clear) {
+      this[keyFilter] = [];
     }
+    if (blur && blurId !== null) {
+      document.getElementById(blurId).blur();
+    }
+  }
+
+  private addDataToRequesterNormal(keyRequest, keyComponent): void {
+    if (this[keyComponent] !== '' && !this.request[keyRequest].map(str => str.toLowerCase()).includes(this[keyComponent].toLowerCase())) {
+      this.request[keyRequest].push(this[keyComponent]);
+    }
+    this[keyComponent] = '';
   }
 
   deleteEnntry(keyRequest, value) {
@@ -108,32 +113,35 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     this.setTitle();
   }
 
-  private setUpFilter(keyList, keyFilter, keyControl, list, filterFunction): void {
-    this[keyList] = list;
-    this[keyFilter] = this[keyControl].valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this[filterFunction](value))
-      );
-  }
-
   private setUpFilterLanguages(languages): void {
-    this.setUpFilter('allLanguages', 'filteredLanguages', 'controlLanguage', languages, '_filter_language');
+    this.allLanguages = languages;
+    this.filteredLanguages = this.allLanguages;
   }
 
   private setUpFilterSources(sources): void {
-    this.setUpFilter('allSources', 'filteredSources', 'controlSources', sources, '_filter_source');
+    this.allSources = sources;
+    this.filteredSources = this.allSources;
   }
 
-  // Are used (by generic method setUpFiltezr)
-  private _filter_language(value: string): Language[] {
-    const filterValue = value.toLowerCase();
-    return this.allLanguages.filter(language => language.name.toLowerCase().includes(filterValue));
+  private setUpFilterEntities(): void {
+
   }
 
-  private _filter_source(value: string): Organization[] {
-    const filterValue = value.toLowerCase();
-    return this.allSources.filter(source => source.name.toLowerCase().includes(filterValue));
+  searchEntities(term: string): void {
+    this.filteredEntities = [];
+    if (term.length >= 3) {
+      this.utilsDataService.getFilteredEntities(term).subscribe(res => this.filteredEntities = res);
+    }
+  }
+
+  searchLanguages(term: string): void {
+    const filterValue = term.toLowerCase();
+    this.filteredLanguages =  this.allLanguages.filter(language => language.name.toLowerCase().includes(filterValue));
+  }
+
+  searchSources(term: string): void {
+    const filterValue = term.toLowerCase();
+    this.filteredSources =  this.allSources.filter(source => source.name.toLowerCase().includes(filterValue));
   }
 
   private setTitle() {

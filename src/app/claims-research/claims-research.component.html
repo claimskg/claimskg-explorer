@@ -11,7 +11,10 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntry($event, 'entities', 'entitiesField')" [(ngModel)]="entitiesField" id="entities" name="entities" type="text" class="form-control">
+            <input [(ngModel)]="entitiesField" (keydown)="addEntryFilterPress($event,'entities', 'entitiesField','filteredEntities', true, false)" id="entities" name="entities" type="text" class="form-control" (input)="searchEntities(entitiesField)" [matAutocomplete]="entities">
+            <mat-autocomplete #entities="matAutocomplete">
+              <mat-option (click)="addEntryFilterClick('entities', 'entitiesField', 'filteredEntities', true, false)"  *ngFor="let entity of filteredEntities" [value]="entity" title="{{entity}}">{{entity}}</mat-option>
+            </mat-autocomplete>
             <div class="input-group-append">
               <select name="entitiesMode" [(ngModel)]="request.entitiesConjunctionMode" class="form-control">
                 <option [ngValue]="false">Match Any</option>
@@ -92,9 +95,9 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntryFieldWithFormControl($event,'languages', 'controlLanguage')" id="languages" name="languages" type="text" class="form-control"  [formControl]="controlLanguage" [matAutocomplete]="languages">
+            <input [(ngModel)]="languagesField" (keydown)="addEntryFilterPress($event,'languages', 'languagesField', 'filteredLanguages', true, true)" (focus)="filteredLanguages = allLanguages" id="languages" name="languages" type="text" class="form-control" (input)="searchLanguages(languagesField)" [matAutocomplete]="languages">
             <mat-autocomplete #languages="matAutocomplete">
-              <mat-option (click)="addEntryClickFiltered('languages', 'languages', 'controlLanguage')" *ngFor="let language of filteredLanguages | async" [value]="language.name">{{language.name}}</mat-option>
+              <mat-option (click)="addEntryFilterClick('languages', 'languagesField', 'filteredLanguages', true, true, 'languages')" *ngFor="let language of filteredLanguages" [value]="language.name">{{language.name}}</mat-option>
             </mat-autocomplete>
           </div>
         </div>
@@ -113,9 +116,9 @@
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input (keydown)="addEntryFieldWithFormControl($event,'sources', 'controlSources')" id="sources" name="sources" type="text" class="form-control" [formControl]="controlSources" [matAutocomplete]="sources">
+            <input [(ngModel)]="sourcesField" (keydown)="addEntryFilterPress($event,'sources', 'sourcesField', 'filteredSources', true, true)" (focus)="filteredSources = allSources" id="sources" name="sources" type="text" class="form-control"  (input)="searchSources(sourcesField)" [matAutocomplete]="sources">
             <mat-autocomplete #sources="matAutocomplete">
-              <mat-option (click)="addEntryClickFiltered('sources', 'sources', 'controlSources')"  *ngFor="let source of filteredSources | async" [value]="source.name">{{source.name}}</mat-option>
+              <mat-option (click)="addEntryFilterClick('sources', 'sourcesField', 'filteredSources', true, true, 'sources')"  *ngFor="let source of filteredSources" [value]="source.name">{{source.name}}</mat-option>
             </mat-autocomplete>
           </div>
         </div>

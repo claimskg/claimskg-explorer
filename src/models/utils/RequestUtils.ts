@@ -41,6 +41,33 @@ export class RequestUtils {
     'select distinct ?organization ?source ' +
     'where { ?organization a schema:Organization . ?organization schema:name ?source }';
 
+  private static readonly filterEntitiesRequest = {
+    prefixes: [
+      'PREFIX schema: <http://schema.org/>',
+      'PREFIX nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>'
+    ],
+    select: '?entity ',
+    clauses: [
+      '?mentions a nif:Context',
+      '?mentions nif:isString ?entity',
+    ]
+  };
+
+  public static filterEntities(fragment: string): string {
+    let request = '';
+    for (const prefix of RequestUtils.filterEntitiesRequest.prefixes) {
+      request += prefix + ' ';
+    }
+    request += 'select distinct ' + RequestUtils.filterEntitiesRequest.select + ' where { ';
+    for (const clause of RequestUtils.filterEntitiesRequest.clauses) {
+      request += clause + ' . ';
+    }
+    request += '  FILTER (strStarts(lcase(str(?entity)), "' + fragment.toLowerCase() + '"))';
+    request += '}';
+
+    return request;
+  }
+
   public static readonly selectRequest = {
     prefixes: [
       'PREFIX schema: <http://schema.org/>',
