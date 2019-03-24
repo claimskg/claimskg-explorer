@@ -1,27 +1,72 @@
-# ClaimskgExplorer
+#ClaimsKG Explorer - Build & Deployment :
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.3.
+##Generate the appropriate build
 
-## Development server
+In order to deploy ClaimsKG Explorer, you first need to produce a build with your configuration options, from the angular project that you’ll place into your web server.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+To produce this build, you need to have installed node (and npm) and then angular :
 
-## Code scaffolding
+Node
+For Linux : https://linuxize.com/post/how-to-install-node-js-on-ubuntu-18.04/
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+For Windows : https://nodejs.org/en/
 
-## Build
+Angular : <code>npm install -g @angular/cli</code>
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Then, go to the claimskg-explorer and edit the file : src/environment/environment.prod.ts
 
-## Running unit tests
+~~~~typescript
+export const environment = {
+  production: true,
+  endpoint: 'http://localhost:8890/sparql',
+  graph_iri: 'http://data.gesis.org/claimskg/',
+  resultPerPage: 10,
+};
+~~~~
+- endpoint : The address to the sparql endpoint of ClaimsKG
+- graph_iri: The claimkg graph iri, already set but you can change it if there is any update in the future on this part
+- resultPerPage: Number of result per page, set to 10 by default
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Once this file is properly edited, type :
 
-## Running end-to-end tests
+<code>npm install</code>
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+<code>ng build --prod --base-href /claimskg-explorer/</code>
 
-## Further help
+**The option --base-href specify the name of the subfolder where the app will run, so, here, the final URL will be : http://yourdomain.com/claimskg-explorer/**
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This generates the build in the dist/claimskg-explorer/ folder.
+
+**Note that neither node or angular are required to make the build work on the server side, it is only required to generate the build, so the server has no needs to install these components.**
+
+##Deploy the build on your server :
+
+Once you’ve got the build, install it on your web server directory.
+Now, you have to configure your server in a way that the routed apps fallback to index.html.
+
+This part depends on your web server technology, you can find the appropriate method for your server here : https://angular.io/guide/deployment#fallback-configuration-examples
+
+In your configuration, don’t forget to specify the subfolder of the build, for example, here is the .htaccess configuration with an apache web server :
+
+~~~~
+RewriteEngine On  
+# If an existing asset or directory is requested go to it as it is
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -f [OR]  
+RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI} -d  
+RewriteRule ^ - [L]
+
+# If the requested resource doesn't exist, use index.html
+RewriteRule ^ /claimskg-explorer/index.html
+~~~~
+
+##Virtuoso configuration
+
+As claimskg-explorer send request to the sparql endpoint of claimsKG, **if they are not located on the same origin**,Virutoso must allow CORS (Cross-Origin Resource Sharing) :
+
+- Log on the Virutoso conductor interface
+- Go to Web Application Server
+- Virtual Domains & Directorie
+- Click on the first blue folder near 0.0.0.0
+- Find the /sparql line and click on EDIT
+- On the Cross-Origin Resource Sharing field put * (allow everyone) or configure it to only allow the app
+- Click on Save Changes

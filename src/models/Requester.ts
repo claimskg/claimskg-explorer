@@ -118,7 +118,7 @@ export class Requester {
       request += '?inLanguage schema:name ?language . ';
       request += 'FILTER (';
       for (const language of this.languages) {
-        request += '?language = "' + language + '" || ';
+        request += 'lcase(?language) = "' + language.toLowerCase() + '" || ';
       }
       request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
@@ -128,7 +128,7 @@ export class Requester {
       request += '?sourceAuthor schema:name ?source . ';
       request += 'FILTER (';
       for (const source of this.sources) {
-        request += 'contains(?source ,"' + source + '") || ';
+        request += 'contains(lcase(?source) ,"' + source.toLowerCase() + '") || ';
       }
       request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
