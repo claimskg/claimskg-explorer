@@ -3,12 +3,12 @@ import {Requester} from '../../models/Requester';
 import {Language} from '../../models/utils/Language';
 import {Organization} from '../../models/utils/Organization';
 import {UtilsDataSparqlService} from '../utils-data-sparql.service';
-import {Observable, Subject} from 'rxjs';
-import {FormControl} from '@angular/forms';
-import {distinctUntilChanged, map, startWith, switchMap} from 'rxjs/operators';
 import {ClaimsListComponent} from '../claims-list/claims-list.component';
 import {Title} from '@angular/platform-browser';
 import {Location} from '@angular/common';
+import {MatDialog} from '@angular/material';
+import {ClaimsHelpModalComponent} from '../claims-help-modal/claims-help-modal.component';
+import {Utils} from '../../models/utils/Utils';
 
 @Component({
   selector: 'app-claims-research',
@@ -26,14 +26,14 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   allLanguages: Language[];
   allSources: Organization[];
   filteredEntities: string[];
-  private searchTermsEntities = new Subject<string>();
   filteredLanguages: Language[];
   filteredSources: Organization[];
   @ViewChild(ClaimsListComponent) resultList: ClaimsListComponent;
   @ViewChildren(ClaimsListComponent) initDetector: QueryList<ClaimsListComponent>;
   childInit = false;
 
-  constructor(private utilsDataService: UtilsDataSparqlService, private titleService: Title, private location: Location) {}
+  constructor(private utilsDataService: UtilsDataSparqlService, private titleService: Title,
+              private location: Location, public dialog: MatDialog) {}
 
   ngOnInit() {
     this.request = new Requester();
@@ -146,5 +146,29 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
 
   private setTitle() {
     this.titleService.setTitle('Claims Search');
+  }
+
+  openDialogEntities() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.entitiesModalData
+    });
+  }
+
+  openDialogKeywords() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.keywordsModalData
+    });
+  }
+
+  openDialogLanguages() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.languagesModalData
+    });
+  }
+
+  openDialogSources() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.sourcesModalData
+    });
   }
 }

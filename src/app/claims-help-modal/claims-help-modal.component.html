@@ -1,0 +1,7 @@
+<h1 class="text-center mx-auto" mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content class="mx-auto">
+  <ul>
+    <li *ngFor="let line of data.content">{{line}}</li>
+  </ul>
+  <img class="img-modal" *ngFor="let path of data.imgsPath" [src]="path">
+</div>
