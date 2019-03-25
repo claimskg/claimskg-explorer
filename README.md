@@ -58,7 +58,7 @@ RewriteRule ^ /claimskg-explorer/index.html
 
 ## Virtuoso configuration
 
-As claimskg-explorer send request to the sparql endpoint of claimsKG, **if they are not located on the same origin**,Virutoso must allow CORS (Cross-Origin Resource Sharing) :
+As claimskg-explorer send request to the sparql endpoint of claimsKG, Virutoso must allow CORS (Cross-Origin Resource Sharing) :
 
 - Log on the Virutoso conductor interface
 - Go to Web Application Server
