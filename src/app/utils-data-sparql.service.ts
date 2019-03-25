@@ -7,6 +7,7 @@ import {environment} from '../environments/environment';
 import {map} from 'rxjs/operators';
 import {RequestUtils} from '../models/utils/RequestUtils';
 import {Utils} from '../models/utils/Utils';
+import {Requester} from '../models/Requester';
 
 const options = {
   headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', 'application/sparql-results+json')
@@ -77,4 +78,12 @@ export class UtilsDataSparqlService {
     return this.http.post<any>(environment.endpoint,  params, options)
       .pipe(map(res => res = UtilsDataSparqlService.convertJSONToEntitiesNames(res)));
   }
+
+  getClaimsTotalCount(): Observable<number> {
+    let params = new HttpParams();
+    params = params.set('query', RequestUtils.countAllRequest);
+    return this.http.post<any>(environment.endpoint,  params, options)
+      .pipe(map(res => (res.results.bindings.length > 0) ? res.results.bindings[0].count.value : null));
+  }
+
 }

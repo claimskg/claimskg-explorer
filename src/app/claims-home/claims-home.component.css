@@ -6,3 +6,32 @@
   font-size: 70px;
   font-weight: bold;
 }
+
+#counter
+{
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+#counter-count
+{
+  font-size: 18px;
+  background-color: #00b3e7;
+  border-radius: 50%;
+  position: relative;
+  text-align: center;
+  line-height: 92px;
+  color: white;
+  width: 92px;
+  height: 92px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  display: inline-block;
+}
+
+#counter-title
+{
+  font-size: 24px;
+  color: #000000;
+  font-weight: bold;
+  line-height: 34px;
+}

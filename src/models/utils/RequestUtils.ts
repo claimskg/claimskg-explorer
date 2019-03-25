@@ -53,21 +53,6 @@ export class RequestUtils {
     ]
   };
 
-  public static filterEntities(fragment: string): string {
-    let request = '';
-    for (const prefix of RequestUtils.filterEntitiesRequest.prefixes) {
-      request += prefix + ' ';
-    }
-    request += 'select distinct ' + RequestUtils.filterEntitiesRequest.select + ' where { ';
-    for (const clause of RequestUtils.filterEntitiesRequest.clauses) {
-      request += clause + ' . ';
-    }
-    request += '  FILTER (strStarts(lcase(str(?entity)), "' + fragment.toLowerCase() + '"))';
-    request += '}';
-
-    return request;
-  }
-
   public static readonly selectRequest = {
     prefixes: [
       'PREFIX schema: <http://schema.org/>',
@@ -106,4 +91,24 @@ export class RequestUtils {
       'OPTIONAL {?item schema:citation ?citations}'
     ]
   };
+
+  public static readonly  countAllRequest = '' +
+    'PREFIX schema: <http://schema.org/> ' +
+    'select count(distinct ?claim) as ?count ' +
+    'where {?claim a schema:ClaimReview}';
+
+  public static filterEntities(fragment: string): string {
+    let request = '';
+    for (const prefix of RequestUtils.filterEntitiesRequest.prefixes) {
+      request += prefix + ' ';
+    }
+    request += 'select distinct ' + RequestUtils.filterEntitiesRequest.select + ' where { ';
+    for (const clause of RequestUtils.filterEntitiesRequest.clauses) {
+      request += clause + ' . ';
+    }
+    request += '  FILTER (strStarts(lcase(str(?entity)), "' + fragment.toLowerCase() + '"))';
+    request += '}';
+
+    return request;
+  }
 }
