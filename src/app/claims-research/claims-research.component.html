@@ -136,17 +136,17 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input type="radio" name="optradio">Truth rating</label>
+                  <label><input (change) = "orderBy($event, 1)" value="1" type="radio" id="orderTruth" name="optradio">Truth rating</label>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input type="radio" name="optradio">Author</label>
+                  <label><input (change) = "orderBy($event, 2)" value="2" type="radio" id="orderAuthor" name="optradio">Author</label>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input type="radio" name="optradio">Time</label>
+                  <label><input (change) = "orderBy($event, 3)" value="3" type="radio" id="orderTime" name="optradio">Time</label>
                 </div>
               </div>
             </div>
@@ -156,17 +156,15 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="radio">
-                  <label><input type="radio" name="optradio1">Ascendant</label>
+                  <label><input (change) = "howToOrder($event, 1)" value="1" type="radio" id="howOrder1" name="optradio1">Ascendant</label>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="radio">
-                  <label><input type="radio" name="optradio1">Descendant</label>
+                  <label><input (change) = "howToOrder($event, 2)" value="2" type="radio" id="howOrder2" name="optradio1">Descendant</label>
                 </div>
               </div>
             </div>
-
-
 
             <div class="form-group">
               <button name="submit" type="button" id="btn-search" class="btn btn-primary" (click)="goSearch($event)">Claims Search</button>

@@ -26,6 +26,8 @@ export class Requester {
   currentOffset: number;
   entitiesConjunctionMode: boolean;
   keywordsConjunctionMode: boolean;
+  orderBy: number;      //0 = Initialisation 1 = Truth, 2 = Author and 3 = Time
+  howToOrder: boolean;  //false = asc and true = desc
 
   private static getStringifiedDate(date: Date): string {
     return date.toISOString().split('T')[0];

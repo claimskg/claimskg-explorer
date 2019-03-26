@@ -105,6 +105,20 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     }
   }
 
+  orderBy($event, value) {
+    if ($event.target.checked === true) {
+      this.request.orderBy = value;
+    }
+    console.log(this.request.orderBy);
+  }
+
+  howToOrder($event, value) {
+    if($event.target.checked === true) {
+      this.request.howToOrder = value;
+    }
+    console.log(this.request.howToOrder);
+  }
+
   goBackForm() {
     this.go = false;
     this.childInit = false;
