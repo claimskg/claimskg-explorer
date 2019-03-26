@@ -13,12 +13,14 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { MatAutocompleteModule, MatInputModule, MatExpansionModule, MatListModule, MatPaginatorModule,
   MatFormFieldModule, MatButtonModule } from '@angular/material';
+import {MatDialogModule} from '@angular/material/dialog';
 import 'hammerjs';
 
 import { ClaimsHomeComponent } from './claims-home/claims-home.component';
 import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ClaimHelpComponent } from './claim-help/claim-help.component';
+import { ClaimsHelpModalComponent } from './claims-help-modal/claims-help-modal.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,7 @@ import { ClaimHelpComponent } from './claim-help/claim-help.component';
     ClaimsHomeComponent,
     ClaimDetailComponent,
     ClaimHelpComponent,
+    ClaimsHelpModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -43,7 +46,11 @@ import { ClaimHelpComponent } from './claim-help/claim-help.component';
     MatPaginatorModule,
     MatFormFieldModule,
     MatButtonModule,
+    MatDialogModule,
     BrowserAnimationsModule
+  ],
+  entryComponents: [
+    ClaimsHelpModalComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

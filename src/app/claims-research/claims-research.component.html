@@ -4,21 +4,21 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="entities">Mentioned Entities</label>
+          <label for="entities">About (Named Entities)</label>
           <div class="input-group">
-            <div class="input-group-prepend help-circle" title="Type an entity (ex: Donald Trump) and press enter to add it in the list!">
+            <div class="input-group-prepend help-circle" (click)="openDialogEntities()" title="Type an entity name (ex: Donald Trump) and click on suggestions or press enter to add it in the list!">
               <div class="input-group-text">
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
             <input [(ngModel)]="entitiesField" (keydown)="addEntryFilterPress($event,'entities', 'entitiesField','filteredEntities', true, false)" id="entities" name="entities" type="text" class="form-control" (input)="searchEntities(entitiesField)" [matAutocomplete]="entities">
             <mat-autocomplete #entities="matAutocomplete">
-              <mat-option (click)="addEntryFilterClick('entities', 'entitiesField', 'filteredEntities', true, false)"  *ngFor="let entity of filteredEntities" [value]="entity" title="{{entity}}">{{entity}}</mat-option>
+              <mat-option class="entitiesOption" (click)="addEntryFilterClick('entities', 'entitiesField', 'filteredEntities', true, false)"  *ngFor="let entity of filteredEntities" [value]="entity" title="{{entity}}">{{entity}}</mat-option>
             </mat-autocomplete>
             <div class="input-group-append">
               <select name="entitiesMode" [(ngModel)]="request.entitiesConjunctionMode" class="form-control">
-                <option [ngValue]="false">Match Any</option>
-                <option [ngValue]="true">Match All</option>
+                <option [ngValue]="false">Contains Any</option>
+                <option [ngValue]="true">Contains All</option>
               </select>
             </div>
           </div>
@@ -33,7 +33,7 @@
         <div class="form-group">
           <label for="keywords">Keywords</label>
           <div class="input-group">
-            <div class="input-group-prepend help-circle" title="Type a keyword and press enter to add it in the list!">
+            <div class="input-group-prepend help-circle" (click)="openDialogKeywords()" title="Type a keyword and press enter to add it in the list!">
               <div class="input-group-text">
                 <i class="fa fa-question-circle"></i>
               </div>
@@ -41,8 +41,8 @@
             <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords" name="keywords" type="text" class="form-control">
             <div class="input-group-append">
               <select name="keywordsMode" [(ngModel)]="request.keywordsConjunctionMode" class="form-control">
-                <option [ngValue]="false">Match Any</option>
-                <option [ngValue]="true">Match All</option>
+                <option [ngValue]="false">Contains Any</option>
+                <option [ngValue]="true">Contains All</option>
               </select>
             </div>
           </div>
@@ -90,7 +90,7 @@
         <div class="form-group">
           <label for="languages">Languages</label>
           <div class="input-group">
-            <div class="input-group-prepend help-circle" title="Select a language in the list or type a language and press enter">
+            <div class="input-group-prepend help-circle" (click)="openDialogLanguages()" title="Select a language in the list or type a language and press enter">
               <div class="input-group-text">
                 <i class="fa fa-question-circle"></i>
               </div>
@@ -111,7 +111,7 @@
         <div class="form-group">
           <label for="sources">Sources</label>
           <div class="input-group">
-            <div class="input-group-prepend help-circle" title="Select a source (fact-checking website) in the list or type a source and press enter">
+            <div class="input-group-prepend help-circle" (click)="openDialogSources()" title="Select a source (fact-checking website) in the list or type a source and press enter">
               <div class="input-group-text">
                 <i class="fa fa-question-circle"></i>
               </div>
