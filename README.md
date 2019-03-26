@@ -67,3 +67,28 @@ As claimskg-explorer send request to the sparql endpoint of claimsKG, Virutoso m
 - Find the /sparql line and click on EDIT
 - On the Cross-Origin Resource Sharing field put * (allow everyone) or configure it to only allow the app
 - Click on Save Changes
+
+
+
+## Docker image
+
+We provide a docker containerization for convenience to deploy and run the app. 
+
+We use a two-stage build with node:alpine and nginx:alpine. 
+
+There are three build configuration arguments: 
+
+- `endpoint` the sparql enpoint on which ClaimsKG is exposed (default: `https://data.gesis.org/claimskg/sparql`)
+- graph_iri` the graph IRI of ClaimsKG (default `http://data.gesis.org/claimskg/`)
+- `per_page` the number of results per page (default: `10`)
+
+To build the image you may use (ommit arguments for default value): 
+
+```bash
+docker build --build-arg endpoint=... graph_iri=... per_page=... -t claimskg-explorer
+```
+
+
+
+Then use `docker run claimskg-explorer` to run the app. 
+
