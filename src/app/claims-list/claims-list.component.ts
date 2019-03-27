@@ -144,4 +144,11 @@ export class ClaimsListComponent implements OnInit {
         }
       });
   }
+
+  enterPageJump($event) {
+    if ($event.key === 'Enter') {
+      document.getElementById($event.target.id).blur();
+      this.jumpPage();
+    }
+  }
 }
