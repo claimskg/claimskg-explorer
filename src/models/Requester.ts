@@ -276,13 +276,23 @@ export class Requester {
 
   private getOrderBy(request): string {
     if (this.orderBy !== undefined) {  //If orderBy is initialized 
-      if (this.howToOrder === undefined || this.howToOrder == 'ASC') {  //If howToOrder isn't initialized or is false (means ASC)
-        request += ' Order by ' + this.orderBy + ' ';
+      if (this.howToOrder === undefined || this.howToOrder == 'ASC') {  //If howToOrder isn't initialized or ASC
+        if(this.orderBy == '?author') {
+          request += ' Order by lcase(' + this.orderBy + ') ';
+        }
+        else{
+          request += ' Order by ' + this.orderBy + ' ';
+        }
+      }
+      else {
+        if(this.orderBy == '?author') {
+          request += ' Order by desc(lcase(' + this.orderBy + ')) ';
+        }
+        else {
+          request += ' Order by desc (' + this.orderBy + ') ';
+        }
+      }
     }
-    else {
-      request += ' Order by desc (' + this.orderBy + ') ';
-    }
+    return request;
   }
-  return request;
-}
 }

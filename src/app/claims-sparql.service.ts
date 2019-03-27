@@ -19,6 +19,7 @@ export class ClaimsSparqlService {
   constructor(private http: HttpClient) { }
 
   getClaimsPreview(request: Requester): Observable<ClaimPreview[]> {
+    console.log(request.toSPARQL());
     let params = new HttpParams();
     params = params.set('query', request.toSPARQL());
     return this.http.post<any>(environment.endpoint,  params, options)
