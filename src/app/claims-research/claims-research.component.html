@@ -6,14 +6,21 @@
         <div class="form-group">
           <label for="entities">About (Named Entities)</label>
           <div class="input-group">
-            <div class="input-group-prepend help-circle" (click)="openDialogEntities()" title="Type an entity name (ex: Donald Trump) and click on suggestions or press enter to add it in the list!">
+            <div class="input-group-prepend help-circle" (click)="openDialogEntities()"
+                 title="Type an entity name (ex: Donald Trump) and click on suggestions or press enter to add it in the list!">
               <div class="input-group-text">
                 <i class="fa fa-question-circle"></i>
               </div>
             </div>
-            <input [(ngModel)]="entitiesField" (keydown)="addEntryFilterPress($event,'entities', 'entitiesField','filteredEntities', true, false)" id="entities" name="entities" type="text" class="form-control" (input)="searchEntities(entitiesField)" [matAutocomplete]="entities">
+            <input [(ngModel)]="entitiesField"
+                   (keydown)="addEntryFilterPress($event,'entities', 'entitiesField','filteredEntities', true, false)"
+                   id="entities" name="entities" type="text" class="form-control"
+                   (input)="searchEntities(entitiesField)" [matAutocomplete]="entities">
             <mat-autocomplete #entities="matAutocomplete">
-              <mat-option class="entitiesOption" (click)="addEntryFilterClick('entities', 'entitiesField', 'filteredEntities', true, false)"  *ngFor="let entity of filteredEntities" [value]="entity" title="{{entity}}">{{entity}}</mat-option>
+              <mat-option class="entitiesOption"
+                          (click)="addEntryFilterClick('entities', 'entitiesField', 'filteredEntities', true, false)"
+                          *ngFor="let entity of filteredEntities" [value]="entity"
+                          title="{{entity}}">{{entity}}</mat-option>
             </mat-autocomplete>
             <div class="input-group-append">
               <select name="entitiesMode" [(ngModel)]="request.entitiesConjunctionMode" class="form-control">
@@ -27,151 +34,199 @@
           {{entity}}
           <a (click)="deleteEnntry('entities', entity)" class="pmd-chip-action">
             <i class="material-icons">close</i></a>
-          </div>
         </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label for="keywords">Keywords</label>
-            <div class="input-group">
-              <div class="input-group-prepend help-circle" (click)="openDialogKeywords()" title="Type a keyword and press enter to add it in the list!">
-                <div class="input-group-text">
-                  <i class="fa fa-question-circle"></i>
-                </div>
-              </div>
-              <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords" name="keywords" type="text" class="form-control">
-              <div class="input-group-append">
-                <select name="keywordsMode" [(ngModel)]="request.keywordsConjunctionMode" class="form-control">
-                  <option [ngValue]="false">Contains Any</option>
-                  <option [ngValue]="true">Contains All</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div *ngFor="let word of request.keywords" class="pmd-chip custom-chip">
-            {{word}}
-            <a (click)="deleteEnntry('keywords', word)" class="pmd-chip-action">
-              <i class="material-icons">close</i></a>
-            </div>
-          </div>
-        </div>
+      </div>
+      <div class="col-md-6">
         <div class="form-group">
-          <label>Truth rating</label>
-          <div>
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <input (change) = "filterTruthRating($event, 3)" name="truthrating" id="truthrating_0" type="checkbox" class="custom-control-input" value="3" [checked]="request.truthRatings.includes(3)">
-              <label for="truthrating_0" class="custom-control-label">True</label>
+          <label for="keywords">Keywords</label>
+          <div class="input-group">
+            <div class="input-group-prepend help-circle" (click)="openDialogKeywords()"
+                 title="Type a keyword and press enter to add it in the list!">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle"></i>
+              </div>
             </div>
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <input (change) = "filterTruthRating($event, 2)" name="truthrating" id="truthrating_1" type="checkbox" class="custom-control-input" value="2" [checked]="request.truthRatings.includes(2)">
-              <label for="truthrating_1" class="custom-control-label">Mixture</label>
-            </div>
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <input (change) = "filterTruthRating($event, 1)" name="truthrating" id="truthrating_2" type="checkbox" class="custom-control-input" value="1" [checked]="request.truthRatings.includes(1)">
-              <label for="truthrating_2" class="custom-control-label">False</label>
-            </div>
-            <div class="custom-control custom-checkbox custom-control-inline">
-              <input (change) = "filterTruthRating($event, -1)" name="truthrating" id="truthrating_3" type="checkbox" class="custom-control-input" value="-1" [checked]="request.truthRatings.includes(-1)">
-              <label for="truthrating_3" class="custom-control-label">Other</label>
+            <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords"
+                   name="keywords" type="text" class="form-control">
+            <div class="input-group-append">
+              <select name="keywordsMode" [(ngModel)]="request.keywordsConjunctionMode" class="form-control">
+                <option [ngValue]="false">Contains Any</option>
+                <option [ngValue]="true">Contains All</option>
+              </select>
             </div>
           </div>
         </div>
-        <div class="row">
-          <div class="form-group col-md-6">
-            <label for="author">Author</label>
-            <input [(ngModel)]="request.author" id="author" name="author" type="text" class="form-control">
+        <div *ngFor="let word of request.keywords" class="pmd-chip custom-chip">
+          {{word}}
+          <a (click)="deleteEnntry('keywords', word)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Truth rating</label>
+      <div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change)="filterTruthRating($event, 3)" name="truthrating" id="truthrating_0" type="checkbox"
+                 class="custom-control-input" value="3" [checked]="request.truthRatings.includes(3)">
+          <label for="truthrating_0" class="custom-control-label">True</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change)="filterTruthRating($event, 2)" name="truthrating" id="truthrating_1" type="checkbox"
+                 class="custom-control-input" value="2" [checked]="request.truthRatings.includes(2)">
+          <label for="truthrating_1" class="custom-control-label">Mixture</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change)="filterTruthRating($event, 1)" name="truthrating" id="truthrating_2" type="checkbox"
+                 class="custom-control-input" value="1" [checked]="request.truthRatings.includes(1)">
+          <label for="truthrating_2" class="custom-control-label">False</label>
+        </div>
+        <div class="custom-control custom-checkbox custom-control-inline">
+          <input (change)="filterTruthRating($event, -1)" name="truthrating" id="truthrating_3" type="checkbox"
+                 class="custom-control-input" value="-1" [checked]="request.truthRatings.includes(-1)">
+          <label for="truthrating_3" class="custom-control-label">Other</label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-6">
+        <label for="author">Author</label>
+        <input [(ngModel)]="request.author" id="author" name="author" type="text" class="form-control">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="author">Time period</label>
+        <input name="timeperiod" class="form-control" #drp="bsDaterangepicker" bsDaterangepicker
+               [(ngModel)]="request.dates">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="languages">Languages</label>
+          <div class="input-group">
+            <div class="input-group-prepend help-circle" (click)="openDialogLanguages()"
+                 title="Select a language in the list or type a language and press enter">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle"></i>
+              </div>
+            </div>
+            <input [(ngModel)]="languagesField"
+                   (keydown)="addEntryFilterPress($event,'languages', 'languagesField', 'filteredLanguages', true, true)"
+                   (focus)="filteredLanguages = allLanguages" id="languages" name="languages" type="text"
+                   class="form-control" (input)="searchLanguages(languagesField)" [matAutocomplete]="languages">
+            <mat-autocomplete #languages="matAutocomplete">
+              <mat-option
+                (click)="addEntryFilterClick('languages', 'languagesField', 'filteredLanguages', true, true, 'languages')"
+                *ngFor="let language of filteredLanguages" [value]="language.name">{{language.name}}</mat-option>
+            </mat-autocomplete>
           </div>
-          <div class="form-group col-md-6">
-            <label for="author">Time period</label>
-            <input name="timeperiod" class="form-control" #drp="bsDaterangepicker" bsDaterangepicker [(ngModel)]="request.dates">
+        </div>
+        <div *ngFor="let language of request.languages" class="pmd-chip custom-chip">
+          {{language}}
+          <a (click)="deleteEnntry('languages', language)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="sources">Sources</label>
+          <div class="input-group">
+            <div class="input-group-prepend help-circle" (click)="openDialogSources()"
+                 title="Select a source (fact-checking website) in the list or type a source and press enter">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle"></i>
+              </div>
+            </div>
+            <input [(ngModel)]="sourcesField"
+                   (keydown)="addEntryFilterPress($event,'sources', 'sourcesField', 'filteredSources', true, true)"
+                   (focus)="filteredSources = allSources" id="sources" name="sources" type="text" class="form-control"
+                   (input)="searchSources(sourcesField)" [matAutocomplete]="sources">
+            <mat-autocomplete #sources="matAutocomplete">
+              <mat-option
+                (click)="addEntryFilterClick('sources', 'sourcesField', 'filteredSources', true, true, 'sources')"
+                *ngFor="let source of filteredSources" [value]="source.name">{{source.name}}</mat-option>
+            </mat-autocomplete>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="languages">Languages</label>
-              <div class="input-group">
-                <div class="input-group-prepend help-circle" (click)="openDialogLanguages()" title="Select a language in the list or type a language and press enter">
-                  <div class="input-group-text">
-                    <i class="fa fa-question-circle"></i>
-                  </div>
-                </div>
-                <input [(ngModel)]="languagesField" (keydown)="addEntryFilterPress($event,'languages', 'languagesField', 'filteredLanguages', true, true)" (focus)="filteredLanguages = allLanguages" id="languages" name="languages" type="text" class="form-control" (input)="searchLanguages(languagesField)" [matAutocomplete]="languages">
-                <mat-autocomplete #languages="matAutocomplete">
-                  <mat-option (click)="addEntryFilterClick('languages', 'languagesField', 'filteredLanguages', true, true, 'languages')" *ngFor="let language of filteredLanguages" [value]="language.name">{{language.name}}</mat-option>
-                </mat-autocomplete>
-              </div>
-            </div>
-            <div *ngFor="let language of request.languages" class="pmd-chip custom-chip">
-              {{language}}
-              <a (click)="deleteEnntry('languages', language)" class="pmd-chip-action">
-                <i class="material-icons">close</i></a>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="sources">Sources</label>
-                <div class="input-group">
-                  <div class="input-group-prepend help-circle" (click)="openDialogSources()" title="Select a source (fact-checking website) in the list or type a source and press enter">
-                    <div class="input-group-text">
-                      <i class="fa fa-question-circle"></i>
-                    </div>
-                  </div>
-                  <input [(ngModel)]="sourcesField" (keydown)="addEntryFilterPress($event,'sources', 'sourcesField', 'filteredSources', true, true)" (focus)="filteredSources = allSources" id="sources" name="sources" type="text" class="form-control"  (input)="searchSources(sourcesField)" [matAutocomplete]="sources">
-                  <mat-autocomplete #sources="matAutocomplete">
-                    <mat-option (click)="addEntryFilterClick('sources', 'sourcesField', 'filteredSources', true, true, 'sources')"  *ngFor="let source of filteredSources" [value]="source.name">{{source.name}}</mat-option>
-                  </mat-autocomplete>
-                </div>
-              </div>
-              <div *ngFor="let source of request.sources" class="pmd-chip custom-chip">
-                {{source}}
-                <a (click)="deleteEnntry('sources', source)" class="pmd-chip-action">
-                  <i class="material-icons">close</i></a>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div id="orderBy"> Order results by </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4">
-                <div class="radio">
-                  <label><input (change) = "orderBy($event, '?truthRating')" value="?truthRating" type="radio" id="orderTruth" name="optradio" [checked]="request.orderBy =='?truthRating' ">Truth rating</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="radio">
-                  <label><input (change) = "orderBy($event, '?author')" value="?author" type="radio" id="orderAuthor" name="optradio" [checked]="request.orderBy == '?author' ">Author</label>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="radio">
-                  <label><input (change) = "orderBy($event, '?date')" value="?date" type="radio" id="orderTime" name="optradio" [checked]="request.orderBy == '?date' ">Time</label>
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-              <div id="typeOrderBy"> How to order by </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <div class="radio">
-                  <label><input (change) = "howToOrder($event, 'ASC')" value="ASC" type="radio" id="howOrder1" name="optradio1" [checked]="request.howToOrder == 'ASC' ">Ascendant</label>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="radio">
-                  <label><input (change) = "howToOrder($event, 'DESC')" value="DESC" type="radio" id="howOrder2" name="optradio1" [checked]="request.howToOrder == 'DESC' ">Descendant</label>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <button name="submit" type="button" id="btn-search" class="btn btn-primary" (click)="goSearch($event)">Claims Search</button>
-            </div>
-          </form>
+        <div *ngFor="let source of request.sources" class="pmd-chip custom-chip">
+          {{source}}
+          <a (click)="deleteEnntry('sources', source)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
         </div>
-        <div *ngIf="go && childInit && !resultList.claimOpen" id="back-action" class="text-center mx-auto">
-          <button class="btn btn-dark" (click)="goBackForm()"><span class="fa fa-arrow-left"> Back</span></button>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Order results?</label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input (change)="request.order = true" [checked]="request.order" value="true" class="form-check-input" type="radio"
+                 name="order" id="orderYes">
+          <label class="form-check-label" for="howAscent">
+            Yes
+          </label>
         </div>
-        <app-claims-list *ngIf="go" [request]="request"></app-claims-list>
+        <div class="form-check form-check-inline">
+          <input (change)="request.order = false" [checked]="!request.order" value="false" class="form-check-input" type="radio"
+                 name="order" id="orderNo">
+          <label class="form-check-label" for="howDescent">
+            No
+          </label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="request.order" class="form-group">
+      <label>Order results by</label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input (change)="orderBy($event, 'ratingName')" [checked]="request.orderBy =='ratingName'" value="ratingName" class="form-check-input" type="radio"
+                 name="orderRadio" id="orderTruth">
+          <label class="form-check-label" for="orderTruth">
+            Truth Rating
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input (change)="orderBy($event, 'author')" [checked]="request.orderBy =='author'" value="author" class="form-check-input" type="radio"
+                 name="orderRadio" id="orderAuthor">
+          <label class="form-check-label" for="orderAuthor">
+            Author
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input (change)="orderBy($event, 'date')" [checked]="request.orderBy =='date'" value="date" class="form-check-input" type="radio" name="orderRadio"
+                 id="orderDate">
+          <label class="form-check-label" for="orderDate">
+            Time period
+          </label>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="request.order && request.orderBy" class="form-group">
+      <label>How to order ?</label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input (change)="howToOrder($event, 'ASC')" [checked]="request.howToOrder =='ASC'" value="ASC" class="form-check-input" type="radio"
+                 name="howtoRadio" id="howAscent">
+          <label class="form-check-label" for="howAscent">
+            Ascendant
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input (change)="howToOrder($event, 'DESC')" [checked]="request.howToOrder =='DESC'" value="DESC" class="form-check-input" type="radio"
+                 name="howtoRadio" id="howDescent">
+          <label class="form-check-label" for="howDescent">
+            Descendant
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <button name="submit" type="button" id="btn-search" class="btn btn-primary" (click)="goSearch($event)">Claims
+        Search
+      </button>
+    </div>
+  </form>
+</div>
+<div *ngIf="go && childInit && !resultList.claimOpen" id="back-action" class="text-center mx-auto">
+  <button class="btn btn-dark" (click)="goBackForm()"><span class="fa fa-arrow-left"> Back</span></button>
+</div>
+<app-claims-list *ngIf="go" [request]="request"></app-claims-list>

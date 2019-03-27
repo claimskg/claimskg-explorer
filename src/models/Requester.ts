@@ -13,6 +13,7 @@ export class Requester {
     this.currentOffset = 0;
     this.entitiesConjunctionMode = false;
     this.keywordsConjunctionMode = false;
+    this.order = false;
   }
 
   private static readonly requestData = RequestUtils.previewRequest;
@@ -26,6 +27,7 @@ export class Requester {
   currentOffset: number;
   entitiesConjunctionMode: boolean;
   keywordsConjunctionMode: boolean;
+  order: boolean; // True if results have to be ordered, false otherwise
   orderBy: string;      // 1 = Truth, 2 = Author and 3 = Time
   howToOrder: string;  // false = asc and true = desc
 
@@ -38,7 +40,9 @@ export class Requester {
     for (const prefix of Requester.requestData.prefixes) {
       request += prefix + ' ';
     }
-    request += 'select * where {';
+    if (this.order) {
+      request += 'select * where {';
+    }
     if (this.superRequestIsTriggered()) {
       request += 'select ' + Requester.requestData.superSelectConjunction + ' where { {';
       request += this.getNormalSelectCore();
@@ -47,10 +51,12 @@ export class Requester {
     }
 
     request += this.getRequestCore();
+    if (this.order) {
+      request += this.getOrderBy();
+      request += '}';
+    }
     request += 'LIMIT ' + environment.resultPerPage + ' ';
     request += 'OFFSET ' + this.currentOffset;
-    request += '}';
-    request = this.getOrderBy(request);
     return request;
   }
 
@@ -218,7 +224,7 @@ export class Requester {
     if (this.sources.length > 0) {
       params += '&sources=' + this.sources.join(',');
     }
-    if (this.dates.length === 2) {
+    if (this.dates !== undefined && this.dates !== null && this.dates.length === 2) {
       params += '&dates=' + Requester.getStringifiedDate(this.dates[0]) + ',' + Requester.getStringifiedDate(this.dates[1]);
     }
     if (this.entitiesConjunctionMode !== undefined) {
@@ -227,11 +233,14 @@ export class Requester {
     if (this.keywordsConjunctionMode !== undefined) {
       params += '&keywordsConjunctionMode=' + this.keywordsConjunctionMode;
     }
-    if (this.orderBy !== undefined) {
-      if (this.howToOrder === 'DESC') {
-        params += '&orderBy=' + this.orderBy + '&howToOrder=DESC'
-      } else {
-        params += '&orderBy=' + this.orderBy + '&howToOrder=ASC';
+    if (this.order !== undefined && this.order) {
+      params += '&order=' + this.order;
+      if (this.orderBy !== undefined) {
+        if (this.howToOrder === 'DESC') {
+          params += '&orderBy=' + this.orderBy + '&howToOrder=DESC';
+        } else {
+          params += '&orderBy=' + this.orderBy + '&howToOrder=ASC';
+        }
       }
     }
 
@@ -270,25 +279,30 @@ export class Requester {
     if (params.keywordsConjunctionMode !== undefined) {
       this.keywordsConjunctionMode = Boolean(params.keywordsConjunctionMode);
     }
-    if (params.orderBy !== undefined) {
-      this.orderBy = params.orderBy;
-      this.howToOrder = params.howToOrder;
+    if (params.order !== undefined) {
+      this.order =  Boolean(params.order);
+      if (this.order) {
+        if (params.orderBy !== undefined) {
+          this.orderBy = params.orderBy;
+          this.howToOrder = params.howToOrder;
+        }
+      }
     }
   }
 
-  private getOrderBy(request): string {
-    if (this.orderBy !== undefined) {  // If orderBy is initialized
-      if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
-        if(this.orderBy === '?author') {
-          request += ' Order by lcase(' + this.orderBy + ') ';
-        } else {
-          request += ' Order by ' + this.orderBy + ' ';
+  private getOrderBy(): string {
+    let request = '';
+    if (this.order) {
+      if (this.orderBy !== undefined) {  // If orderBy is initialized
+        let orderAttribute = '?' + this.orderBy;
+        if (orderAttribute === 'author') {
+          orderAttribute = 'lcase(' + orderAttribute + ')';
         }
-      } else {
-        if (this.orderBy === '?author') {
-          request += ' Order by desc(lcase(' + this.orderBy + ')) ';
+        if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
+          request += ' Order by ' + orderAttribute + ' ';
+
         } else {
-          request += ' Order by desc (' + this.orderBy + ') ';
+          request += ' Order by desc (' + orderAttribute + ') ';
         }
       }
     }
