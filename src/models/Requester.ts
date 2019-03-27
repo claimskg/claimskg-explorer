@@ -26,8 +26,8 @@ export class Requester {
   currentOffset: number;
   entitiesConjunctionMode: boolean;
   keywordsConjunctionMode: boolean;
-  orderBy: number;      //0 = Initialisation 1 = Truth, 2 = Author and 3 = Time
-  howToOrder: boolean;  //false = asc and true = desc
+  orderBy: string;      //1 = Truth, 2 = Author and 3 = Time
+  howToOrder: string;  //false = asc and true = desc
 
   private static getStringifiedDate(date: Date): string {
     return date.toISOString().split('T')[0];
@@ -46,10 +46,9 @@ export class Requester {
     }
 
     request += this.getRequestCore();
-
+    request = this.getOrderBy(request);
     request += 'LIMIT ' + environment.resultPerPage + ' ';
     request += 'OFFSET ' + this.currentOffset;
-
     return request;
   }
 
@@ -262,5 +261,17 @@ export class Requester {
     if (params.keywordsConjunctionMode !== undefined) {
       this.keywordsConjunctionMode = Boolean(params.keywordsConjunctionMode);
     }
+  }
+
+  private getOrderBy(request): string {
+    if (typeof this.orderBy !== 'undefined') {  //If orderBy is initialized 
+      if (typeof this.howToOrder === 'undefined' || this.howToOrder == 'ASC') {  //If howToOrder isn't initialized or is false (means ASC)
+        request += ' Order by ' + this.orderBy + ' ';
+      }
+      else {
+        request += ' Order by desc (' + this.orderBy + ') ';
+      }
+    }
+    return request;
   }
 }

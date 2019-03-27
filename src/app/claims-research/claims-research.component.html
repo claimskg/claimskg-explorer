@@ -136,17 +136,17 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input (change) = "orderBy($event, 1)" value="1" type="radio" id="orderTruth" name="optradio">Truth rating</label>
+                  <label><input (change) = "orderBy($event, '?truthRating')" value="?truthRating" type="radio" id="orderTruth" name="optradio">Truth rating</label>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input (change) = "orderBy($event, 2)" value="2" type="radio" id="orderAuthor" name="optradio">Author</label>
+                  <label><input (change) = "orderBy($event, '?author')" value="?author" type="radio" id="orderAuthor" name="optradio">Author</label>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input (change) = "orderBy($event, 3)" value="3" type="radio" id="orderTime" name="optradio">Time</label>
+                  <label><input (change) = "orderBy($event, '?date')" value="?date" type="radio" id="orderTime" name="optradio">Time</label>
                 </div>
               </div>
             </div>
@@ -156,12 +156,12 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="radio">
-                  <label><input (change) = "howToOrder($event, 1)" value="1" type="radio" id="howOrder1" name="optradio1">Ascendant</label>
+                  <label><input (change) = "howToOrder($event, 'ASC')" value="ASC" type="radio" id="howOrder1" name="optradio1">Ascendant</label>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="radio">
-                  <label><input (change) = "howToOrder($event, 2)" value="2" type="radio" id="howOrder2" name="optradio1">Descendant</label>
+                  <label><input (change) = "howToOrder($event, 'DESC')" value="DESC" type="radio" id="howOrder2" name="optradio1">Descendant</label>
                 </div>
               </div>
             </div>
