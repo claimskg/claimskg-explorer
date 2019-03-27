@@ -26,8 +26,8 @@ export class Requester {
   currentOffset: number;
   entitiesConjunctionMode: boolean;
   keywordsConjunctionMode: boolean;
-  orderBy: string;      //1 = Truth, 2 = Author and 3 = Time
-  howToOrder: string;  //false = asc and true = desc
+  orderBy: string;      // 1 = Truth, 2 = Author and 3 = Time
+  howToOrder: string;  // false = asc and true = desc
 
   private static getStringifiedDate(date: Date): string {
     return date.toISOString().split('T')[0];
@@ -38,6 +38,7 @@ export class Requester {
     for (const prefix of Requester.requestData.prefixes) {
       request += prefix + ' ';
     }
+    request += 'select * where {';
     if (this.superRequestIsTriggered()) {
       request += 'select ' + Requester.requestData.superSelectConjunction + ' where { {';
       request += this.getNormalSelectCore();
@@ -46,9 +47,10 @@ export class Requester {
     }
 
     request += this.getRequestCore();
-    request = this.getOrderBy(request);
     request += 'LIMIT ' + environment.resultPerPage + ' ';
     request += 'OFFSET ' + this.currentOffset;
+    request += '}';
+    request = this.getOrderBy(request);
     return request;
   }
 
@@ -226,7 +228,7 @@ export class Requester {
       params += '&keywordsConjunctionMode=' + this.keywordsConjunctionMode;
     }
     if (this.orderBy !== undefined) {
-      if (this.howToOrder == 'DESC') {
+      if (this.howToOrder === 'DESC') {
         params += '&orderBy=' + this.orderBy + '&howToOrder=DESC'
       } else {
         params += '&orderBy=' + this.orderBy + '&howToOrder=ASC';
@@ -268,27 +270,24 @@ export class Requester {
     if (params.keywordsConjunctionMode !== undefined) {
       this.keywordsConjunctionMode = Boolean(params.keywordsConjunctionMode);
     }
-    if(params.orderBy !== undefined) {
+    if (params.orderBy !== undefined) {
       this.orderBy = params.orderBy;
       this.howToOrder = params.howToOrder;
     }
   }
 
   private getOrderBy(request): string {
-    if (this.orderBy !== undefined) {  //If orderBy is initialized 
-      if (this.howToOrder === undefined || this.howToOrder == 'ASC') {  //If howToOrder isn't initialized or ASC
-        if(this.orderBy == '?author') {
+    if (this.orderBy !== undefined) {  // If orderBy is initialized
+      if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
+        if(this.orderBy === '?author') {
           request += ' Order by lcase(' + this.orderBy + ') ';
-        }
-        else{
+        } else {
           request += ' Order by ' + this.orderBy + ' ';
         }
-      }
-      else {
-        if(this.orderBy == '?author') {
+      } else {
+        if (this.orderBy === '?author') {
           request += ' Order by desc(lcase(' + this.orderBy + ')) ';
-        }
-        else {
+        } else {
           request += ' Order by desc (' + this.orderBy + ') ';
         }
       }
