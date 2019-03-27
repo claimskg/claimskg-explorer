@@ -92,9 +92,9 @@ export class Requester {
     }
     if (this.dates && this.dates.length === 2) {
       request += 'FILTER (?date >= "'
-        + Requester.getStringifiedDate(this.dates[0])
-        + '"^^xsd:dateTime && ?date <= "'
-        + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
+      + Requester.getStringifiedDate(this.dates[0])
+      + '"^^xsd:dateTime && ?date <= "'
+      + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
       request += '?claims schema:mentions ?mentions_links . ';
@@ -139,8 +139,8 @@ export class Requester {
       request += 'FILTER (';
       for (const word of this.keywords) {
         request += 'contains (lcase(str(?keywords)), "' + word.toLowerCase() + '") ' +
-          '|| contains (lcase(str(?text)), "' + word.toLowerCase() + '") ' +
-          '|| contains (lcase(str(?headline)), "' + word.toLowerCase() + '") || ';
+        '|| contains (lcase(str(?text)), "' + word.toLowerCase() + '") ' +
+        '|| contains (lcase(str(?headline)), "' + word.toLowerCase() + '") || ';
       }
       request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
@@ -160,7 +160,7 @@ export class Requester {
         request += 'FILTER (';
         for (const keyword of this.keywords) {
           request += '(contains (lcase(str(?keywords)), "' + keyword.toLowerCase() +
-            '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
+          '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
         }
         request = request.slice(0, -4); // Delete last ' && '
         request += ') . ';
@@ -173,7 +173,7 @@ export class Requester {
 
   private superRequestIsTriggered() {
     return this.entitiesConjunctionIsTriggered()
-      || this.keywordsConjunctionIsTriggered();
+    || this.keywordsConjunctionIsTriggered();
   }
 
   private entitiesConjunctionIsTriggered() {
@@ -225,6 +225,13 @@ export class Requester {
     if (this.keywordsConjunctionMode !== undefined) {
       params += '&keywordsConjunctionMode=' + this.keywordsConjunctionMode;
     }
+    if (this.orderBy !== undefined) {
+      if (this.howToOrder == 'DESC') {
+        params += '&orderBy=' + this.orderBy + '&howToOrder=DESC'
+      } else {
+        params += '&orderBy=' + this.orderBy + '&howToOrder=ASC';
+      }
+    }
 
     return encodeURI(params);
   }
@@ -261,17 +268,21 @@ export class Requester {
     if (params.keywordsConjunctionMode !== undefined) {
       this.keywordsConjunctionMode = Boolean(params.keywordsConjunctionMode);
     }
+    if(params.orderBy !== undefined) {
+      this.orderBy = params.orderBy;
+      this.howToOrder = params.howToOrder;
+    }
   }
 
   private getOrderBy(request): string {
-    if (typeof this.orderBy !== 'undefined') {  //If orderBy is initialized 
-      if (typeof this.howToOrder === 'undefined' || this.howToOrder == 'ASC') {  //If howToOrder isn't initialized or is false (means ASC)
+    if (this.orderBy !== undefined) {  //If orderBy is initialized 
+      if (this.howToOrder === undefined || this.howToOrder == 'ASC') {  //If howToOrder isn't initialized or is false (means ASC)
         request += ' Order by ' + this.orderBy + ' ';
-      }
-      else {
-        request += ' Order by desc (' + this.orderBy + ') ';
-      }
     }
-    return request;
+    else {
+      request += ' Order by desc (' + this.orderBy + ') ';
+    }
   }
+  return request;
+}
 }

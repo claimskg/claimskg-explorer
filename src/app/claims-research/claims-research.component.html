@@ -136,17 +136,17 @@
             <div class="row">
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input (change) = "orderBy($event, '?truthRating')" value="?truthRating" type="radio" id="orderTruth" name="optradio">Truth rating</label>
+                  <label><input (change) = "orderBy($event, '?truthRating')" value="?truthRating" type="radio" id="orderTruth" name="optradio" [checked]="request.orderBy =='?truthRating' ">Truth rating</label>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input (change) = "orderBy($event, '?author')" value="?author" type="radio" id="orderAuthor" name="optradio">Author</label>
+                  <label><input (change) = "orderBy($event, '?author')" value="?author" type="radio" id="orderAuthor" name="optradio" [checked]="request.orderBy == '?author' ">Author</label>
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="radio">
-                  <label><input (change) = "orderBy($event, '?date')" value="?date" type="radio" id="orderTime" name="optradio">Time</label>
+                  <label><input (change) = "orderBy($event, '?date')" value="?date" type="radio" id="orderTime" name="optradio" [checked]="request.orderBy == '?date' ">Time</label>
                 </div>
               </div>
             </div>
@@ -156,12 +156,12 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="radio">
-                  <label><input (change) = "howToOrder($event, 'ASC')" value="ASC" type="radio" id="howOrder1" name="optradio1">Ascendant</label>
+                  <label><input (change) = "howToOrder($event, 'ASC')" value="ASC" type="radio" id="howOrder1" name="optradio1" [checked]="request.howToOrder == 'ASC' ">Ascendant</label>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="radio">
-                  <label><input (change) = "howToOrder($event, 'DESC')" value="DESC" type="radio" id="howOrder2" name="optradio1">Descendant</label>
+                  <label><input (change) = "howToOrder($event, 'DESC')" value="DESC" type="radio" id="howOrder2" name="optradio1" [checked]="request.howToOrder == 'DESC' ">Descendant</label>
                 </div>
               </div>
             </div>
