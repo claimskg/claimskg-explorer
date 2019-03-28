@@ -296,7 +296,7 @@ export class Requester {
     let request = '';
     if (this.isOrderTriggered()) {
       let orderAttribute = '?' + this.orderBy;
-      if (orderAttribute === 'author') {
+      if (orderAttribute === '?author') {
         orderAttribute = 'lcase(' + orderAttribute + ')';
       }
       if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
