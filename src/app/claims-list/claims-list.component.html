@@ -2,8 +2,10 @@
   <div *ngIf="(loadingClaims || loadingCounter) && !noResult" class="text-center mx-auto">
     <img src="assets/img/loading.gif">
   </div>
-  <div id="countResults" *ngIf="claimsCount && claims && claims.length !=0" class="text-center">
-    <p>{{claimsCount}} results</p>
+  <div id="countResults" class="row w-50 mx-auto" *ngIf="claimsCount && claims && claims.length !=0">
+    <span class="col-lg-2"></span>
+    <p class="col-lg-8 text-center">{{claimsCount}} results</p>
+    <button id="btnExport" (click)="openExport()" class="col-lg-2 btn btn-primary">Export</button>
   </div>
   <div *ngIf="noResult" class="text-center resultMsg">
     <p>No results.</p>

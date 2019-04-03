@@ -5,8 +5,8 @@ import {ClaimPreview} from '../../models/ClaimPreview';
 import {ActivatedRoute, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Title} from '@angular/platform-browser';
-import {PageEvent} from '@angular/material';
-import {passBoolean} from 'protractor/built/util';
+import {MatDialog, PageEvent} from '@angular/material';
+import {ClaimsExportModalComponent} from '../claims-export-modal/claims-export-modal.component';
 
 @Component({
   selector: 'app-claims-list',
@@ -38,7 +38,7 @@ export class ClaimsListComponent implements OnInit {
   pageIndexForPaginator: number;
 
   constructor(private sparqlService: ClaimsSparqlService, private route: ActivatedRoute, private router: Router,
-              private location: Location, private titleService: Title) {
+              private location: Location, private titleService: Title, public dialog: MatDialog) {
     this.pageIndex = 1;
     this.pageIndexForPaginator = 0;
   }
@@ -150,5 +150,11 @@ export class ClaimsListComponent implements OnInit {
       document.getElementById($event.target.id).blur();
       this.jumpPage();
     }
+  }
+
+  openExport() {
+    this.dialog.open(ClaimsExportModalComponent, {
+      data: this.request,
+    });
   }
 }

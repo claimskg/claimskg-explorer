@@ -112,7 +112,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   }
 
   howToOrder($event, value) {
-    if($event.target.checked === true) {
+    if ($event.target.checked === true) {
       this.request.howToOrder = value;
     }
   }

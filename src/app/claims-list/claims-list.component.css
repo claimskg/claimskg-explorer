@@ -44,3 +44,8 @@
   margin-top: 20px;
 }
 
+#btnExport {
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+

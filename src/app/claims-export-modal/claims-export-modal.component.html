@@ -1,0 +1,49 @@
+<h1 class="text-center mx-auto" mat-dialog-title>Export</h1>
+<div class="mx-auto text-center">
+  <div mat-dialog-content>
+    <div class="form-group">
+      <label>Format</label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input checked (change)="selectedFormat = 'text/csv'" value="text/csv" class="form-check-input" type="radio"
+                 name="export" id="csv">
+          <label class="form-check-label" for="csv">
+            CSV
+          </label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input (change)="selectedFormat = 'application/rdf+xml'" value="application/rdf+xml" class="form-check-input" type="radio"
+                 name="export" id="rdf">
+          <label class="form-check-label" for="rdf">
+            RDF
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Fields</label>
+      <div>
+        <div class="form-check form-check-inline">
+          <input (change)="customSelection = false" [checked]="!customSelection" value="false" class="form-check-input"
+                 type="radio"
+                 name="custom" id="all">
+          <label class="form-check-label" for="all">All</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input (change)="customSelection = true" [checked]="customSelection" value="true" class="form-check-input"
+                 type="radio"
+                 name="custom" id="custom">
+          <label class="form-check-label" for="custom">Customize</label>
+        </div>
+      </div>
+      <div *ngIf="customSelection" class="text-left">
+        <div *ngFor="let association of fieldsAssociation" class="form-check">
+          <input checked (change)="checkField($event)" value="{{association.field}}" class="form-check-input" type="checkbox"
+                 name="{{association.name}}" id="{{association.field}}">
+          <label class="form-check-label" for="{{association.field}}">{{association.name}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button (click)="goExport()" class="btn btn-primary">Export</button>
+</div>

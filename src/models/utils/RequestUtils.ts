@@ -92,10 +92,35 @@ export class RequestUtils {
     ]
   };
 
-  public static readonly  countAllRequest = '' +
+  public static readonly exportExtraClauses = [
+    '?item a schema:CreativeWork',
+    '?id schema:itemReviewed ?item',
+    'OPTIONAL {?id schema:inLanguage ?inLanguage . ?inLanguage schema:name ?language}',
+    'OPTIONAL {?id schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
+    'OPTIONAL {?item schema:keywords ?keywords}',
+    'OPTIONAL {?id schema:mentions ?entities . ?entities nif:isString ?entities_name}',
+  ]
+
+  public static readonly countAllRequest = '' +
     'PREFIX schema: <http://schema.org/> ' +
     'select count(distinct ?claim) as ?count ' +
     'where {?claim a schema:ClaimReview}';
+
+  public static readonly fieldsAssociation = [
+    {name: 'Claim id', field: '?id'},
+    {name: 'Claim text', field: '?text'},
+    {name: 'Date', field: '?date'},
+    {name: 'Truth Rating Value', field: '?truthRating'},
+    {name: 'Truth Rating Label', field: '?ratingName'},
+    {name: 'Author', field: '?author'},
+    {name: 'Headline of the article', field: '?headline'},
+    {name: 'Named Entities', field: 'group_concat(?entities_name, ",") as ?named_entities'},
+    {name: 'Keywords', field: '?keywords'},
+    {name: 'Fact-Checking Website Name', field: '?source'},
+    {name: 'Fact-Checking Website Link', field: '?sourceURL'},
+    {name: 'Link of the fact-checking article', field: '?link'},
+    {name: 'Language', field: '?language'},
+  ];
 
   public static filterEntities(fragment: string): string {
     let request = '';

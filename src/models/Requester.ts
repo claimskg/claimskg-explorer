@@ -36,10 +36,34 @@ export class Requester {
   }
 
   public toSPARQL(): string {
-    let request = '';
-    for (const prefix of Requester.requestData.prefixes) {
-      request += prefix + ' ';
+    let request = this.setUpPrefixes();
+    request = this.setUpNormalResearch(request);
+    request += 'LIMIT ' + environment.resultPerPage + ' ';
+    request += 'OFFSET ' + this.currentOffset;
+    return request;
+  }
+
+  public toSPARQLExport(fields: string[]): string {
+    let request = this.setUpPrefixes();
+    request += 'select ';
+    if (fields !== null && fields.length > 0) {
+      for (const field of fields) {
+        request += field + ' ';
+      }
+    } else {
+      request += ' * ';
     }
+    request += 'where {{';
+    request = this.setUpNormalResearch(request);
+    request += '} . ';
+    for (const clauseExport of RequestUtils.exportExtraClauses) {
+      request += clauseExport + ' . ';
+    }
+    request += '}';
+    return request;
+  }
+
+  private setUpNormalResearch(request) {
     if (this.isOrderTriggered()) {
       request += 'select * where {';
     }
@@ -55,16 +79,19 @@ export class Requester {
       request += this.getOrderBy();
       request += '}';
     }
-    request += 'LIMIT ' + environment.resultPerPage + ' ';
-    request += 'OFFSET ' + this.currentOffset;
     return request;
   }
 
-  public toCountSPARQL(): string {
+  private setUpPrefixes() {
     let request = '';
     for (const prefix of Requester.requestData.prefixes) {
       request += prefix + ' ';
     }
+    return request;
+  }
+
+  public toCountSPARQL(): string {
+    let request = this.setUpPrefixes();
     if (this.superRequestIsTriggered()) {
       request += 'select count(distinct ?id) as ?count where { {';
       request += this.getNormalSelectCore();
