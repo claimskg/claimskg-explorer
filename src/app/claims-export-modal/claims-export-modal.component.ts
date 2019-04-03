@@ -25,6 +25,7 @@ export class ClaimsExportModalComponent implements OnInit {
   private selectedFields: string[];
   private customSelection = false;
   private selectedFormat = 'text/csv';
+  private loading = false;
 
   ngOnInit() {
 
@@ -42,7 +43,13 @@ export class ClaimsExportModalComponent implements OnInit {
     if (!this.customSelection) {
       this.selectedFields = this.allchoices;
     }
-    this.exportService.getDownloadClaimsExport(this.requester, this.selectedFields, this.selectedFormat);
+    this.loading = true;
+    this.exportService.getDownloadClaimsExport(this.requester, this.selectedFields, this.selectedFormat)
+      .subscribe(res => this.endLoading());
+  }
+
+  private endLoading() {
+    this.loading = false;
   }
 
 }

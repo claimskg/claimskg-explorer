@@ -132,7 +132,7 @@ export class Requester {
         + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
-      request += '?claims schema:mentions ?mentions_links . ';
+      request += '?item schema:mentions ?mentions_links . ';
       request += '?mentions_links nif:isString ?mentions .';
       request += 'FILTER (';
       for (const entity of this.entities) {

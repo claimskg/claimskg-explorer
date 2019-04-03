@@ -24,7 +24,7 @@ export class ClaimsExportService {
     if (dataType === 'application/rdf+xml') {return 'rdf'; }
   }
 
-  getDownloadClaimsExport(request: Requester, fields, format) {
+  getDownloadClaimsExport(request: Requester, fields, format): Observable<any> {
     console.log( request.toSPARQLExport(fields));
     let params = new HttpParams();
     const options = {
@@ -32,6 +32,6 @@ export class ClaimsExportService {
       responseType: format as 'json',
     };
     params = params.set('query', request.toSPARQLExport(fields));
-    this.http.post<any>(environment.endpoint,  params, options).subscribe(data => ClaimsExportService.performDownload(data, format));
+    return this.http.post<any>(environment.endpoint,  params, options).pipe(map(data => ClaimsExportService.performDownload(data, format)));
   }
 }

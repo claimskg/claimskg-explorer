@@ -19,7 +19,6 @@ export class RequestUtils {
     clauses: [
       '?claims a schema:ClaimReview',
       'OPTIONAL {?claims schema:headline ?headline}',
-      'OPTIONAL {?claims schema:datePublished ?date}',
       '?claims schema:reviewRating ?truth_rating_review',
       '?truth_rating_review schema:alternateName ?ratingName',
       '?truth_rating_review schema:author <' + environment.graph_iri + 'organization/claimskg>',
@@ -27,7 +26,8 @@ export class RequestUtils {
       'OPTIONAL {?claims schema:url ?link}',
       '?item a schema:CreativeWork',
       '?claims schema:itemReviewed ?item',
-      'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author}'
+      'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author }',
+      'OPTIONAL {?item schema:datePublished ?date}'
     ]
   };
 
@@ -95,6 +95,7 @@ export class RequestUtils {
   public static readonly exportExtraClauses = [
     '?item a schema:CreativeWork',
     '?id schema:itemReviewed ?item',
+    'OPTIONAL {?id schema:headline ?headline}',
     'OPTIONAL {?id schema:inLanguage ?inLanguage . ?inLanguage schema:name ?language}',
     'OPTIONAL {?id schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
     'OPTIONAL {?item schema:keywords ?keywords}',
@@ -114,7 +115,7 @@ export class RequestUtils {
     {name: 'Truth Rating Label', field: '?ratingName'},
     {name: 'Author', field: '?author'},
     {name: 'Headline of the article', field: '?headline'},
-    {name: 'Named Entities', field: 'group_concat(?entities_name, ",") as ?named_entities'},
+    {name: 'Named Entities', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities'},
     {name: 'Keywords', field: '?keywords'},
     {name: 'Fact-Checking Website Name', field: '?source'},
     {name: 'Fact-Checking Website Link', field: '?sourceURL'},
