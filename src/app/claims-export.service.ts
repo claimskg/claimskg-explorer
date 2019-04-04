@@ -21,12 +21,12 @@ export class ClaimsExportService {
 
   private static convertDataTypeToExtension(dataType) {
     if (dataType === 'text/csv') {return 'csv'; }
-    if (dataType === 'application/rdf+xml') {return 'rdf'; }
+    if (dataType === 'text/turtle') {return 'ttl'; }
   }
 
   getDownloadClaimsExport(request: Requester, fields, format): Observable<any> {
     console.log( request.toSPARQLExport(fields));
-    let params = new HttpParams();
+    let params = new HttpParams().set('Format', format);
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', format),
       responseType: format as 'json',

@@ -100,7 +100,7 @@ export class RequestUtils {
     'OPTIONAL {?id schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
     'OPTIONAL {?item schema:keywords ?keywords}',
     'OPTIONAL {?id schema:mentions ?entities . ?entities nif:isString ?entities_name}',
-  ]
+  ];
 
   public static readonly countAllRequest = '' +
     'PREFIX schema: <http://schema.org/> ' +
@@ -108,8 +108,8 @@ export class RequestUtils {
     'where {?claim a schema:ClaimReview}';
 
   public static readonly fieldsAssociation = [
-    {name: 'Claim id', field: '?id'},
-    {name: 'Claim text', field: '?text'},
+    {name: 'Id of the Claim', field: '?id'},
+    {name: 'Text of the Claim', field: '?text'},
     {name: 'Date', field: '?date'},
     {name: 'Truth Rating Value', field: '?truthRating'},
     {name: 'Truth Rating Label', field: '?ratingName'},
