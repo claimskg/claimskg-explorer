@@ -2,7 +2,7 @@ import {Component, OnInit, Input, SimpleChanges, SimpleChange} from '@angular/co
 import {Requester} from '../../models/Requester';
 import {ClaimsSparqlService} from '../claims-sparql.service';
 import {ClaimPreview} from '../../models/ClaimPreview';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import { Location } from '@angular/common';
 import {Title} from '@angular/platform-browser';
 import {MatDialog, PageEvent} from '@angular/material';
@@ -39,6 +39,23 @@ export class ClaimsListComponent implements OnInit {
 
   constructor(private sparqlService: ClaimsSparqlService, private route: ActivatedRoute, private router: Router,
               private location: Location, private titleService: Title, public dialog: MatDialog) {
+    this.setUpReloadComponentOnRouterLink();
+  }
+
+  // Make reload the list component on router link click if routerlink points on the same component
+  private setUpReloadComponentOnRouterLink() {
+    // override the route reuse strategy
+    this.router.routeReuseStrategy.shouldReuseRoute = () => {
+      return false;
+    };
+    this.router.events.subscribe((evt) => {
+      if (evt instanceof NavigationEnd) {
+        // trick the Router into believing it's last link wasn't previously loaded
+        this.router.navigated = false;
+        // if you need to scroll back to top, here is the right place
+        window.scrollTo(0, 0);
+      }
+    });
     this.pageIndex = 1;
     this.pageIndexForPaginator = 0;
   }

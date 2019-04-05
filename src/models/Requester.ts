@@ -132,11 +132,11 @@ export class Requester {
         + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
-      request += '?item schema:mentions ?mentions_links . ';
+      request += '?claims  schema:mentions ?mentions_links . ';
       request += '?mentions_links nif:isString ?mentions .';
       request += 'FILTER (';
       for (const entity of this.entities) {
-        request += 'contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '") || ';
+        request += '(lcase(str(?mentions)) = "' + entity.toLowerCase() + '") || ';
       }
       request = request.slice(0, -4); // Delete last ' || '
       request += ') .';

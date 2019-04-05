@@ -75,7 +75,6 @@ export class RequestUtils {
     clauses: [
       '?claim a schema:ClaimReview',
       'OPTIONAL{ ?claim schema:headline ?headline}',
-      'OPTIONAL {?claim schema:datePublished ?date}',
       '?claim schema:reviewRating ?truth_rating_review',
       '?truth_rating_review schema:author <' + environment.graph_iri + 'organization/claimskg>',
       '?truth_rating_review schema:alternateName ?ratingName',
@@ -84,11 +83,12 @@ export class RequestUtils {
       '?item a schema:CreativeWork',
       '?claim schema:itemReviewed ?item',
       'OPTIONAL {?claim schema:mentions ?entities . ?entities nif:isString ?entities_name}',
-      'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author}',
+      'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author }',
       'OPTIONAL {?claim schema:inLanguage ?inLanguage . ?inLanguage schema:name ?language}',
       'OPTIONAL {?claim schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
       'OPTIONAL {?item schema:keywords ?keywords}',
-      'OPTIONAL {?item schema:citation ?citations}'
+      'OPTIONAL {?item schema:citation ?citations}',
+      'OPTIONAL {?item schema:datePublished ?date}'
     ]
   };
 

@@ -16,7 +16,7 @@
   </div>
   <div>
     <p id="claimAuthorDate">
-      <span *ngIf="claim.author">Claimed by {{claim.author}}</span>
+      <span *ngIf="claim.author">Claimed by <a routerLink="/search" [queryParams]="{author: claim.author}">{{claim.author}}</a></span>
       <span *ngIf="claim.author && claim.date">, on </span>
       <span *ngIf="claim.date">{{claim.date|date:'longDate'}}</span>
     </p>
@@ -29,7 +29,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
-        <mat-list-item *ngFor="let entity of claim.mentions">{{entity}}</mat-list-item>
+        <mat-list-item *ngFor="let entity of claim.mentions"><a routerLink="/search" [queryParams]="{entities: entity}">{{entity}}</a></mat-list-item>
       </mat-list>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="claim.citations.length > 0">

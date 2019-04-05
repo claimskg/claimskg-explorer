@@ -10,9 +10,9 @@ import {ClaimsListComponent} from './claims-list/claims-list.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: ClaimsHomeComponent},
-  { path: 'search', component: ClaimsListComponent },
-  { path: 'research', component: ClaimsResearchComponent },
-  { path: 'detail/:id', component: ClaimDetailComponent },
+  { path: 'search', component: ClaimsListComponent, pathMatch: 'full'},
+  { path: 'research', component: ClaimsResearchComponent, pathMatch: 'full'},
+  { path: 'detail/:id', component: ClaimDetailComponent},
   { path: 'help', component: ClaimHelpComponent },
 ];
 

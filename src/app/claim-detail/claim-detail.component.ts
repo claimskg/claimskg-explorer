@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ClaimsSparqlService} from '../claims-sparql.service';
 import {Claim} from '../../models/Claim';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Title} from '@angular/platform-browser';
 
 @Component({
@@ -17,7 +17,8 @@ export class ClaimDetailComponent implements OnInit {
   notFound = false;
   loading = true;
 
-  constructor(private sparqlService: ClaimsSparqlService, private route: ActivatedRoute, private titleService: Title) { }
+  constructor(private sparqlService: ClaimsSparqlService, private route: ActivatedRoute,
+              private router: Router, private titleService: Title) { }
 
   ngOnInit() {
     const idRoute = this.route.snapshot.paramMap.get('id');
@@ -37,5 +38,4 @@ export class ClaimDetailComponent implements OnInit {
     }
     this.titleService.setTitle(this.claim.text);
   }
-
 }
