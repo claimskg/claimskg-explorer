@@ -16,6 +16,15 @@ export class Utils {
     imgsPath: ['assets/img/modal/modalEntities.gif'],
   };
 
+  public static readonly entitiesMentionsFromArticleModalData = {
+    title: 'Named entities from fact-checking articles',
+    content: [
+      'By default, the explorer search the named entities mentioned in the claim.',
+      'For some reasons, named entities mentioned in the articles extracted from the fact-checking website may be also interesting',
+      'If you want that the research algorithm also includes these entities, check this option.',
+    ],
+  };
+
   public static readonly keywordsModalData = {
     title: 'Keywords selection',
     content: [

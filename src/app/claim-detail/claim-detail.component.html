@@ -25,11 +25,21 @@
     <mat-expansion-panel *ngIf="claim.mentions.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Mentioned Entities
+          Nammed Entities (from the claim)
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
         <mat-list-item *ngFor="let entity of claim.mentions"><a routerLink="/search" [queryParams]="{entities: entity}">{{entity}}</a></mat-list-item>
+      </mat-list>
+    </mat-expansion-panel>
+    <mat-expansion-panel *ngIf="claim.mentionsArticle.length > 0">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Nammed Entities (from the fact-Checking article)
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <mat-list>
+        <mat-list-item *ngFor="let entity of claim.mentionsArticle"><a routerLink="/search" [queryParams]="{entities: entity, entitiesSearchIncludeArticles: true}">{{entity}}</a></mat-list-item>
       </mat-list>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="claim.citations.length > 0">

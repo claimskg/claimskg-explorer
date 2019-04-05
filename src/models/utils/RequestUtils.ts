@@ -64,6 +64,7 @@ export class RequestUtils {
       'COALESCE(?date, \'\') as ?date ' +
       'COALESCE(?keywords, "") as ?keywords ' +
       'group_concat(distinct ?entities_name, ";!;") as ?mentions ' +
+      'group_concat(distinct ?entities_name_article, ";!;") as ?mentionsArticle ' +
       'COALESCE(?language, "") as ?language ' +
       'group_concat(?citations, ";!;") as ?citations ' +
       '?truthRating ' +
@@ -82,7 +83,8 @@ export class RequestUtils {
       'OPTIONAL {?claim schema:url ?link}',
       '?item a schema:CreativeWork',
       '?claim schema:itemReviewed ?item',
-      'OPTIONAL {?claim schema:mentions ?entities . ?entities nif:isString ?entities_name}',
+      'OPTIONAL {?item schema:mentions ?entities . ?entities nif:isString ?entities_name}',
+      'OPTIONAL {?claim schema:mentions ?entities_article . ?entities_article nif:isString ?entities_name_article}',
       'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author }',
       'OPTIONAL {?claim schema:inLanguage ?inLanguage . ?inLanguage schema:name ?language}',
       'OPTIONAL {?claim schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
@@ -100,6 +102,7 @@ export class RequestUtils {
     'OPTIONAL {?id schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
     'OPTIONAL {?item schema:keywords ?keywords}',
     'OPTIONAL {?id schema:mentions ?entities . ?entities nif:isString ?entities_name}',
+    'OPTIONAL {?item schema:mentions ?entities_article . ?entities_article nif:isString ?entities_name_article}',
   ];
 
   public static readonly countAllRequest = '' +
@@ -115,7 +118,8 @@ export class RequestUtils {
     {name: 'Truth Rating Label', field: '?ratingName'},
     {name: 'Author', field: '?author'},
     {name: 'Headline of the article', field: '?headline'},
-    {name: 'Named Entities', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities'},
+    {name: 'Named Entities from Claim', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities_claim'},
+    {name: 'Named Entities from Article', field: 'group_concat(distinct ?entities_name_article, ",") as ?named_entities_article'},
     {name: 'Keywords', field: '?keywords'},
     {name: 'Fact-Checking Website Name', field: '?source'},
     {name: 'Fact-Checking Website Link', field: '?sourceURL'},

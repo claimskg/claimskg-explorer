@@ -25,7 +25,6 @@ export class ClaimsExportService {
   }
 
   getDownloadClaimsExport(request: Requester, fields, format): Observable<any> {
-    console.log( request.toSPARQLExport(fields));
     let params = new HttpParams().set('Format', format);
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', format),

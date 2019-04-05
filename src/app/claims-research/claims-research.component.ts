@@ -166,6 +166,12 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openDialogEntitiesMentionedInArticles() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.entitiesMentionsFromArticleModalData
+    });
+  }
+
   openDialogKeywords() {
     this.dialog.open(ClaimsHelpModalComponent, {
       data: Utils.keywordsModalData
@@ -182,5 +188,9 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     this.dialog.open(ClaimsHelpModalComponent, {
       data: Utils.sourcesModalData
     });
+  }
+
+  changePrecision($event) {
+    this.request.entitiesSearchIncludeArticles = $event.target.checked;
   }
 }

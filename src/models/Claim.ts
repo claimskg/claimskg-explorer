@@ -12,6 +12,7 @@ export class Claim {
   author: string;
   link: string;
   mentions: string[];
+  mentionsArticle: string[];
   language: string;
   keywords: string[];
   citations: string[];
@@ -28,6 +29,7 @@ export class Claim {
     this.ratingName = jsonData.ratingName.value;
     this.text = jsonData.text.value;
     this.mentions = jsonData.mentions.value !== '' ? jsonData.mentions.value.split(';!;') : [];
+    this.mentionsArticle = jsonData.mentionsArticle.value !== '' ? jsonData.mentionsArticle.value.split(';!;') : [];
     this.language = jsonData.language.value;
     this.keywords = jsonData.keywords.value !== ''  ? jsonData.keywords.value.split(',') : [];
     this.citations = jsonData.citations.value !== ''  ? jsonData.citations.value.split(';!;') : [];

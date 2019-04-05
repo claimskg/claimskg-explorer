@@ -28,3 +28,11 @@
 .entitiesOption {
   font-size: 12px;
 }
+
+#help-entities-precision {
+  margin-left: 5px;
+}
+
+#precision-option-div {
+  margin-bottom: 1rem;
+}

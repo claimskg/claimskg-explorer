@@ -30,6 +30,15 @@
             </div>
           </div>
         </div>
+        <div id="precision-option-div" class="custom-control custom-checkbox custom-control-inline"
+             *ngIf="request.entities && request.entities.length > 0">
+          <input name="precision" id="precision" type="checkbox"
+                 class="custom-control-input checkbox-inline" [checked]="request.entitiesSearchIncludeArticles"
+                 (change)="changePrecision($event)">
+          <label for="precision" class="custom-control-label">Also include entities from articles</label>
+          <i id="help-entities-precision" class="fa fa-question-circle help-circle"
+             (click)="openDialogEntitiesMentionedInArticles()"></i>
+        </div>
         <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip">
           {{entity}}
           <a (click)="deleteEnntry('entities', entity)" class="pmd-chip-action">
@@ -155,6 +164,7 @@
         </div>
       </div>
     </div>
+    <!----
     <div class="form-group">
       <label>Order results?</label>
       <div>
@@ -219,6 +229,7 @@
         </div>
       </div>
     </div>
+    ---->
     <div class="form-group">
       <button name="submit" type="button" id="btn-search" class="btn btn-primary" (click)="goSearch($event)">Claims
         Search
