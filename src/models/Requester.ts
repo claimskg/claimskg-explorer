@@ -105,6 +105,9 @@ export class Requester {
     let request = 'select ' + Requester.requestData.select;
     if (this.entitiesConjunctionIsTriggered()) {
       request += ' group_concat(?mentions, ",") as ?mentions ';
+      if (this.entitiesSearchIncludeArticles) {
+        request += ' group_concat(?mentions_article, ",") as ?mentions_article ';
+      }
     }
     if (this.keywordsConjunctionIsTriggered()) {
       request += ' group_concat(?keywords, ",") as ?keywords ';
