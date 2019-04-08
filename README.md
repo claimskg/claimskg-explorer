@@ -81,11 +81,12 @@ There are three build configuration arguments:
 - `endpoint` the sparql enpoint on which ClaimsKG is exposed (default: `https://data.gesis.org/claimskg/sparql`)
 - graph_iri` the graph IRI of ClaimsKG (default `http://data.gesis.org/claimskg/`)
 - `per_page` the number of results per page (default: `10`)
+- `base_url` define the base deployment URL of claimskg-explorer
 
 To build the image you may use (ommit arguments for default value): 
 
 ```bash
-docker build --build-arg endpoint=... graph_iri=... per_page=... -t claimskg-explorer
+docker build --build-arg endpoint=... graph_iri=... per_page=... base_url= -t claimskg-explorer
 ```
 
 
