@@ -25,7 +25,7 @@ export class ClaimsExportModalComponent implements OnInit {
   private selectedFields: string[];
   private customSelection = false;
   private selectedFormat = 'text/csv';
-  private loading = false;
+  public loading = false;
 
   ngOnInit() {
 
