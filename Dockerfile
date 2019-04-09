@@ -24,7 +24,8 @@ COPY .  /app
 RUN echo -e "export const environment = {\n  production: true,\n  endpoint: '$ENDPOINT',\n  graph_iri: '$GRAPH_IRI',\n    resultPerPage: $PER_PAGE,\n};" > /app/src/environments/environment.prod.ts 
 RUN cp /app/src/environments/environment.prod.ts /app/src/environments/environment.ts
 RUN cat /app/src/environments/environment.prod.ts
-RUN cd /app && ng build --prod --base-href $BASE_URL
+RUN cd /app && ng build --prod --base-href $base_url
 
 EXPOSE 8081
-CMD ["ng", "serve", "--port", "8081", "--host", "0.0.0.0", "--prod"]
+CMD ng serve --port 8081 --host 0.0.0.0 --prod --base-href "$BASE_URL"
+#MD ["ng", "serve", "--port", "8081", "--host", "0.0.0.0", "--prod", "--base-href", "$base_url"]
