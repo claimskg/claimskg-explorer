@@ -9,3 +9,26 @@
 .titre2{
 	margin-left: 1%;
 }
+
+h1 {
+	margin : 2%;
+ font-size: 200%; 
+ color: black; 
+ text-align: center;
+ }
+h2 {
+ font-size: 150%; 
+ color: #d50000; 
+ padding-left: 15px;
+ text-align : justify;
+ }
+ 
+ html, body {
+  margin: 0;
+  padding: 0;
+  }
+ body {
+  background-color: white; 
+  font-family: Verdana, sans-serif; 
+  font-size: 100%;
+  }

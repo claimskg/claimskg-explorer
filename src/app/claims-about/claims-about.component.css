@@ -8,16 +8,16 @@ body {
  font-size: 100%;
  }
 h1 {
+	margin : 2%;
  font-size: 200%; 
  color: black; 
  text-align: center;
  }
 h2 {
  font-size: 150%; 
- color: red; 
+ color: #d50000; 
  padding-left: 15px;
  text-align : justify;
- text-decoration: underline;
  }
  p {
  color : black;
