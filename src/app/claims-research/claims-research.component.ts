@@ -23,6 +23,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   languagesField: string;
   sourcesField: string;
   keywordsField: string;
+  authorField: string;
   allLanguages: Language[];
   allSources: Organization[];
   filteredEntities: string[];
@@ -87,7 +88,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   }
 
   private addDataToRequesterNormal(keyRequest, keyComponent): void {
-    if (this[keyComponent] !== '' && !this.request[keyRequest].map(str => str.toLowerCase()).includes(this[keyComponent].toLowerCase())) {
+    if (this[keyComponent] !== '' && !this.request[keyRequest].map(str => str.toLowerCase()).includes(this[keyComponent].toLowerCase())) {  
       this.request[keyRequest].push(this[keyComponent]);
     }
     this[keyComponent] = '';

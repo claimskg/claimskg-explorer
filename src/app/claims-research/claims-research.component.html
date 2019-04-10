@@ -97,11 +97,33 @@
         </div>
       </div>
     </div>
+
+
+
+
+
+
+
+
+
+
     <div class="row">
       <div class="form-group col-md-6">
         <label for="author">Author</label>
-        <input [(ngModel)]="request.author" id="author" name="author" type="text" class="form-control">
+        <div class="input-group">
+          <input [(ngModel)]="authorField" id="author" name="author" type="text" class="form-control" (keydown)="addEntry($event,'author', 'authorField')">
+        </div>
       </div>
+
+
+
+
+
+
+
+
+
+
       <div class="form-group col-md-6">
         <label for="timePeriod">Time period</label>
         <input name="timeperiod" class="form-control" id="timePeriod" #drp="bsDaterangepicker" bsDaterangepicker

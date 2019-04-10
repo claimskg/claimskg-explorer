@@ -10,6 +10,7 @@ export class Requester {
     this.entities = [];
     this.keywords = [];
     this.dates = [];
+    this.author = [];
     this.currentOffset = 0;
     this.entitiesConjunctionMode = false;
     this.keywordsConjunctionMode = false;
@@ -19,7 +20,7 @@ export class Requester {
   private static readonly requestData = RequestUtils.previewRequest;
   entities: string[];
   truthRatings: number[];
-  author: string;
+  author: string[];
   keywords: string[];
   languages: string[];
   sources: string[];
@@ -122,14 +123,19 @@ export class Requester {
     for (const clause of Requester.requestData.clauses) {
       request += clause + ' . ';
     }
-    if (this.author) {
-      request += 'FILTER regex(lcase(str(?author)), "' + this.author.toLowerCase() + '") . ';
+    if (this.author && this.author.length > 0) {
+      request += 'FILTER (';
+      for (const author of this.author) {
+        request += 'contains (lcase(str(?author)), "' + author.toLowerCase() + '") || ';
+      }
+      request = request.slice(0, -4); // Delete last ' || '
+      request += ') .';
     }
     if (this.dates && this.dates.length === 2) {
       request += 'FILTER (?date >= "'
-        + Requester.getStringifiedDate(this.dates[0])
-        + '"^^xsd:dateTime && ?date <= "'
-        + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
+      + Requester.getStringifiedDate(this.dates[0])
+      + '"^^xsd:dateTime && ?date <= "'
+      + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
       request += '?item schema:mentions ?mentions_links . ';
@@ -181,8 +187,8 @@ export class Requester {
       request += 'FILTER (';
       for (const word of this.keywords) {
         request += 'contains (lcase(str(?keywords)), "' + word.toLowerCase() + '") ' +
-          '|| contains (lcase(str(?text)), "' + word.toLowerCase() + '") ' +
-          '|| contains (lcase(str(?headline)), "' + word.toLowerCase() + '") || ';
+        '|| contains (lcase(str(?text)), "' + word.toLowerCase() + '") ' +
+        '|| contains (lcase(str(?headline)), "' + word.toLowerCase() + '") || ';
       }
       request = request.slice(0, -4); // Delete last ' || '
       request += ') .';
@@ -206,20 +212,19 @@ export class Requester {
         request += 'FILTER (';
         for (const keyword of this.keywords) {
           request += '(contains (lcase(str(?keywords)), "' + keyword.toLowerCase() +
-            '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
+          '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
         }
         request = request.slice(0, -4); // Delete last ' && '
         request += ') . ';
       }
       request += '}';
     }
-
     return request;
   }
 
   private superRequestIsTriggered() {
     return this.entitiesConjunctionIsTriggered()
-      || this.keywordsConjunctionIsTriggered();
+    || this.keywordsConjunctionIsTriggered();
   }
 
   private entitiesConjunctionIsTriggered() {
@@ -250,8 +255,8 @@ export class Requester {
     if (this.truthRatings.length > 0) {
       params += '&truthRatings=' + this.truthRatings.join(',');
     }
-    if (this.author !== undefined) {
-      params += '&author=' + this.author;
+    if (this.author.length > 0) {
+      params += '&author=' + this.author.join(',');
     }
     if (this.keywords.length > 0) {
       params += '&keywords=' + this.keywords.join(',');
@@ -346,10 +351,10 @@ export class Requester {
       if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
         request += ' Order by ' + orderAttribute + ' ';
 
-      } else {
-        request += ' Order by desc (' + orderAttribute + ') ';
-      }
+    } else {
+      request += ' Order by desc (' + orderAttribute + ') ';
     }
-    return request;
   }
+  return request;
+}
 }
