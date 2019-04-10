@@ -21,6 +21,7 @@ import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { ClaimHelpComponent } from './claim-help/claim-help.component';
 import { ClaimsHelpModalComponent } from './claims-help-modal/claims-help-modal.component';
+import { ClaimsAboutComponent } from './claims-about/claims-about.component';
 import { ClaimsExportModalComponent } from './claims-export-modal/claims-export-modal.component';
 
 @NgModule({
@@ -33,6 +34,7 @@ import { ClaimsExportModalComponent } from './claims-export-modal/claims-export-
     ClaimHelpComponent,
     ClaimsHelpModalComponent,
     ClaimsExportModalComponent,
+    ClaimsAboutComponent,
   ],
   imports: [
     BrowserModule,

@@ -5,6 +5,7 @@ import {ClaimsHomeComponent} from './claims-home/claims-home.component';
 import {ClaimDetailComponent} from './claim-detail/claim-detail.component';
 import {ClaimHelpComponent} from './claim-help/claim-help.component';
 import {ClaimsListComponent} from './claims-list/claims-list.component';
+import {ClaimsAboutComponent} from './claims-about/claims-about.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   { path: 'research', component: ClaimsResearchComponent, pathMatch: 'full'},
   { path: 'detail/:id', component: ClaimDetailComponent},
   { path: 'help', component: ClaimHelpComponent },
+  { path: 'about', component: ClaimsAboutComponent },
 ];
 
 @NgModule({

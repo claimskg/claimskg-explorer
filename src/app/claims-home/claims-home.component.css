@@ -35,3 +35,11 @@
   font-weight: bold;
   line-height: 34px;
 }
+
+#about {
+  margin-left: 0.5em;
+}
+
+#explore {
+  margin-right: 0.5em;
+}

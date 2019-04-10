@@ -1,11 +1,41 @@
-.but{
-	margin-left: 1%;
-}
+h1 {
+ margin : 2%;
+ font-size: 200%; 
+ color: black; 
+ text-align: center;
+ }
 
-.explanation{
-	margin-left:1%;
-}
+h2 {
+  font-size: 150%; 
+  color: #d50000; 
+  padding-left: 5px;
+  text-align : justify;
+  }
+ 
+ html, body {
+  margin: 0;
+  padding: 0;
+  }
+  
+ body {
+  background-color: white; 
+  font-family: Verdana, sans-serif; 
+  font-size: 100%;
+  }
+  
+  .descriptionprojet {
+  	border: 1px #aaa solid; 
+  	text-align: justify;
+      margin: 25px;
+      padding: 40px;
+      width: 95%;
+      box-shadow: 5px 5px 2px gray;
+  }
 
-.titre2{
-	margin-left: 1%;
-}
+  .SearchTools {
+  	border: 1px #aaa solid; 
+      margin: 25px;
+      padding: 40px;
+      width: 95%;
+      box-shadow: 5px 5px 2px gray;
+  }

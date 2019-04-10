@@ -3,7 +3,6 @@ import {Requester} from '../../models/Requester';
 import {MAT_DIALOG_DATA} from '@angular/material';
 import {RequestUtils} from '../../models/utils/RequestUtils';
 import {ClaimsExportService} from '../claims-export.service';
-import * as fileSaver from 'file-saver';
 
 @Component({
   selector: 'app-claims-export-modal',
@@ -20,12 +19,12 @@ export class ClaimsExportModalComponent implements OnInit {
     this.selectedFields = this.allchoices;
   }
 
-  private fieldsAssociation = RequestUtils.fieldsAssociation;
-  private allchoices: string[];
-  private selectedFields: string[];
-  private customSelection = false;
-  private selectedFormat = 'text/csv';
-  public loading = false;
+  fieldsAssociation = RequestUtils.fieldsAssociation;
+  allchoices: string[];
+  selectedFields: string[];
+  customSelection = false;
+  selectedFormat = 'text/csv';
+  loading = false;
 
   ngOnInit() {
 
