@@ -132,11 +132,9 @@ export class Requester {
         + Requester.getStringifiedDate(this.dates[1]) + '"^^xsd:dateTime) . ';
     }
     if (this.entities && this.entities.length > 0) {
-      request += '?item schema:mentions ?mentions_links . ';
-      request += '?mentions_links nif:isString ?mentions .';
+      request += 'OPTIONAL{?item schema:mentions ?mentions_links . ?mentions_links nif:isString ?mentions} .';
       if (this.entitiesSearchIncludeArticles) {
-        request += '?claims schema:mentions ?mentions_links_article . ';
-        request += '?mentions_links_article nif:isString ?mentions_article .';
+        request += 'OPTIONAL{?claims schema:mentions ?mentions_links_article . ?mentions_links_article nif:isString ?mentions_article} .';
       }
       request += 'FILTER (';
       for (const entity of this.entities) {
