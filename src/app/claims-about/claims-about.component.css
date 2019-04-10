@@ -8,7 +8,7 @@ body {
  font-size: 100%;
  }
 h1 {
-	margin : 2%;
+ margin : 2%;
  font-size: 200%; 
  color: black; 
  text-align: center;
@@ -16,7 +16,7 @@ h1 {
 h2 {
  font-size: 150%; 
  color: #d50000; 
- padding-left: 15px;
+ padding-left: 50px;
  text-align : justify;
  }
  p {
@@ -25,6 +25,7 @@ h2 {
  padding-right: 15px;
  }
 ul,li,td {
+ margin : 1.5%;
  color: black; 
  }
 a:link {
@@ -37,21 +38,4 @@ a:hover {
 }
 a:active, a:focus {
  color: gray;
-}
-.descriptionprojet {
-	border: 1px #aaa solid; 
-	text-align: justify;
-    margin: 25px;
-    padding: 40px;
-    width: 95%;
-    box-shadow: 5px 5px 2px gray;
-}
-
-.explicationprocessus {
-	border: 1px #aaa solid; 
-	text-align: center;
-    margin: 25px;
-    padding: 40px;
-    width: 95%;
-    box-shadow: 5px 5px 2px gray;
 }
