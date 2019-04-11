@@ -6,12 +6,12 @@ export class Utils {
   public static readonly entitiesModalData = {
     title: 'Entities selection',
     content: [
-      'With this field, you can specify entities that you want mentioned in the results',
-      'There are two options, Contains Any or Contains All: ' +
-      'with the first option you will have all results about any of the entities, with the other one, you will have results containing the specified entities together',
-      'To add an entity, you can type its name, there will be some propositions, click on the one that you want to add',
-      'You can also type the name of the entity and press enter',
-      'To remove an entity, just press the delete button on the chip'
+      'With this field, you can specify entities that you want mentioned in the results.',
+      'There are two options, Contains Any or Contains All: with the first option you will have all ' +
+      'the entities, with the other one, you will have results containing the specified entities together.',
+      'To add an entity, you can type its name, there will be some propositions, click on the one that you want to add.',
+      'You can also type the name of the entity and press enter.',
+      'To remove an entity, just press the delete button on the chip.'
     ],
     imgsPath: ['assets/img/modal/modalEntities.gif'],
   };
@@ -28,10 +28,11 @@ export class Utils {
   public static readonly keywordsModalData = {
     title: 'Keywords selection',
     content: [
-      'With this field, you can specify keywords to be mentioned in the results',
-      'There is two options, Contains Any or Contains All: with the first option you will have all results containing any of the keywords, with the latter, you will have the result containing all the keywords',
-      'To add a keyword, type it and press enter',
-      'To remove a keyword, just press the delete button on the chip'
+      'With this field, you can specify keywords to be mentioned in the results.',
+      'There is two options, Contains Any or Contains All: with the first option you will have all results containing ' +
+      'any of the keywords, with the latter, you will have the result containing all the keywords.',
+      'To add a keyword, type it and press enter.',
+      'To remove a keyword, just press the delete button on the chip.'
     ],
     imgsPath: ['assets/img/modal/modalKeywords.gif'],
   };
@@ -39,10 +40,10 @@ export class Utils {
   public static readonly languagesModalData = {
     title: 'Languages selection',
     content: [
-      'With this field, you can select the language(s) of the results',
-      'To add a language, click on the field, there will be some propositions, click on the one that you want to add',
-      'You can also type the name of the language and press enter',
-      'To remove a language, just press the delete button on the chip'
+      'With this field, you can select the language(s) of the results.',
+      'To add a language, click on the field, there will be some propositions, click on the one that you want to add.',
+      'You can also type the name of the language and press enter.',
+      'To remove a language, just press the delete button on the chip.'
     ],
     imgsPath: ['assets/img/modal/modalLanguages.gif'],
   };
@@ -50,10 +51,10 @@ export class Utils {
   public static readonly sourcesModalData = {
     title: 'Sources selection',
     content: [
-      'With this field, you can choose from what fact-checking website the results are extracted',
-      'To add a source, click on the field, there will be some propositions, click on the one that you want to add',
-      'You can also type the name of the source and press enter',
-      'To remove a source, just press the delete button on the chip'
+      'With this field, you can choose from what fact-checking website the results are extracted.',
+      'To add a source, click on the field, there will be some propositions, click on the one that you want to add.',
+      'You can also type the name of the source and press enter.',
+      'To remove a source, just press the delete button on the chip.'
     ],
     imgsPath: ['assets/img/modal/modalSources.gif'],
   };

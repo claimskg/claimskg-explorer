@@ -3,8 +3,8 @@
   <p id="claimText" class="mx-auto">{{claim.text}}</p>
   <div id="headInfos" class="mx-auto w-25">
     <div class="row">
-      <a *ngIf="claim.link" href="{{claim.link}}" class="mx-auto"><img class="link-source" src="assets/img/www-icon.png"></a>
-      <div *ngIf="!claim.link" class="mx-auto"><img class="link-source" src="assets/img/www-icon.png"></div>
+      <a *ngIf="claim.link" [href]="claim.link" class="mx-auto"><img class="link-source" src="assets/img/article-icon.png"></a>
+      <div *ngIf="!claim.link" class="mx-auto"><img class="link-source" src="assets/img/article-icon.png"></div>
       <div id="truth" class="text-center mx-auto">
         <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-4x"></i>
         <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-4x"></i>
@@ -15,17 +15,20 @@
     </div>
   </div>
   <div>
-    <p id="claimAuthorDate">
+    <p class="claimInfos">
       <span *ngIf="claim.author">Claimed by <a routerLink="/search" [queryParams]="{author: claim.author}">{{claim.author}}</a></span>
       <span *ngIf="claim.author && claim.date">, on </span>
       <span *ngIf="claim.date">{{claim.date|date:'longDate'}}</span>
+    </p>
+    <p class="claimInfos">
+      <span *ngIf="claim.source">Claim Review extracted from  <a [href]="claim.sourceURL">{{claim.source}}</a></span>
     </p>
   </div>
   <div>
     <mat-expansion-panel *ngIf="claim.mentions.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Nammed Entities (from the claim)
+          Named Entities (from the claim)
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
@@ -49,7 +52,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
-        <mat-list-item *ngFor="let citation of claim.citations"><a href="{{citation}}">{{citation}}</a></mat-list-item>
+        <mat-list-item *ngFor="let citation of claim.citations"><a [href]="citation">{{citation}}</a></mat-list-item>
       </mat-list>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="claim.keywords.length > 0">
@@ -69,11 +72,6 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
-        <mat-list-item *ngIf="claim.source || claim.sourceURL">
-          <span *ngIf="claim.source && claim.source">Source of information : <a href="{{claim.sourceURL}}">{{claim.source}}</a></span>
-          <span *ngIf="claim.source && !claim.sourceURL">Source of information : {{claim.source}}</span>
-          <a href="{{claim.sourceURL}}" *ngIf="claim.sourceURL && !claim.source">{{claim.sourceURL}}</a>
-        </mat-list-item>
         <mat-list-item *ngIf="claim.language">Language : {{claim.language}}</mat-list-item>
       </mat-list>
     </mat-expansion-panel>
