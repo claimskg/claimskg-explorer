@@ -30,14 +30,16 @@
             </div>
           </div>
         </div>
-        <div id="precision-option-div" class="custom-control custom-checkbox custom-control-inline"
-             *ngIf="request.entities && request.entities.length > 0">
-          <input name="precision" id="precision" type="checkbox"
-                 class="custom-control-input checkbox-inline" [checked]="request.entitiesSearchIncludeArticles"
-                 (change)="changePrecision($event)">
-          <label for="precision" class="custom-control-label">Also include entities from articles</label>
-          <i id="help-entities-precision" class="fa fa-question-circle help-circle"
-             (click)="openDialogEntitiesMentionedInArticles()"></i>
+        <div class="w-100">
+          <div id="precision-option-div" class="custom-control custom-checkbox custom-control-inline"
+               *ngIf="request.entities && request.entities.length > 0">
+            <input name="precision" id="precision" type="checkbox"
+                   class="custom-control-input checkbox-inline" [checked]="request.entitiesSearchIncludeArticles"
+                   (change)="changePrecision($event)">
+            <label for="precision" class="custom-control-label">Also include entities from articles</label>
+            <i id="help-entities-precision" class="fa fa-question-circle help-circle"
+               (click)="openDialogEntitiesMentionedInArticles()"></i>
+          </div>
         </div>
         <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip">
           {{entity}}
@@ -98,10 +100,19 @@
       </div>
     </div>
     <div class="row">
-      <div class="form-group col-md-6">
-        <label for="author">Author</label>
-        <input [(ngModel)]="request.author" id="author" name="author" type="text" class="form-control">
-      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="author">Author</label>
+          <div class="input-group">
+            <input [(ngModel)]="authorField" id="author" name="author" type="text" class="form-control" (keydown)="addEntry($event,'author', 'authorField')">
+          </div>
+        </div>
+        <div *ngFor="let authorDelete of request.author" class="pmd-chip custom-chip">
+          {{authorDelete}}
+          <a (click)="deleteEnntry('author', authorDelete)" class="pmd-chip-action">
+            <i class="material-icons">close</i></a>
+        </div>
+    </div>
       <div class="form-group col-md-6">
         <label for="timePeriod">Time period</label>
         <input name="timeperiod" class="form-control" id="timePeriod" #drp="bsDaterangepicker" bsDaterangepicker

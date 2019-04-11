@@ -118,8 +118,10 @@ export class RequestUtils {
     {name: 'Truth Rating Label', field: '?ratingName'},
     {name: 'Author', field: '?author'},
     {name: 'Headline of the article', field: '?headline'},
-    {name: 'Named Entities from Claim', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities_claim'},
-    {name: 'Named Entities from Article', field: 'group_concat(distinct ?entities_name_article, ",") as ?named_entities_article'},
+    {name: 'Named Entities from Claim', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities_claim',
+      varName: '?named_entities_claim'},
+    {name: 'Named Entities from Article', field: 'group_concat(distinct ?entities_name_article, ",") as ?named_entities_article',
+      varName: '?named_entities_article'},
     {name: 'Keywords', field: '?keywords'},
     {name: 'Fact-Checking Website Name', field: '?source'},
     {name: 'Fact-Checking Website Link', field: '?sourceURL'},
@@ -141,4 +143,5 @@ export class RequestUtils {
 
     return request;
   }
+
 }
