@@ -24,7 +24,7 @@
       <span *ngIf="claim.source">Claim Review extracted from  <a [href]="claim.sourceURL">{{claim.source}}</a></span>
     </p>
   </div>
-  <div>
+  <div id="panel-infos-claim">
     <mat-expansion-panel *ngIf="claim.mentions.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -38,7 +38,7 @@
     <mat-expansion-panel *ngIf="claim.mentionsArticle.length > 0">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Nammed Entities (from the fact-Checking article)
+          Named Entities (from the fact-Checking article)
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>

@@ -44,11 +44,11 @@ export class ClaimsExportModalComponent implements OnInit {
     }
     this.loading = true;
     this.exportService.getDownloadClaimsExport(this.requester, this.selectedFields, this.selectedFormat)
-      .subscribe(res => this.endLoading());
+      .subscribe(res => this.downloadResult(res, this.selectedFormat));
   }
 
-  private endLoading() {
+  private downloadResult(result, type) {
+    this.exportService.performDownload(result, type);
     this.loading = false;
   }
-
 }

@@ -14,14 +14,14 @@ export class ClaimsExportService {
 
   constructor(private http: HttpClient) { }
 
-  private static performDownload(data, dataType) {
-    const blob = new Blob([data], { type: dataType});
-    fileSaver.saveAs(blob, 'claimskg_result.' + ClaimsExportService.convertDataTypeToExtension(dataType));
-  }
-
   private static convertDataTypeToExtension(dataType) {
     if (dataType === 'text/csv') {return 'csv'; }
     if (dataType === 'text/turtle') {return 'ttl'; }
+  }
+
+  public performDownload(data, dataType) {
+    const blob = new Blob([data], { type: dataType});
+    fileSaver.saveAs(blob, 'claimskg_result.' + ClaimsExportService.convertDataTypeToExtension(dataType));
   }
 
   getDownloadClaimsExport(request: Requester, fields, format): Observable<any> {
@@ -31,6 +31,6 @@ export class ClaimsExportService {
       responseType: format as 'json',
     };
     params = params.set('query', request.toSPARQLExport(fields));
-    return this.http.post<any>(environment.endpoint,  params, options).pipe(map(data => ClaimsExportService.performDownload(data, format)));
+    return this.http.post<any>(environment.endpoint,  params, options).pipe(map(data => data));
   }
 }
