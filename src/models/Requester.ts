@@ -198,24 +198,24 @@ export class Requester {
       request += '}';
       if (this.entitiesConjunctionIsTriggered()) {
         request += 'FILTER (';
-        for (const entity of this.entities) {
-          request += '(contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '")';
-          if (this.entitiesSearchIncludeArticles) {
-            request += '|| contains (lcase(str(?mentions_article)), "' + entity.toLowerCase() + '")';
+          for (const entity of this.entities) {
+            request += '(contains (lcase(str(?mentions)), "' + entity.toLowerCase() + '")';
+            if (this.entitiesSearchIncludeArticles) {
+              request += '|| contains (lcase(str(?mentions_article)), "' + entity.toLowerCase() + '")';
+            }
+            request += ') && ';
           }
-          request += ') && ';
-        }
-        request = request.slice(0, -4); // Delete last ' && '
-        request += ') . ';
+          request = request.slice(0, -4); // Delete last ' && '
+          request += ') . ';
       }
       if (this.keywordsConjunctionIsTriggered()) {
         request += 'FILTER (';
-        for (const keyword of this.keywords) {
-          request += '(contains (lcase(str(?keywords)), "' + keyword.toLowerCase() +
-          '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
-        }
-        request = request.slice(0, -4); // Delete last ' && '
-        request += ') . ';
+          for (const keyword of this.keywords) {
+            request += '(contains (lcase(str(?keywords)), "' + keyword.toLowerCase() +
+            '") || contains (lcase(str(?text)), "' + keyword.toLowerCase() + '")) && ';
+          }
+          request = request.slice(0, -4); // Delete last ' && '
+          request += ') . ';
       }
       request += '}';
     }
@@ -255,106 +255,113 @@ export class Requester {
     if (this.truthRatings.length > 0) {
       params += '&truthRatings=' + this.truthRatings.join(',');
     }
-    if (this.author.length > 0) {
-      params += '&author=' + this.author.join(',');
-    }
-    if (this.keywords.length > 0) {
-      params += '&keywords=' + this.keywords.join(',');
-    }
-    if (this.languages.length > 0) {
-      params += '&languages=' + this.languages.join(',');
-    }
-    if (this.sources.length > 0) {
-      params += '&sources=' + this.sources.join(',');
-    }
-    if (this.dates !== undefined && this.dates !== null && this.dates.length === 2) {
-      params += '&dates=' + Requester.getStringifiedDate(this.dates[0]) + ',' + Requester.getStringifiedDate(this.dates[1]);
-    }
-    if (this.entitiesConjunctionMode !== undefined) {
-      params += '&entitiesConjunctionMode=' + this.entitiesConjunctionMode;
-    }
-    if (this.entitiesSearchIncludeArticles !== undefined) {
-      params += '&entitiesSearchIncludeArticles=' + this.entitiesSearchIncludeArticles;
-    }
-    if (this.keywordsConjunctionMode !== undefined) {
-      params += '&keywordsConjunctionMode=' + this.keywordsConjunctionMode;
-    }
-    if (this.isOrderTriggered()) {
-      params += '&order=' + this.order + '&orderBy=' + this.orderBy;
-      if (this.howToOrder === 'DESC') {
-        params += '&howToOrder=DESC';
-      } else {
-        params += '&howToOrder=ASC';
+    //Error with this code: this.auteur.join isn't a function.
+    /*if (this.author.length > 0) {
+        params += '&author=' + this.author.join(',');
+      }    */
+      if (this.author.length > 0) {
+        params += '&author='; 
+        for(const authorTmp of this.author) {
+          params += authorTmp + ',';
+        }
       }
+      if (this.keywords.length > 0) {
+        params += '&keywords=' + this.keywords.join(',');
+      }
+      if (this.languages.length > 0) {
+        params += '&languages=' + this.languages.join(',');
+      }
+      if (this.sources.length > 0) {
+        params += '&sources=' + this.sources.join(',');
+      }
+      if (this.dates !== undefined && this.dates !== null && this.dates.length === 2) {
+        params += '&dates=' + Requester.getStringifiedDate(this.dates[0]) + ',' + Requester.getStringifiedDate(this.dates[1]);
+      }
+      if (this.entitiesConjunctionMode !== undefined) {
+        params += '&entitiesConjunctionMode=' + this.entitiesConjunctionMode;
+      }
+      if (this.entitiesSearchIncludeArticles !== undefined) {
+        params += '&entitiesSearchIncludeArticles=' + this.entitiesSearchIncludeArticles;
+      }
+      if (this.keywordsConjunctionMode !== undefined) {
+        params += '&keywordsConjunctionMode=' + this.keywordsConjunctionMode;
+      }
+      if (this.isOrderTriggered()) {
+        params += '&order=' + this.order + '&orderBy=' + this.orderBy;
+        if (this.howToOrder === 'DESC') {
+          params += '&howToOrder=DESC';
+        } else {
+          params += '&howToOrder=ASC';
+        }
+      }
+
+      return encodeURI(params);
     }
 
-    return encodeURI(params);
-  }
-
-  public configureWithQueyParams(params) {
-    if (params.entities !== undefined) {
-      this.entities = params.entities.split(',');
-    }
-    if (params.truthRatings !== undefined) {
-      for (const rating of params.truthRatings.split(',')) {
-        this.truthRatings.push(parseInt(rating, null));
+    public configureWithQueyParams(params) {
+      if (params.entities !== undefined) {
+        this.entities = params.entities.split(',');
       }
-    }
-    if (params.author !== undefined) {
-      this.author = params.author;
-    }
-    if (params.keywords !== undefined) {
-      this.keywords = params.keywords.split(',');
-    }
-    if (params.languages !== undefined) {
-      this.languages = params.languages.split(',');
-    }
-    if (params.sources !== undefined) {
-      this.sources = params.sources.split(',');
-    }
-    if (params.dates !== undefined) {
-      const datesArray = params.dates.split(',');
-      this.dates.push(new Date(datesArray[0]));
-      this.dates.push(new Date(datesArray[1]));
-    }
-    if (params.entitiesConjunctionMode !== undefined) {
-      this.entitiesConjunctionMode = Boolean(params.entitiesConjunctionMode);
-    }
-    if (params.entitiesConjunctionMode !== undefined) {
-      this.entitiesConjunctionMode = Boolean(params.entitiesConjunctionMode);
-    }
-    if (params.entitiesSearchIncludeArticles !== undefined) {
-      this.entitiesSearchIncludeArticles = Boolean(params.entitiesSearchIncludeArticles);
-    }
-    if (params.order !== undefined && params.orderBy !== undefined) {
-      this.order = Boolean(params.order);
-      if (this.order) {
-        this.orderBy = params.orderBy;
-        if (params.howToOrder !== undefined) {
-          this.howToOrder = params.howToOrder;
+      if (params.truthRatings !== undefined) {
+        for (const rating of params.truthRatings.split(',')) {
+          this.truthRatings.push(parseInt(rating, null));
+        }
+      }
+      if (params.author !== undefined) {
+        this.author = params.author;
+      }
+      if (params.keywords !== undefined) {
+        this.keywords = params.keywords.split(',');
+      }
+      if (params.languages !== undefined) {
+        this.languages = params.languages.split(',');
+      }
+      if (params.sources !== undefined) {
+        this.sources = params.sources.split(',');
+      }
+      if (params.dates !== undefined) {
+        const datesArray = params.dates.split(',');
+        this.dates.push(new Date(datesArray[0]));
+        this.dates.push(new Date(datesArray[1]));
+      }
+      if (params.entitiesConjunctionMode !== undefined) {
+        this.entitiesConjunctionMode = Boolean(params.entitiesConjunctionMode);
+      }
+      if (params.entitiesConjunctionMode !== undefined) {
+        this.entitiesConjunctionMode = Boolean(params.entitiesConjunctionMode);
+      }
+      if (params.entitiesSearchIncludeArticles !== undefined) {
+        this.entitiesSearchIncludeArticles = Boolean(params.entitiesSearchIncludeArticles);
+      }
+      if (params.order !== undefined && params.orderBy !== undefined) {
+        this.order = Boolean(params.order);
+        if (this.order) {
+          this.orderBy = params.orderBy;
+          if (params.howToOrder !== undefined) {
+            this.howToOrder = params.howToOrder;
+          }
         }
       }
     }
-  }
 
-  private isOrderTriggered(): boolean {
-    return (this.order !== undefined && this.order !== null && this.order && this.orderBy !== undefined && this.orderBy !== null);
-  }
-
-  private getOrderBy(): string {
-    let request = '';
-    if (this.isOrderTriggered()) {
-      let orderAttribute = '?' + this.orderBy;
-      if (orderAttribute === '?author') {
-        orderAttribute = 'lcase(' + orderAttribute + ')';
-      }
-      if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
-        request += ' Order by ' + orderAttribute + ' ';
-
-    } else {
-      request += ' Order by desc (' + orderAttribute + ') ';
+    private isOrderTriggered(): boolean {
+      return (this.order !== undefined && this.order !== null && this.order && this.orderBy !== undefined && this.orderBy !== null);
     }
+
+    private getOrderBy(): string {
+      let request = '';
+      if (this.isOrderTriggered()) {
+        let orderAttribute = '?' + this.orderBy;
+        if (orderAttribute === '?author') {
+          orderAttribute = 'lcase(' + orderAttribute + ')';
+        }
+        if (this.howToOrder === undefined || this.howToOrder === 'ASC') {  // If howToOrder isn't initialized or ASC
+          request += ' Order by ' + orderAttribute + ' ';
+
+      } else {
+        request += ' Order by desc (' + orderAttribute + ') ';
+      }
+    }
+    return request;
   }
-  return request;
-}
 }
