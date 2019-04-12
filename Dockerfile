@@ -9,7 +9,7 @@ ENV GRAPH_IRI=$graph_iri
 ARG per_page=10
 ENV PER_PAGE=$per_page
 
-ARG base_url=/
+ARG base_url=/claimskg/explorer/
 ENV BASE_URL=$base_url
 
 RUN apk update && apk add --no-cache make git
@@ -27,5 +27,5 @@ RUN cat /app/src/environments/environment.prod.ts
 RUN cd /app && ng build --prod --base-href $base_url
 
 EXPOSE 8081
-CMD ng serve --port 8081 --host 0.0.0.0 --prod --base-href "$BASE_URL"
+CMD ng serve --port 8081 --host 0.0.0.0 --prod --base-href "$BASE_URL" --disable-host-check
 #MD ["ng", "serve", "--port", "8081", "--host", "0.0.0.0", "--prod", "--base-href", "$base_url"]
