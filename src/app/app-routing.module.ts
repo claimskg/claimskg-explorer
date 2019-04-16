@@ -14,8 +14,8 @@ const routes: Routes = [
   { path: 'search', component: ClaimsListComponent, pathMatch: 'full'},
   { path: 'research', component: ClaimsResearchComponent, pathMatch: 'full'},
   { path: 'detail/:id', component: ClaimDetailComponent},
-  { path: 'help', component: ClaimHelpComponent },
-  { path: 'about', component: ClaimsAboutComponent },
+  { path: 'about', component: ClaimHelpComponent },
+  { path: 'contact', component: ClaimsAboutComponent },
 ];
 
 @NgModule({
