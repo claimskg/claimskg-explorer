@@ -37,6 +37,17 @@ export class Utils {
     imgsPath: ['assets/img/modal/modalKeywords.gif'],
   };
 
+  public static readonly authorsModalData = {
+    title: 'Authors selection',
+    content: [
+      'With this field, you can specify entities names that you want as author of the claims in the results.',
+      'To add an author, you can type its name, there will be some propositions, click on the one that you want to add.',
+      'You can also type the name of the author and press enter.',
+      'To remove an author, just press the delete button on the chip.'
+    ],
+    imgsPath: ['assets/img/modal/modalAuthors.gif'],
+  };
+
   public static readonly languagesModalData = {
     title: 'Languages selection',
     content: [

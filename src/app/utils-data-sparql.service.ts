@@ -58,6 +58,18 @@ export class UtilsDataSparqlService {
     return entities;
   }
 
+  private static convertJSONToAuthorsNames(response: any): string[] {
+    const results = response.results.bindings;
+    const authors = [];
+    for (const result of results) {
+      const newEntity = result.author.value;
+      if (!authors.map(item => item.toLowerCase()).includes(newEntity.toLowerCase())) {
+        authors.push(Utils.capitalize(newEntity));
+      }
+    }
+    return authors;
+  }
+
   getAllLanguages(): Observable<Language[]> {
     let params = new HttpParams();
     params = params.set('query', RequestUtils.languagesRequest);
@@ -79,11 +91,17 @@ export class UtilsDataSparqlService {
       .pipe(map(res => res = UtilsDataSparqlService.convertJSONToEntitiesNames(res)));
   }
 
+  getFilteredAuthors(entityFragment: string): Observable<string[]> {
+    let params = new HttpParams();
+    params = params.set('query', RequestUtils.filterAuthors(entityFragment));
+    return this.http.post<any>(environment.endpoint,  params, options)
+      .pipe(map(res => res = UtilsDataSparqlService.convertJSONToAuthorsNames(res)));
+  }
+
   getClaimsTotalCount(): Observable<number> {
     let params = new HttpParams();
     params = params.set('query', RequestUtils.countAllRequest);
     return this.http.post<any>(environment.endpoint,  params, options)
       .pipe(map(res => (res.results.bindings.length > 0) ? res.results.bindings[0].count.value : null));
   }
-
 }

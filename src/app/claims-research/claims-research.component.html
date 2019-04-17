@@ -102,9 +102,24 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label for="author">Author</label>
+          <label for="author">Authors</label>
           <div class="input-group">
-            <input [(ngModel)]="authorField" id="author" name="author" type="text" class="form-control" (keydown)="addEntry($event,'author', 'authorField')">
+            <div class="input-group-prepend help-circle"
+                 (click)="openDialogAuthors()"
+                 title="Type an author name (ex: Donald Trump) and click on suggestions or press enter to add it in the list!">
+              <div class="input-group-text">
+                <i class="fa fa-question-circle"></i>
+              </div>
+            </div>
+            <input [(ngModel)]="authorField" id="author" name="author" type="text" class="form-control"
+                   (keydown)="addEntryFilterPress($event,'author', 'authorField', 'filteredAuthors', true, false)"
+                   (input)="searchAuthors(authorField)" [matAutocomplete]="authors">
+            <mat-autocomplete #authors="matAutocomplete">
+              <mat-option class="entitiesOption"
+                          (click)="addEntryFilterClick('author', 'authorField', 'filteredAuthors', true, false)"
+                          *ngFor="let author of filteredAuthors" [value]="author"
+                          title="{{author}}">{{author}}</mat-option>
+            </mat-autocomplete>
           </div>
         </div>
         <div *ngFor="let authorDelete of request.author" class="pmd-chip custom-chip">

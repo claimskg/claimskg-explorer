@@ -48,8 +48,23 @@ export class RequestUtils {
     ],
     select: '?entity ',
     clauses: [
-      '?mentions a nif:Context',
+      '?claim a schema:ClaimReview',
+      '?claim schema:itemReviewed ?item',
+      '?item schema:mentions ?mentions',
       '?mentions nif:isString ?entity',
+    ]
+  };
+
+  private static readonly filterAuthorsRequest = {
+    prefixes: [
+      'PREFIX schema: <http://schema.org/>',
+    ],
+    select: '?author ',
+    clauses: [
+      '?claim a schema:ClaimReview',
+      '?claim schema:itemReviewed ?item',
+      '?item schema:author ?author_entity',
+      '?author_entity schema:name ?author',
     ]
   };
 
@@ -138,8 +153,23 @@ export class RequestUtils {
     for (const clause of RequestUtils.filterEntitiesRequest.clauses) {
       request += clause + ' . ';
     }
-    request += '  FILTER (strStarts(lcase(str(?entity)), "' + fragment.toLowerCase() + '"))';
-    request += '}';
+    request += '  FILTER (strStarts(lcase(?entity), "' + fragment.toLowerCase() + '"))';
+    request += '} ORDER BY ?entity';
+
+    return request;
+  }
+
+  public static filterAuthors(fragment: string): string {
+    let request = '';
+    for (const prefix of RequestUtils.filterAuthorsRequest.prefixes) {
+      request += prefix + ' ';
+    }
+    request += 'select distinct ' + RequestUtils.filterAuthorsRequest.select + ' where { ';
+    for (const clause of RequestUtils.filterAuthorsRequest.clauses) {
+      request += clause + ' . ';
+    }
+    request += '  FILTER (strStarts(lcase(?author), "' + fragment.toLowerCase() + '"))';
+    request += '} ORDER BY ?author';
 
     return request;
   }
