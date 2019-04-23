@@ -1,0 +1,28 @@
+<div *ngIf="!stats" class="text-center mx-auto">
+  <img src="assets/img/loading.gif">
+</div>
+<div *ngIf="stats" id="table-stat" class="mx-auto">
+  <h1 class="text-center"><strong>ClaimKG Statistics</strong></h1>
+  <table class="table table-bordered">
+    <thead>
+    <tr>
+      <th scope="col">Property</th>
+      <th scope="col">Total</th>
+      <th scope="col">True</th>
+      <th scope="col">False</th>
+      <th scope="col">Mixture</th>
+      <th scope="col">Other</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let stat of stats">
+      <th scope="row">{{stat.name}}</th>
+      <td>{{stat.total}}</td>
+      <td>{{stat.true}}</td>
+      <td>{{stat.false}}</td>
+      <td>{{stat.mixture}}</td>
+      <td>{{stat.other}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>

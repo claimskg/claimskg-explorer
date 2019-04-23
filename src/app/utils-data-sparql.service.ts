@@ -8,6 +8,7 @@ import {map} from 'rxjs/operators';
 import {RequestUtils} from '../models/utils/RequestUtils';
 import {Utils} from '../models/utils/Utils';
 import {Requester} from '../models/Requester';
+import {StatClaim} from '../models/utils/StatClaim';
 
 const options = {
   headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', 'application/sparql-results+json')
@@ -69,6 +70,29 @@ export class UtilsDataSparqlService {
     }
     return authors;
   }
+  private static convertJSONToStatistics(response: any): StatClaim[] {
+    const results = response.results.bindings;
+    const stats = [];
+    const global = new StatClaim();
+    global.name = 'Global';
+    for (const result of results) {
+      const newStat = new StatClaim();
+      newStat.name = Utils.capitalize(result.name.value);
+      newStat.total = parseInt(result.total.value, 0);
+      global.total += newStat.total;
+      newStat.true = parseInt(result.true.value, 0);
+      global.true += newStat.true;
+      newStat.false = parseInt(result.false.value, 0);
+      global.false += newStat.false;
+      newStat.mixture = parseInt(result.mixture.value, 0);
+      global.mixture += newStat.mixture;
+      newStat.other = parseInt(result.other.value, 0);
+      global.other += newStat.other;
+      stats.push(newStat);
+    }
+    stats.unshift(global);
+    return stats;
+  }
 
   getAllLanguages(): Observable<Language[]> {
     let params = new HttpParams();
@@ -103,5 +127,12 @@ export class UtilsDataSparqlService {
     params = params.set('query', RequestUtils.countAllRequest);
     return this.http.post<any>(environment.endpoint,  params, options)
       .pipe(map(res => (res.results.bindings.length > 0) ? res.results.bindings[0].count.value : null));
+  }
+
+  getClaimsStatistics(): Observable<StatClaim[]> {
+    let params = new HttpParams();
+    params = params.set('query', RequestUtils.statisticRequest);
+    return this.http.post<any>(environment.endpoint,  params, options)
+      .pipe(map(res => (UtilsDataSparqlService.convertJSONToStatistics(res))));
   }
 }

@@ -23,6 +23,7 @@ import { ClaimHelpComponent } from './claim-help/claim-help.component';
 import { ClaimsHelpModalComponent } from './claims-help-modal/claims-help-modal.component';
 import { ClaimsAboutComponent } from './claims-about/claims-about.component';
 import { ClaimsExportModalComponent } from './claims-export-modal/claims-export-modal.component';
+import { ClaimsStatisticsComponent } from './claims-statistics/claims-statistics.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ClaimsExportModalComponent } from './claims-export-modal/claims-export-
     ClaimsHelpModalComponent,
     ClaimsExportModalComponent,
     ClaimsAboutComponent,
+    ClaimsStatisticsComponent,
   ],
   imports: [
     BrowserModule,
