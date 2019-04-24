@@ -18,7 +18,7 @@
             <a [href]="claim.link" class="pmd-avatar-list-img mx-auto">
               <img class="article-link" src="assets/img/article-icon.png" width="40" height="40">
             </a>
-            <p *ngIf="claim.date !== 'Unknown'" class="mx-auto">{{claim.date | date:'MM/dd/yy'}}</p>
+            <p *ngIf="claim.date !== 'Unknown'" class="mx-auto">{{claim.date | date:'dd/MM/yy'}}</p>
             <p *ngIf="claim.date == 'Unknown'" class="mx-auto">{{claim.date}}</p>
           </div>
           <div class="media-body">

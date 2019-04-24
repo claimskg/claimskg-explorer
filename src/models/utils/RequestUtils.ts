@@ -48,8 +48,23 @@ export class RequestUtils {
     ],
     select: '?entity ',
     clauses: [
-      '?mentions a nif:Context',
+      '?claim a schema:ClaimReview',
+      '?claim schema:itemReviewed ?item',
+      '?item schema:mentions ?mentions',
       '?mentions nif:isString ?entity',
+    ]
+  };
+
+  private static readonly filterAuthorsRequest = {
+    prefixes: [
+      'PREFIX schema: <http://schema.org/>',
+    ],
+    select: '?author ',
+    clauses: [
+      '?claim a schema:ClaimReview',
+      '?claim schema:itemReviewed ?item',
+      '?item schema:author ?author_entity',
+      '?author_entity schema:name ?author',
     ]
   };
 
@@ -129,6 +144,78 @@ export class RequestUtils {
     {name: 'Language', field: '?language'},
   ];
 
+  public static readonly statisticRequest = 'PREFIX schema: <http://schema.org/>' +
+    'select str(?name) as ?name ?total ?false ?true ?mixture ?other where {' +
+    '{' +
+    'select ?name COUNT(?claim) as ?total ' +
+    'where {' +
+    ' OPTIONAL {' +
+    ' ?claim a schema:ClaimReview .' +
+    ' ?claim schema:author ?author .' +
+    ' ?author schema:name ?name .' +
+    '}' +
+    '} GROUP BY ?name' +
+    '}' +
+    '' +
+    'OPTIONAL {' +
+    'select ?name COUNT(?claim) as ?false ' +
+    'where {' +
+    ' OPTIONAL {' +
+    ' ?claim a schema:ClaimReview .' +
+    ' ?claim schema:author ?author .' +
+    ' ?author schema:name ?name .' +
+    ' ?claim schema:reviewRating ?credibility .' +
+    ' ?credibility schema:author <' + environment.graph_iri + 'organization/claimskg> .' +
+    ' ?credibility schema:alternateName ?ratingName . FILTER(str(?ratingName) = "FALSE")' +
+    ' }' +
+    '} GROUP BY ?name' +
+    '}' +
+    '' +
+    'OPTIONAL {' +
+    'select ?name COUNT(?claim) as ?true ' +
+    'where {' +
+    ' OPTIONAL {' +
+    ' ?claim a schema:ClaimReview .' +
+    ' ?claim schema:author ?author .' +
+    ' ?author schema:name ?name .' +
+    ' ?claim schema:reviewRating ?credibility .' +
+    ' ?credibility schema:author <' + environment.graph_iri + 'organization/claimskg> .' +
+    ' ?credibility schema:alternateName ?ratingName . FILTER(str(?ratingName) = "TRUE")' +
+    ' }' +
+    '} GROUP BY ?name' +
+    '}' +
+    '' +
+    '' +
+    'OPTIONAL {' +
+    'select ?name COUNT(?claim) as ?mixture ' +
+    'where {' +
+    ' OPTIONAL {' +
+    ' ?claim a schema:ClaimReview .' +
+    ' ?claim schema:author ?author .' +
+    ' ?author schema:name ?name .' +
+    ' ?claim schema:reviewRating ?credibility .' +
+    ' ?credibility schema:author <' + environment.graph_iri + 'organization/claimskg> .' +
+    ' ?credibility schema:alternateName ?ratingName . FILTER(str(?ratingName) = "MIXTURE")' +
+    ' }' +
+    '} GROUP BY ?name' +
+    '}' +
+    '' +
+    'OPTIONAL {' +
+    'select ?name COUNT(?claim) as ?other ' +
+    'where {' +
+    ' OPTIONAL {' +
+    ' ?claim a schema:ClaimReview .' +
+    ' ?claim schema:author ?author .' +
+    ' ?author schema:name ?name .' +
+    ' ?claim schema:reviewRating ?credibility .' +
+    ' ?credibility schema:author <' + environment.graph_iri + 'organization/claimskg> .' +
+    ' ?credibility schema:alternateName ?ratingName . FILTER(str(?ratingName) = "OTHER")' +
+    ' }' +
+    '} GROUP BY ?name' +
+    '}' +
+    '' +
+    '} ORDER BY DESC(?total)';
+
   public static filterEntities(fragment: string): string {
     let request = '';
     for (const prefix of RequestUtils.filterEntitiesRequest.prefixes) {
@@ -138,8 +225,23 @@ export class RequestUtils {
     for (const clause of RequestUtils.filterEntitiesRequest.clauses) {
       request += clause + ' . ';
     }
-    request += '  FILTER (strStarts(lcase(str(?entity)), "' + fragment.toLowerCase() + '"))';
-    request += '}';
+    request += '  FILTER (strStarts(lcase(?entity), "' + fragment.toLowerCase() + '"))';
+    request += '} ORDER BY ?entity';
+
+    return request;
+  }
+
+  public static filterAuthors(fragment: string): string {
+    let request = '';
+    for (const prefix of RequestUtils.filterAuthorsRequest.prefixes) {
+      request += prefix + ' ';
+    }
+    request += 'select distinct ' + RequestUtils.filterAuthorsRequest.select + ' where { ';
+    for (const clause of RequestUtils.filterAuthorsRequest.clauses) {
+      request += clause + ' . ';
+    }
+    request += '  FILTER (strStarts(lcase(?author), "' + fragment.toLowerCase() + '"))';
+    request += '} ORDER BY ?author';
 
     return request;
   }

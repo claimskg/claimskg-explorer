@@ -9,6 +9,7 @@ import {Location} from '@angular/common';
 import {MatDialog} from '@angular/material';
 import {ClaimsHelpModalComponent} from '../claims-help-modal/claims-help-modal.component';
 import {Utils} from '../../models/utils/Utils';
+import {BsDatepickerConfig} from 'ngx-bootstrap';
 
 @Component({
   selector: 'app-claims-research',
@@ -27,11 +28,13 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   allLanguages: Language[];
   allSources: Organization[];
   filteredEntities: string[];
+  filteredAuthors: string[];
   filteredLanguages: Language[];
   filteredSources: Organization[];
   @ViewChild(ClaimsListComponent) resultList: ClaimsListComponent;
   @ViewChildren(ClaimsListComponent) initDetector: QueryList<ClaimsListComponent>;
   childInit = false;
+  bsConfig: Partial<BsDatepickerConfig> = new BsDatepickerConfig();
 
   constructor(private utilsDataService: UtilsDataSparqlService, private titleService: Title,
               private location: Location, public dialog: MatDialog) {}
@@ -41,10 +44,11 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     this.filteredLanguages = [];
     this.filteredSources = [];
     this.filteredEntities = [];
+    this.filteredEntities = [];
     this.utilsDataService.getAllLanguages().subscribe(languages => this.setUpFilterLanguages(languages));
     this.utilsDataService.getAllSources().subscribe(sources => this.setUpFilterSources(sources));
-    this.setUpFilterEntities();
     this.setTitle();
+    this.bsConfig = Object.assign({}, { showWeekNumbers: false, rangeInputFormat: 'DD/MM/YYYY' });
   }
 
   ngAfterViewInit(): void {
@@ -88,7 +92,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   }
 
   private addDataToRequesterNormal(keyRequest, keyComponent): void {
-    if (this[keyComponent] !== '' && !this.request[keyRequest].map(str => str.toLowerCase()).includes(this[keyComponent].toLowerCase())) {  
+    if (this[keyComponent] !== '' && !this.request[keyRequest].map(str => str.toLowerCase()).includes(this[keyComponent].toLowerCase())) {
       this.request[keyRequest].push(this[keyComponent]);
     }
     this[keyComponent] = '';
@@ -136,14 +140,17 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     this.filteredSources = this.allSources;
   }
 
-  private setUpFilterEntities(): void {
-
-  }
-
   searchEntities(term: string): void {
     this.filteredEntities = [];
     if (term.length >= 3) {
       this.utilsDataService.getFilteredEntities(term).subscribe(res => this.filteredEntities = res);
+    }
+  }
+
+  searchAuthors(term: string) {
+    this.filteredAuthors = [];
+    if (term.length >= 3) {
+      this.utilsDataService.getFilteredAuthors(term).subscribe(res => this.filteredAuthors = res);
     }
   }
 
@@ -188,6 +195,12 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   openDialogSources() {
     this.dialog.open(ClaimsHelpModalComponent, {
       data: Utils.sourcesModalData
+    });
+  }
+
+  openDialogAuthors() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.authorsModalData
     });
   }
 
