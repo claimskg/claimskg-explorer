@@ -6,6 +6,7 @@ import { environment} from '../environments/environment';
 import {Requester} from '../models/Requester';
 import {ClaimPreview} from '../models/ClaimPreview';
 import {Claim} from '../models/Claim';
+import {ResultCount} from '../models/utils/ResultCount';
 
 const options = {
   headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded').set('Accept', 'application/sparql-results+json')
@@ -25,11 +26,11 @@ export class ClaimsSparqlService {
       .pipe(map(res => ClaimPreview.convertJSONtoClaimsPreview(res)));
   }
 
-  getClaimsPreviewCount(request: Requester): Observable<number> {
+  getClaimsPreviewCount(request: Requester): Observable<ResultCount> {
     let params = new HttpParams();
     params = params.set('query', request.toCountSPARQL());
     return this.http.post<any>(environment.endpoint,  params, options)
-      .pipe(map(res => (res.results.bindings.length > 0) ? res.results.bindings[0].count.value : null));
+      .pipe(map(res => (new ResultCount(res.results.bindings))));
   }
 
   getClaim(claimId: string): Observable<Claim> {

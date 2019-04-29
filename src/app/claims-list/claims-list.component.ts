@@ -7,6 +7,7 @@ import { Location } from '@angular/common';
 import {Title} from '@angular/platform-browser';
 import {MatDialog, PageEvent} from '@angular/material';
 import {ClaimsExportModalComponent} from '../claims-export-modal/claims-export-modal.component';
+import {ResultCount} from '../../models/utils/ResultCount';
 
 @Component({
   selector: 'app-claims-list',
@@ -20,6 +21,8 @@ export class ClaimsListComponent implements OnInit {
   claims: ClaimPreview[];
 
   claimsCount: number;
+
+  claimsCounter: ResultCount;
 
   loadingCounter = true;
 
@@ -87,8 +90,9 @@ export class ClaimsListComponent implements OnInit {
         this.titleService.setTitle('No results');
     }
   }
-  diffuseClaimsCount(count): void {
-    this.claimsCount = count;
+  diffuseClaimsCount(count: ResultCount): void {
+    this.claimsCount = count.getTotal();
+    this.claimsCounter = count;
     this.loadingCounter = false;
   }
 

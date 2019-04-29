@@ -98,10 +98,10 @@ export class Requester {
   public toCountSPARQL(): string {
     let request = this.setUpPrefixes();
     if (this.superRequestIsTriggered()) {
-      request += 'select count(distinct ?id) as ?count where { {';
+      request += 'select (?truthRating as ?rating) count(distinct ?id) as ?count where { {';
       request += this.getNormalSelectCore();
     } else {
-      request += 'select count(distinct ?claims) as ?count where { ';
+      request += 'select (?truthRating as ?rating) count(distinct ?claims) as ?count where { ';
     }
 
     request += this.getRequestCore();

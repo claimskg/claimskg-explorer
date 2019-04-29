@@ -63,3 +63,7 @@
   box-shadow: 0 0 11px rgba(33,33,33,.2);
 }
 
+#claimsCountDetail {
+  font-weight: bold;
+  margin-top: -20px;
+}
