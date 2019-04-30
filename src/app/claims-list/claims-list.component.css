@@ -67,3 +67,15 @@
   font-weight: bold;
   margin-top: -20px;
 }
+
+#pageCount {
+  text-align: center;
+  color: rgba(0,0,0,.54);
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 12px;
+  vertical-align: middle;
+  display: flex;
+  align-items: center;
+  padding-left: 35px;
+  padding-top: 5px;
+}

@@ -39,7 +39,8 @@
       </div>
     </a>
     <div [hidden]="!(claims && claims.length > 0)" class="mx-auto pagination-box">
-      <mat-paginator class="text-center mx-auto col-md-7"
+      <p id="pageCount" class="col-lg-2">{{getNbMaxPages()}} pages</p>
+      <mat-paginator class="text-center mx-auto col-md-6"
         [length]="claimsCount"
         [pageSize]="10"
         [pageIndex]="pageIndexForPaginator"
@@ -47,7 +48,7 @@
       [hidePageSize]="true"
       (page)="pageChange($event)">
       </mat-paginator>
-      <mat-form-field class="col-sm-3">
+      <mat-form-field class="col-sm-2">
         <input (keydown)="enterPageJump($event)" matInput [(ngModel)]="pageIndex" type="number" step="1" min="1" max="{{getNbMaxPages()}}">
       </mat-form-field>
       <button (click)="jumpPage()" class="col-lg-2" mat-button>Jump</button>
