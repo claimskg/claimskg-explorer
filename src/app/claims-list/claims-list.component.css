@@ -79,3 +79,9 @@
   padding-left: 35px;
   padding-top: 5px;
 }
+
+.counter-result {
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}

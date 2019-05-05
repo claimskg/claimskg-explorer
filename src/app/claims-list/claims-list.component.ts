@@ -178,4 +178,17 @@ export class ClaimsListComponent implements OnInit {
       data: this.request,
     });
   }
+
+  filterByRating(rating: number) {
+    this.loadingCounter = true;
+    this.loadingClaims = true;
+    this.request.truthRatings = [];
+    this.request.truthRatings.push(rating);
+    this.claimsCounter = null;
+    this.claimsCount = 0;
+    this.claims = [];
+    this.updateQueryToSearch();
+    this.getRequestClaims();
+    this.getCountClaims();
+  }
 }

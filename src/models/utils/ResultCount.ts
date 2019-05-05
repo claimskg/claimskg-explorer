@@ -26,25 +26,4 @@ export class ResultCount {
   getTotal(): number {
     return this.false + this.true + this.mixture + this.other;
   }
-
-  getDetails(): string {
-    let details = '(';
-    if (this.true > 0) {
-      details += this.true + ' True, ';
-    }
-    if (this.false > 0) {
-      details += this.false + ' False, ';
-    }
-    if (this.mixture > 0) {
-      details += this.mixture + ' Mixture, ';
-    }
-    if (this.other > 0) {
-      details += this.other + ' Other';
-    } else {
-      details = details.substring(0, details.lastIndexOf(','));
-    }
-    details += ')';
-
-    return details;
-  }
 }

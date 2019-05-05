@@ -8,7 +8,23 @@
       <p class="col-lg-8 text-center">{{claimsCount}} results</p>
       <button id="btnExport" (click)="openExport()" class="col-lg-2 btn btn-primary">Export</button>
     </div>
-    <p class="text-center" id="claimsCountDetail">{{claimsCounter.getDetails()}}</p>
+    <p class="text-center" id="claimsCountDetail">
+      (
+      <span *ngIf="claimsCounter.true > 0">
+        {{claimsCounter.true}} <span class="btn-link counter-result" (click)="filterByRating(3)">True</span>
+        <span *ngIf="claimsCounter.false >0 || claimsCounter.mixture > 0 || claimsCounter.other > 0">, </span>
+      </span>
+      <span *ngIf="claimsCounter.false > 0">
+        {{claimsCounter.false}} <span class="btn-link counter-result" (click)="filterByRating(1)">False</span><span *ngIf="claimsCounter.mixture > 0 || claimsCounter.other > 0">, </span>
+      </span>
+      <span *ngIf="claimsCounter.mixture > 0">
+        {{claimsCounter.mixture}} <span class="btn-link counter-result" (click)="filterByRating(2)">Mixture</span><span *ngIf="claimsCounter.other > 0">, </span>
+      </span>
+      <span *ngIf="claimsCounter.other > 0">
+        {{claimsCounter.other}} <span class="btn-link counter-result" (click)="filterByRating(-1)">Other</span>
+      </span>
+      )
+    </p>
   </div>
   <div *ngIf="noResult" class="text-center resultMsg">
     <p>No results.</p>
