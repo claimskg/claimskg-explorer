@@ -187,6 +187,9 @@ export class ClaimsListComponent implements OnInit {
     this.claimsCounter = null;
     this.claimsCount = 0;
     this.claims = [];
+    this.pageIndex = 1;
+    this.pageIndexForPaginator = 0;
+    this.request.setPage(1);
     this.updateQueryToSearch();
     this.getRequestClaims();
     this.getCountClaims();
