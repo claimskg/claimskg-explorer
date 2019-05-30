@@ -11,17 +11,17 @@
     <p class="text-center" id="claimsCountDetail">
       (
       <span *ngIf="claimsCounter.true > 0">
-        {{claimsCounter.true}} <span class="btn-link counter-result" (click)="filterByRating(3)">True</span>
+        {{claimsCounter.true}} <a class="btn-link counter-result" target="_blank" [href]="getFilterLinkByRating(3)">True</a>
         <span *ngIf="claimsCounter.false >0 || claimsCounter.mixture > 0 || claimsCounter.other > 0">, </span>
       </span>
       <span *ngIf="claimsCounter.false > 0">
-        {{claimsCounter.false}} <span class="btn-link counter-result" (click)="filterByRating(1)">False</span><span *ngIf="claimsCounter.mixture > 0 || claimsCounter.other > 0">, </span>
+        {{claimsCounter.false}} <a class="btn-link counter-result" target="_blank" [href]="getFilterLinkByRating(1)">False</a><span *ngIf="claimsCounter.mixture > 0 || claimsCounter.other > 0">, </span>
       </span>
       <span *ngIf="claimsCounter.mixture > 0">
-        {{claimsCounter.mixture}} <span class="btn-link counter-result" (click)="filterByRating(2)">Mixture</span><span *ngIf="claimsCounter.other > 0">, </span>
+        {{claimsCounter.mixture}} <a class="btn-link counter-result" target="_blank" [href]="getFilterLinkByRating(2)">Mixture</a><span *ngIf="claimsCounter.other > 0">, </span>
       </span>
       <span *ngIf="claimsCounter.other > 0">
-        {{claimsCounter.other}} <span class="btn-link counter-result" (click)="filterByRating(-1)">Other</span>
+        {{claimsCounter.other}} <a class="btn-link counter-result" target="_blank" [href]="getFilterLinkByRating(-1)">Other</a>
       </span>
       )
     </p>

@@ -179,19 +179,16 @@ export class ClaimsListComponent implements OnInit {
     });
   }
 
-  filterByRating(rating: number) {
-    this.loadingCounter = true;
-    this.loadingClaims = true;
+  getFilterLinkByRating(rating: number) {
+    const savedTruth = this.request.truthRatings;
+    const savedOffset = this.request.currentOffset;
     this.request.truthRatings = [];
     this.request.truthRatings.push(rating);
-    this.claimsCounter = null;
-    this.claimsCount = 0;
-    this.claims = [];
-    this.pageIndex = 1;
-    this.pageIndexForPaginator = 0;
     this.request.setPage(1);
-    this.updateQueryToSearch();
-    this.getRequestClaims();
-    this.getCountClaims();
+    const query =  this.request.toQueryParams();
+    this.request.truthRatings = savedTruth;
+    this.request.currentOffset = savedOffset;
+
+    return 'search' + query;
   }
 }
