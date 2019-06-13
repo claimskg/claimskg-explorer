@@ -15,7 +15,11 @@
   font-size: 32px;
 }
 
-.link-source {
+#link-source {
+  width: 66px;
+}
+
+#no-source {
   width: 70px;
 }
 
@@ -30,4 +34,8 @@
 
 #panel-infos-claim {
   margin-bottom: 3em;
+}
+
+#link-article {
+  padding-left: 11px;
 }

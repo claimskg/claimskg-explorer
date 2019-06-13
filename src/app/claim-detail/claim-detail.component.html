@@ -3,8 +3,11 @@
   <p id="claimText" class="mx-auto">{{claim.text}}</p>
   <div id="headInfos" class="mx-auto w-25">
     <div class="row">
-      <a *ngIf="claim.link" [href]="claim.link" class="mx-auto"><img class="link-source" src="assets/img/article-icon.png"></a>
-      <div *ngIf="!claim.link" class="mx-auto"><img class="link-source" src="assets/img/article-icon.png"></div>
+      <a *ngIf="claim.link" [href]="claim.link" class="text-center mx-auto">
+        <img id="link-source" src="assets/img/article-icon.png">
+        <p id="link-article" class="mx-auto">Article</p>
+      </a>
+      <div *ngIf="!claim.link" class="mx-auto"><img id="no-source" src="assets/img/article-icon.png"></div>
       <div id="truth" class="text-center mx-auto">
         <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-4x"></i>
         <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-4x"></i>

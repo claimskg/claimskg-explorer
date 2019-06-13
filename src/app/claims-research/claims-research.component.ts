@@ -180,9 +180,21 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
     });
   }
 
+  openDialogEntitiesConjunction() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.entitiesConjuctionModalData
+    });
+  }
+
   openDialogKeywords() {
     this.dialog.open(ClaimsHelpModalComponent, {
       data: Utils.keywordsModalData
+    });
+  }
+
+  openDialogKeywordsConjunction() {
+    this.dialog.open(ClaimsHelpModalComponent, {
+      data: Utils.keywordsConjuctionModalData
     });
   }
 

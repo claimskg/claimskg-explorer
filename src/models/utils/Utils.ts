@@ -25,6 +25,15 @@ export class Utils {
     ],
   };
 
+  public static readonly entitiesConjuctionModalData = {
+    title: 'Contains Any / All',
+    content: [
+      'There are two options, Contains Any or Contains All',
+      'With the first option you will have results containing any of the entities.',
+      'With the other one, you will have results containing all the specified entities together.',
+    ],
+  };
+
   public static readonly keywordsModalData = {
     title: 'Keywords selection',
     content: [
@@ -35,6 +44,15 @@ export class Utils {
       'To remove a keyword, just press the delete button on the chip.'
     ],
     imgsPath: ['assets/img/modal/modalKeywords.gif'],
+  };
+
+  public static readonly keywordsConjuctionModalData = {
+    title: 'Contains Any / All',
+    content: [
+      'There are two options, Contains Any or Contains All',
+      'With the first option you will have results containing any of the keywords.',
+      'With the other one, you will have results containing all the specified keywords together.',
+    ],
   };
 
   public static readonly authorsModalData = {

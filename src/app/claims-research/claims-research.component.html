@@ -22,12 +22,6 @@
                           *ngFor="let entity of filteredEntities" [value]="entity"
                           title="{{entity}}">{{entity}}</mat-option>
             </mat-autocomplete>
-            <div class="input-group-append">
-              <select name="entitiesMode" [(ngModel)]="request.entitiesConjunctionMode" class="form-control">
-                <option [ngValue]="false">Contains Any</option>
-                <option [ngValue]="true">Contains All</option>
-              </select>
-            </div>
           </div>
         </div>
         <div class="w-100">
@@ -37,8 +31,31 @@
                    class="custom-control-input checkbox-inline" [checked]="request.entitiesSearchIncludeArticles"
                    (change)="changePrecision($event)">
             <label for="precision" class="custom-control-label">Also include entities from articles</label>
-            <i id="help-entities-precision" class="fa fa-question-circle help-circle"
+            <i class="fa fa-question-circle help-circle help-entities"
                (click)="openDialogEntitiesMentionedInArticles()"></i>
+          </div>
+        </div>
+        <div *ngIf="request.entities && request.entities.length >=2" class="w-100">
+          <div class="form-group custom-control custom-control-inline">
+            <div>
+              <div class="form-check form-check-inline">
+                <input [checked]=!request.entitiesConjunctionMode (change)="request.entitiesConjunctionMode = false" class="form-check-input" type="radio"
+                       name="any-entities" id="any-entities">
+                <label class="form-check-label" for="any-entities">
+                  Contains Any
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input [checked]="request.entitiesConjunctionMode" (change)="request.entitiesConjunctionMode = true"
+                       class="form-check-input" type="radio"
+                       name="all-entities" id="all-entities">
+                <label class="form-check-label" for="all-entities">
+                  Contains All
+                </label>
+              </div>
+            </div>
+            <i class="fa fa-question-circle help-circle help-entities"
+               (click)="openDialogEntitiesConjunction()"></i>
           </div>
         </div>
         <div *ngFor="let entity of request.entities" class="pmd-chip custom-chip">
@@ -59,12 +76,29 @@
             </div>
             <input (keydown)="addEntry($event,'keywords', 'keywordsField')" [(ngModel)]="keywordsField" id="keywords"
                    name="keywords" type="text" class="form-control">
-            <div class="input-group-append">
-              <select name="keywordsMode" [(ngModel)]="request.keywordsConjunctionMode" class="form-control">
-                <option [ngValue]="false">Contains Any</option>
-                <option [ngValue]="true">Contains All</option>
-              </select>
+          </div>
+        </div>
+        <div *ngIf="request.keywords && request.keywords.length >=2" class="w-100">
+          <div class="form-group custom-control custom-control-inline">
+            <div>
+              <div class="form-check form-check-inline">
+                <input [checked]=!request.keywordsConjunctionMode (change)="request.keywordsConjunctionMode = false" class="form-check-input" type="radio"
+                       name="any-keywords" id="any-keywords">
+                <label class="form-check-label" for="any-keywords">
+                  Contains Any
+                </label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input [checked]="request.keywordsConjunctionMode" (change)="request.keywordsConjunctionMode = true"
+                       class="form-check-input" type="radio"
+                       name="all-keywords" id="all-keywords">
+                <label class="form-check-label" for="all-keywords">
+                  Contains All
+                </label>
+              </div>
             </div>
+            <i class="fa fa-question-circle help-circle help-entities"
+               (click)="openDialogKeywordsConjunction()"></i>
           </div>
         </div>
         <div *ngFor="let word of request.keywords" class="pmd-chip custom-chip">
