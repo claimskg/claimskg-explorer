@@ -225,7 +225,7 @@ export class RequestUtils {
     for (const clause of RequestUtils.filterEntitiesRequest.clauses) {
       request += clause + ' . ';
     }
-    request += '  FILTER (strStarts(lcase(?entity), "' + fragment.toLowerCase() + '"))';
+    request += '  FILTER (contains(lcase(?entity), "' + fragment.toLowerCase() + '"))';
     request += '} ORDER BY ?entity';
 
     return request;
@@ -240,7 +240,7 @@ export class RequestUtils {
     for (const clause of RequestUtils.filterAuthorsRequest.clauses) {
       request += clause + ' . ';
     }
-    request += '  FILTER (strStarts(lcase(?author), "' + fragment.toLowerCase() + '"))';
+    request += '  FILTER (contains(lcase(?author), "' + fragment.toLowerCase() + '"))';
     request += '} ORDER BY ?author';
 
     return request;

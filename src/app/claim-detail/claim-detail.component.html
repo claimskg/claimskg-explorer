@@ -8,13 +8,15 @@
         <p id="link-article" class="mx-auto">Article</p>
       </a>
       <div *ngIf="!claim.link" class="mx-auto"><img id="no-source" src="assets/img/article-icon.png"></div>
-      <div id="truth" class="text-center mx-auto">
-        <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-4x"></i>
-        <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-4x"></i>
-        <i *ngIf="claim.truthRating === 3" class="mx-auto fa fa-thermometer-full truth-true fa-4x"></i>
-        <i *ngIf="claim.truthRating === -1" class="mx-auto fa fa-question-circle truth-other fa-4x"></i>
-        <p class="mx-auto">{{claim.ratingName}}</p>
-      </div>
+      <a id="truth" class="text-center mx-auto" href="https://markdownshare.com/view/31354bfe-fbe0-47a6-b0ef-ff42f1554cc0">
+        <div>
+          <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-4x"></i>
+          <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-4x"></i>
+          <i *ngIf="claim.truthRating === 3" class="mx-auto fa fa-thermometer-full truth-true fa-4x"></i>
+          <i *ngIf="claim.truthRating === -1" class="mx-auto fa fa-question-circle truth-other fa-4x"></i>
+          <p class="mx-auto">{{claim.ratingName}}</p>
+        </div>
+      </a>
     </div>
   </div>
   <div>
