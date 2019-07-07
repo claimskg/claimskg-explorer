@@ -3,12 +3,12 @@
   <p id="claimText" class="mx-auto">{{claim.text}}</p>
   <div id="headInfos" class="mx-auto w-25">
     <div class="row">
-      <a *ngIf="claim.link" [href]="claim.link" class="text-center mx-auto">
+      <a *ngIf="claim.link" [href]="claim.link" target="_blank" class="text-center mx-auto link-new-tab">
         <img id="link-source" src="assets/img/article-icon.png">
         <p id="link-article" class="mx-auto">Article</p>
       </a>
       <div *ngIf="!claim.link" class="mx-auto"><img id="no-source" src="assets/img/article-icon.png"></div>
-      <a id="truth" class="text-center mx-auto" href="https://markdownshare.com/view/31354bfe-fbe0-47a6-b0ef-ff42f1554cc0">
+      <a id="truth" class="text-center mx-auto link-new-tab" target="_blank" href="https://markdownshare.com/view/31354bfe-fbe0-47a6-b0ef-ff42f1554cc0">
         <div>
           <i *ngIf="claim.truthRating === 1" class="mx-auto fa fa-thermometer-empty truth-false fa-4x"></i>
           <i *ngIf="claim.truthRating === 2" class="mx-auto fa fa-thermometer-half truth-mixed fa-4x"></i>
@@ -26,7 +26,7 @@
       <span *ngIf="claim.date">{{claim.date|date:'longDate'}}</span>
     </p>
     <p class="claimInfos">
-      <span *ngIf="claim.source">Claim Review extracted from  <a [href]="claim.sourceURL">{{claim.source}}</a></span>
+      <span *ngIf="claim.source">Claim Review extracted from  <a [href]="claim.sourceURL" target="_blank" class="link-new-tab">{{claim.source}}</a></span>
     </p>
   </div>
   <div id="panel-infos-claim">
@@ -57,7 +57,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <mat-list>
-        <mat-list-item *ngFor="let citation of claim.citations"><a [href]="citation">{{citation}}</a></mat-list-item>
+        <mat-list-item *ngFor="let citation of claim.citations"><a [href]="citation" target="_blank" class="link-new-tab">{{citation}}</a></mat-list-item>
       </mat-list>
     </mat-expansion-panel>
     <mat-expansion-panel *ngIf="claim.keywords.length > 0">

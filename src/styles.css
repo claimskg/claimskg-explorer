@@ -22,3 +22,7 @@
 .margin-t-100 {
   margin-top: 100px;
 }
+
+.link-new-tab {
+  target-new:tab;
+}
