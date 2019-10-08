@@ -1,6 +1,6 @@
-import {Utils} from './utils/Utils';
-import {environment} from '../environments/environment';
-import {RequestUtils} from './utils/RequestUtils';
+import { Utils } from './utils/Utils';
+import { environment } from '../environments/environment';
+import { RequestUtils } from './utils/RequestUtils';
 
 export class Claim {
   private static readonly requestData = RequestUtils.selectRequest;
@@ -31,13 +31,13 @@ export class Claim {
     this.mentions = jsonData.mentions.value !== '' ? jsonData.mentions.value.split(';!;') : [];
     this.mentionsArticle = jsonData.mentionsArticle.value !== '' ? jsonData.mentionsArticle.value.split(';!;') : [];
     this.language = jsonData.language.value;
-    this.keywords = jsonData.keywords.value !== ''  ? jsonData.keywords.value.split(',') : [];
-    this.citations = jsonData.citations.value !== ''  ? jsonData.citations.value.split(';!;') : [];
+    this.keywords = jsonData.keywords.value !== '' ? jsonData.keywords.value.split(',') : [];
+    this.citations = jsonData.citations.value !== '' ? jsonData.citations.value.split(';!;') : [];
     this.source = jsonData.source.value;
     this.sourceURL = jsonData.sourceURL.value;
   }
 
-  public static getSPAEQLToSelect(id: string): string {
+  public static getSPARQLToSelect(id: string): string {
     let request = '';
     for (const prefix of this.requestData.prefixes) {
       request += prefix + ' ';

@@ -1,4 +1,4 @@
-import {environment} from '../../environments/environment';
+import { environment } from '../../environments/environment';
 
 export class RequestUtils {
 
@@ -97,10 +97,11 @@ export class RequestUtils {
       '?truth_rating_review schema:ratingValue ?truthRating',
       'OPTIONAL {?claim schema:url ?link}',
       '?item a schema:CreativeWork',
+      '?item schema:text ?text .',
       '?claim schema:itemReviewed ?item',
       'OPTIONAL {?item schema:mentions ?entities . ?entities nif:isString ?entities_name}',
       'OPTIONAL {?claim schema:mentions ?entities_article . ?entities_article nif:isString ?entities_name_article}',
-      'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author }',
+      'OPTIONAL {?item schema:author ?author_info .  ?author_info schema:name ?author }',
       'OPTIONAL {?claim schema:inLanguage ?inLanguage . ?inLanguage schema:name ?language}',
       'OPTIONAL {?claim schema:author ?sourceAuthor . ?sourceAuthor schema:name ?source . ?sourceAuthor schema:url ?sourceURL}',
       'OPTIONAL {?item schema:keywords ?keywords}',
@@ -126,22 +127,26 @@ export class RequestUtils {
     'where {?claim a schema:ClaimReview}';
 
   public static readonly fieldsAssociation = [
-    {name: 'Id of the Claim', field: '?id'},
-    {name: 'Text of the Claim', field: '?text'},
-    {name: 'Date', field: '?date'},
-    {name: 'Truth Rating Value', field: '?truthRating'},
-    {name: 'Truth Rating Label', field: '?ratingName'},
-    {name: 'Author', field: '?author'},
-    {name: 'Headline of the Claim Review', field: '?headline'},
-    {name: 'Named Entities from the Claim', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities_claim',
-      varName: '?named_entities_claim'},
-    {name: 'Named Entities from the Claim Review', field: 'group_concat(distinct ?entities_name_article, ",") as ?named_entities_article',
-      varName: '?named_entities_article'},
-    {name: 'Keywords', field: '?keywords'},
-    {name: 'Fact-Checking Website Name', field: '?source'},
-    {name: 'Fact-Checking Website Link', field: '?sourceURL'},
-    {name: 'Link of the Claim Review on the Fact-Checking Website', field: '?link'},
-    {name: 'Language', field: '?language'},
+    { name: 'Id of the Claim', field: '?id' },
+    { name: 'Text of the Claim', field: '?text' },
+    { name: 'Date', field: '?date' },
+    { name: 'Truth Rating Value', field: '?truthRating' },
+    { name: 'Truth Rating Label', field: '?ratingName' },
+    { name: 'Author', field: '?author' },
+    { name: 'Headline of the Claim Review', field: '?headline' },
+    {
+      name: 'Named Entities from the Claim', field: 'group_concat(distinct ?entities_name, ",") as ?named_entities_claim',
+      varName: '?named_entities_claim'
+    },
+    {
+      name: 'Named Entities from the Claim Review', field: 'group_concat(distinct ?entities_name_article, ",") as ?named_entities_article',
+      varName: '?named_entities_article'
+    },
+    { name: 'Keywords', field: '?keywords' },
+    { name: 'Fact-Checking Website Name', field: '?source' },
+    { name: 'Fact-Checking Website Link', field: '?sourceURL' },
+    { name: 'Link of the Claim Review on the Fact-Checking Website', field: '?link' },
+    { name: 'Language', field: '?language' },
   ];
 
   public static readonly statisticRequest = 'PREFIX schema: <http://schema.org/>' +
