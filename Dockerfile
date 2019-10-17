@@ -18,6 +18,7 @@ RUN mkdir /app
 WORKDIR /app
 
 COPY package.json package-lock.json /app/
+
 RUN cd /app && npm set progress=false && npm audit fix
 RUN npm install -g @angular/cli
 RUN npm uninstall @angular-devkit/build-angular
