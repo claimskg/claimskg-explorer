@@ -1,4 +1,4 @@
-FROM node:alpine as builder
+FROM node:12.9.1 as builder
 
 ARG endpoint=https://data.gesis.org/claimskg/sparql
 ENV ENDPOINT=$endpoint
@@ -12,19 +12,22 @@ ENV PER_PAGE=$per_page
 ARG base_url=/claimskg/explorer/
 ENV BASE_URL=$base_url
 
-RUN apk update && apk add --no-cache make git
+RUN apt-get update && apt-get install -y make git build-essential
 RUN mkdir /run/nginx
 RUN mkdir /app
 WORKDIR /app
 
 COPY package.json package-lock.json /app/
-RUN cd /app && npm set progress=false && npm install -g @angular/cli && npm install --save-dev @angular-devkit/build-angular
+RUN cd /app && npm set progress=false && npm audit fix
+RUN npm install -g @angular/cli
+RUN npm uninstall @angular-devkit/build-angular
+RUN npm install --save-dev @angular-devkit/build-angular
 
 COPY .  /app
-RUN echo -e "export const environment = {\n  production: true,\n  endpoint: '$ENDPOINT',\n  graph_iri: '$GRAPH_IRI',\n    resultPerPage: $PER_PAGE,\n};" > /app/src/environments/environment.prod.ts 
+RUN echo -e "export const environment = {\n  production: true,\n  endpoint: '$ENDPOINT',\n  graph_iri: '$GRAPH_IRI',\n    resultPerPage: $PER_PAGE,\n};" > /app/src/environments/environment.prod.ts
 RUN cp /app/src/environments/environment.prod.ts /app/src/environments/environment.ts
 RUN cat /app/src/environments/environment.prod.ts
-RUN cd /app && ng build --prod --base-href $base_url
+RUN cd /app && ng update --all && ng build --prod --base-href $base_url
 
 EXPOSE 8081
 CMD ng serve --port 8081 --host 0.0.0.0 --prod --base-href "$BASE_URL" --disable-host-check
