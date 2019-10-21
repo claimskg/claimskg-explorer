@@ -31,7 +31,7 @@ export class ClaimsResearchComponent implements OnInit, AfterViewInit {
   filteredAuthors: string[];
   filteredLanguages: Language[];
   filteredSources: Organization[];
-  @ViewChild(ClaimsListComponent) resultList: ClaimsListComponent;
+  @ViewChild(ClaimsListComponent, {static:true}) resultList: ClaimsListComponent;
   @ViewChildren(ClaimsListComponent) initDetector: QueryList<ClaimsListComponent>;
   childInit = false;
   bsConfig: Partial<BsDatepickerConfig> = new BsDatepickerConfig();
