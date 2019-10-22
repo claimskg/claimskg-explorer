@@ -8,8 +8,6 @@ export class RequestUtils {
       'PREFIX nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>'
     ],
     select: '(?claims as ?id) ' +
-      'COALESCE(?headline, \'No text data\') as ?headline ' +
-      'COALESCE(?text, ?headline) as ?text ' +
       'COALESCE(?date, \'Unknown\') as ?date ' +
       '?truthRating ' +
       '?ratingName ' +
@@ -26,7 +24,8 @@ export class RequestUtils {
       'OPTIONAL {?claims schema:url ?link}',
       '?item a schema:CreativeWork',
       '?claims schema:itemReviewed ?item',
-      'OPTIONAL {?item schema:author ?author_info . ?item schema:text ?text . ?author_info schema:name ?author }',
+      '?item schema:text ?text',
+      'OPTIONAL {?item schema:author ?author_info . ?author_info schema:name ?author }',
       'OPTIONAL {?item schema:datePublished ?date}'
     ]
   };
@@ -74,8 +73,6 @@ export class RequestUtils {
       'PREFIX nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#>'
     ],
     select: '(?claim as ?id) ' +
-      'COALESCE(?headline, \'No text data\') as ?headline ' +
-      'COALESCE(?text, ?headline) as ?text ' +
       'COALESCE(?date, \'\') as ?date ' +
       'COALESCE(?keywords, "") as ?keywords ' +
       'group_concat(distinct ?entities_name, ";!;") as ?mentions ' +
@@ -97,7 +94,7 @@ export class RequestUtils {
       '?truth_rating_review schema:ratingValue ?truthRating',
       'OPTIONAL {?claim schema:url ?link}',
       '?item a schema:CreativeWork',
-      '?item schema:text ?text .',
+      '?item schema:text ?text',
       '?claim schema:itemReviewed ?item',
       'OPTIONAL {?item schema:mentions ?entities . ?entities nif:isString ?entities_name}',
       'OPTIONAL {?claim schema:mentions ?entities_article . ?entities_article nif:isString ?entities_name_article}',
