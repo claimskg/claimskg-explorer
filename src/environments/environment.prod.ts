@@ -4,3 +4,9 @@ export const environment = {
   graph_iri: 'http://data.gesis.org/claimskg/',
   resultPerPage: 10,
 };
+
+export const packages: any = {
+  'moment': {
+    format: 'cjs'
+  }
+};
