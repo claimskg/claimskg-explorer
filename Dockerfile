@@ -12,8 +12,7 @@ ENV PER_PAGE=$per_page
 ARG base_url=/claimskg/explorer/
 ENV BASE_URL=$base_url
 
-RUN apt-get update && apt-get install -y make git build-essential
-RUN mkdir /run/nginx
+RUN apt-get update && apt-get install -y make git build-essential nginx
 RUN mkdir /app
 WORKDIR /app
 
@@ -26,7 +25,11 @@ RUN cd /app && npm set progress=false && npm install && npm audit fix && npm ins
 RUN echo "export const environment = {\n  production: true,\n  endpoint: '$ENDPOINT',\n  graph_iri: '$GRAPH_IRI',\n    resultPerPage: $PER_PAGE,\n};" > /app/src/environments/environment.prod.ts
 RUN cp /app/src/environments/environment.prod.ts /app/src/environments/environment.ts
 RUN cd /app && npm install @angular/cli && ng update --all && ng build --prod --base-href $base_url
+RUN rm /var/www/html/index.nginx-debian.html
+RUN cp -r /app/dist/claimskg-explorer /var/www/html/
+COPY ./nginx-default /etc/nginx/sites-enabled/default
 
-EXPOSE 8081
-CMD ng serve --port 8081 --host 0.0.0.0 --prod --base-href "$BASE_URL" --disable-host-check
-#MD ["ng", "serve", "--port", "8081", "--host", "0.0.0.0", "--prod", "--base-href", "$base_url"]
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
