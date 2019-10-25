@@ -12,7 +12,8 @@ export class RequestUtils {
       '?truthRating ' +
       '?ratingName ' +
       'COALESCE(?author, \'Unknown\') as ?author ' +
-      'COALESCE(?link, \'\') as ?link',
+      'COALESCE(?link, \'\') as ?link' +
+      '?text',
     superSelectConjunction: '?id ?text ?date ?truthRating ?ratingName ?author ?link',
     clauses: [
       '?claims a schema:ClaimReview',
@@ -81,6 +82,7 @@ export class RequestUtils {
       'group_concat(?citations, ";!;") as ?citations ' +
       '?truthRating ' +
       '?ratingName ' +
+        '?'+
       'COALESCE(?author, \'\') as ?author ' +
       'COALESCE(?source, "") as ?source ' +
       'COALESCE(?sourceURL, "") as ?sourceURL ' +
