@@ -82,7 +82,7 @@ export class RequestUtils {
       'group_concat(?citations, ";!;") as ?citations ' +
       '?truthRating ' +
       '?ratingName ' +
-        '?'+
+      '?text ' +
       'COALESCE(?author, \'\') as ?author ' +
       'COALESCE(?source, "") as ?source ' +
       'COALESCE(?sourceURL, "") as ?sourceURL ' +
